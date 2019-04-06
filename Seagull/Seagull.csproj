@@ -43,6 +43,22 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="AST\AbstractAstNode.cs" />
+        <Compile Include="AST\Expressions\AbstractExpression.cs" />
+        <Compile Include="AST\Expressions\AttributeAccess.cs" />
+        <Compile Include="AST\Expressions\BinaryOperation.cs" />
+        <Compile Include="AST\Expressions\Binary\Arithmetic.cs" />
+        <Compile Include="AST\Expressions\Binary\Comparison.cs" />
+        <Compile Include="AST\Expressions\Binary\LogicalOperation.cs" />
+        <Compile Include="AST\Expressions\Cast.cs" />
+        <Compile Include="AST\Expressions\FunctionInvocation.cs" />
+        <Compile Include="AST\Expressions\Indexing.cs" />
+        <Compile Include="AST\Expressions\Literal.cs" />
+        <Compile Include="AST\Expressions\Literals\CharLiteral.cs" />
+        <Compile Include="AST\Expressions\Literals\DoubleLiteral.cs" />
+        <Compile Include="AST\Expressions\Literals\IntLiteral.cs" />
+        <Compile Include="AST\Expressions\Negation.cs" />
+        <Compile Include="AST\Expressions\UnaryMinus.cs" />
+        <Compile Include="AST\Expressions\Variable.cs" />
         <Compile Include="AST\IAstNode.cs" />
         <Compile Include="AST\IDefinition.cs" />
         <Compile Include="AST\IExpression.cs" />
