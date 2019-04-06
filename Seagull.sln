@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.539
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seagull", "Seagull\Seagull.csproj", "{4BE75FC8-27FC-49D7-B0DB-09F60E665931}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seagull", "Seagull\Seagull.csproj", "{79D5C142-87E3-4B09-B516-C0DA43EB1C1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Sandbox\Sandbox.csproj", "{AF97DCC2-8B57-4116-AC40-161DD835DF25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4BE75FC8-27FC-49D7-B0DB-09F60E665931}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4BE75FC8-27FC-49D7-B0DB-09F60E665931}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4BE75FC8-27FC-49D7-B0DB-09F60E665931}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4BE75FC8-27FC-49D7-B0DB-09F60E665931}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79D5C142-87E3-4B09-B516-C0DA43EB1C1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79D5C142-87E3-4B09-B516-C0DA43EB1C1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79D5C142-87E3-4B09-B516-C0DA43EB1C1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79D5C142-87E3-4B09-B516-C0DA43EB1C1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF97DCC2-8B57-4116-AC40-161DD835DF25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF97DCC2-8B57-4116-AC40-161DD835DF25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF97DCC2-8B57-4116-AC40-161DD835DF25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF97DCC2-8B57-4116-AC40-161DD835DF25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
