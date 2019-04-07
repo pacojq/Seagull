@@ -4,14 +4,24 @@ using System.IO;
 using Antlr4.Runtime;
 using Seagull.AST;
 using Seagull.Errors;
+using Seagull.Parser;
 
 namespace Seagull
 {
     public class SeagullCompiler
     {
-        
+
+	    private ErrorListener _errorListener;
+
+	    public SeagullCompiler()
+	    {
+		    _errorListener = new ErrorListener();
+	    }
+	    
+	    
         public bool Compile(string filename)
         {
+	        ErrorHandler.Instance.Clear();
 	        
 	        // create a lexer that feeds off of input stream
 	        AntlrInputStream input;
@@ -32,13 +42,10 @@ namespace Seagull
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             SeagullParser parser = new SeagullParser(tokens);
 		
-		
-            
-            ErrorListener error = new ErrorListener();
             parser.RemoveErrorListeners();
             lexer.RemoveErrorListeners();
-            parser.AddErrorListener(error);
-            lexer.AddErrorListener(error);
+            parser.AddErrorListener(_errorListener);
+            lexer.AddErrorListener(_errorListener);
 		
 	    
             Program ast = parser.program().Ast;

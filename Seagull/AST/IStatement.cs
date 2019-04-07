@@ -1,6 +1,6 @@
 namespace Seagull.AST
 {
-    public interface IStatement
+    public interface IStatement : IAstNode
     {
         
     }

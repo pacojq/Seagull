@@ -4,11 +4,11 @@
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{AF97DCC2-8B57-4116-AC40-161DD835DF25}</ProjectGuid>
-        <OutputType>Exe</OutputType>
+        <ProjectGuid>{AA23493F-6D55-41D2-8E87-40C1986AC283}</ProjectGuid>
+        <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>Sandbox</RootNamespace>
-        <AssemblyName>Sandbox</AssemblyName>
+        <RootNamespace>Seagull.CodeGeneration</RootNamespace>
+        <AssemblyName>Seagull.CodeGeneration</AssemblyName>
         <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>
@@ -38,22 +38,7 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-    </ItemGroup>
-    <ItemGroup>
-      <Content Include="input.sgl">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Include="main.sgl">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\Seagull\Seagull.csproj">
-        <Project>{79d5c142-87e3-4b09-b516-c0da43eb1c1d}</Project>
-        <Name>Seagull</Name>
-      </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

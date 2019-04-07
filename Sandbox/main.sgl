@@ -1,0 +1,150 @@
+
+
+/*
+
+//cool stuff we could try to achieve
+
+#define COMPILER_INSTRUCTION
+
+#import Math // import module
+#load math.sgl // compile and import file
+
+#import my_package
+
+#run function_name() // run in compile time
+#assert false // assert in compile time
+
+// A checking_function will be called every time we compile a
+// call to a given method, just to check everything is okay
+
+#checkcall func_name checking_function 
+
+
+#export my_package {
+        ...
+}
+*/
+
+
+
+// Comment
+
+/* Block comment */
+
+/* /* Nested Block comment */ */
+
+/* Multi
+    /* Line
+        /* Block comment */
+    */
+*/
+
+
+
+
+
+delegate arithmetic : (a : int, b : int) -> int;
+
+
+struct Person {
+    name : string;
+    age : int;
+}
+
+/*
+struct Student : Person { // Inheritance?
+    course : string;
+}
+*/
+
+enum TYPES : int {
+    TYPE_A,
+    TYPE_B,
+    TYPE_C
+}
+
+
+
+square : (int i) -> int {
+	return i*i;
+}
+
+
+
+main() : void {
+
+    p1 : Person;
+    p2 := new Person;
+    p1 = new Person {
+        name = "Mike";
+        age = 20;
+    }
+    
+    postpone print("Deleting p1"); // Postpone takes a statement and executes it at the very end of the block
+    postpone delete p1;
+
+    delete p2; // Destructor
+
+	a := square(2);
+	b : int = square(a);
+
+    
+
+	mult : (int a, int b) -> int = (int a, int b) -> {
+		return a * b;
+	}
+
+	div : arithmetic = (int a, int b) -> {
+		return a / b;
+	}
+
+	sub:= (int a, int b) -> {
+		return a - b;
+	}
+
+	sum := (int a, int b) -> a + b;
+
+	sum2 : arithmetic = (a, b) -> a + b;
+	
+	
+	
+	
+	
+	i := 0;
+	while (1) {
+	
+	    defer print(i);
+	
+	    if (i == 0) {
+	        i ++;
+	        continue;
+	    }
+	    else {
+            i += 2;
+            i = sum(i, square(i));
+            
+            if (i == 13)
+                return;
+                
+            if (i > 300)
+                break;
+	    }
+	    // defer print(i) will be called here
+	}
+	
+	
+	numbers := int[10];
+	
+	// Dynamic arrays?
+	//results: int[];
+	
+	for (n in 0..count-1) {
+	    print(numbers[n]);
+	}
+	
+	for (i in numbers) {
+	    print(i);
+	}
+	
+
+}

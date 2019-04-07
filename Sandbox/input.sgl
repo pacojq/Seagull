@@ -1,3 +1,16 @@
 
-5
+a : int;
+b : double;
+c : char;
 
+// Comment
+
+/* Block comment */
+
+/* /* Nested Block comment */ */
+
+
+/* a /* b /* c /* d */ 1 */ 2 */
+/* a /* b /* c */ 1 */ 2 */ 3 */
+
+/* a /* b /* c /* d */ 1 */ 2 */ 3 */

@@ -8,7 +8,7 @@ namespace Seagull.AST
         public int Line { get; private set; }
         public int Column { get; private set; }
 	
-        private readonly List<IDefinition> _definitions;
+        public IEnumerable<IDefinition> Definitions { get; private set; }
 
 	
 	
@@ -16,13 +16,7 @@ namespace Seagull.AST
         {
             Line = line;
             Column = column;
-            _definitions = new List<IDefinition>(definitions);
-        }
-	
-	
-        public IEnumerable<IDefinition> GetDefinitions()
-        {
-            return _definitions;
+            Definitions = new List<IDefinition>(definitions);
         }
 	
     }

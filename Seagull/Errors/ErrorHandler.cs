@@ -51,8 +51,11 @@ namespace Seagull.Errors
 
             return str.ToString();
         }
-        
-        
-        
+
+
+        public void Clear()
+        {
+            _errors.Clear();
+        }
     }
 }

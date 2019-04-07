@@ -17,7 +17,10 @@ namespace Sandbox
                 // to type the EOF character and end the input: use CTRL+D, then press <enter>
                 while ((filename = Console.ReadLine()) != "q")
                 {
-                    compiler.Compile(filename);
+                    bool success = compiler.Compile(filename);
+                    if (success)
+                        Console.WriteLine("The file is correct!");
+                    
                     Console.WriteLine("Type an input file (or 'q' to end execution):");
                 }
                 
