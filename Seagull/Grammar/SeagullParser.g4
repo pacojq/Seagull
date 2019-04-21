@@ -1,4 +1,6 @@
-grammar Seagull;
+parser grammar SeagullParser;
+
+options { tokenVocab = SeagullLexer; }
 
 @header {
 
@@ -16,6 +18,8 @@ grammar Seagull;
 	
 	using Seagull.AST.Types;
 }
+
+
 
 program returns [Program Ast, List<IDefinition> Def = new List<IDefinition>()]:
 		(d=definition { $Def.AddRange($d.Ast); })* EOF
@@ -35,9 +39,9 @@ type returns [IType Ast]:
 		primitive { $Ast = $primitive.Ast; }
 		
 		// Arrays
-		| t=type '[' i=INT_CONSTANT ']' 
+		| t=type L_BRACKET i=INT_CONSTANT R_BRACKET 
 				{ $Ast = ArrayType.BuildArray(int.Parse($i.text), $t.Ast); }
-				('[' i2=INT_CONSTANT ']' 
+				(L_BRACKET i2=INT_CONSTANT R_BRACKET 
 				    { $Ast = ArrayType.BuildArray( int.Parse($i2.text), $Ast); } 
 				)*
 		//| structType { $Ast = $structType.Ast; }
@@ -45,19 +49,19 @@ type returns [IType Ast]:
 		
 /*
 structType returns [StructType Ast, List<VariableDefinition> defs=new List<VariableDefinition>()]:
-		s='struct' '{' (variableDef { $defs.AddRange($variableDef.Ast); })* '}' 
+		s='struct' L_CURL (variableDef { $defs.AddRange($variableDef.Ast); })* R_CURL 
 				{ $Ast = new StructType($s.GetLine(), $s.GetCol(), $defs); } 
 		;
 */
 // Primitive types
 primitive returns [IType Ast]:
-		i='int' { $Ast = new IntType($i.GetLine(), $i.GetCol()); }
-		| c='char' { $Ast = new CharType($c.GetLine(), $c.GetCol()); }
-		| d='double' { $Ast = new DoubleType($d.GetLine(), $d.GetCol()); }
+		i=INT { $Ast = new IntType($i.GetLine(), $i.GetCol()); }
+		| c=CHAR { $Ast = new CharType($c.GetLine(), $c.GetCol()); }
+		| d=DOUBLE { $Ast = new DoubleType($d.GetLine(), $d.GetCol()); }
 		;
 
 voidType returns [IType Ast]:
-		v='void' { $Ast = new VoidType($v.GetLine(), $v.GetCol()); }
+		v=VOID { $Ast = new VoidType($v.GetLine(), $v.GetCol()); }
 		;
 
 
@@ -77,14 +81,14 @@ definition returns [List<IDefinition> Ast = new List<IDefinition>()]:
 
 
 variableDef returns [List<VariableDefinition> Ast = new List<VariableDefinition>()]: 
-        n=ID ':' t=type ';'
+        n=ID COL t=type SEMI_COL
 		    { $Ast.Add(new VariableDefinition($t.Ast.Line, $t.Ast.Column, $n.GetText(), $t.Ast)); }
 		// TODO | ID ':=' expression
-		// TODO | ID ':' type '=' expression
+		// TODO | ID COL type ASSIGN expression
 		;
 /*		
 fuctionDef returns [FunctionDefinition Ast, List<VariableDefinition> p = new List<VariableDefinition>()]: 
-		t=funcReturnType ID '(' (parameters { $p.AddRange($parameters.Ast); } )? ')' fnBlock	// Function IDefinition
+		t=funcReturnType ID L_PAR (parameters { $p.AddRange($parameters.Ast); } )? R_PAR fnBlock	// Function IDefinition
 			{ $Ast = new FunctionDefinition($t.Ast.Line, $t.Ast.Column, $ID.text, new FunctionType($t.Ast, $p), $fnBlock.Ast); }
 		;
 		
@@ -107,38 +111,38 @@ parameters returns [List<VariableDefinition> Ast = new List<VariableDefinition>(
 
 
 funcInvocation returns [FunctionInvocation Ast, List<IExpression> arguments = new List<IExpression>()]:
-		func=variable '(' ( e1=expression { $arguments.Add($e1.Ast); } (',' e2=expression { $arguments.Add($e2.Ast); })* )? ')'
+		func=variable L_PAR ( e1=expression { $arguments.Add($e1.Ast); } (COMMA e2=expression { $arguments.Add($e2.Ast); })* )? R_PAR
  			{ $Ast = new FunctionInvocation($func.Ast, $arguments); }
  		;
  
   	
 block returns [List<IStatement> Ast = new List<IStatement>()]: 
 		st1=statement { $Ast.AddRange($st1.Ast); }
-		| '{' (st2=statement { $Ast.AddRange($st2.Ast); })* '}'
+		| L_CURL (st2=statement { $Ast.AddRange($st2.Ast); })* R_CURL
 		;
 		
 fnBlock returns [List<IStatement> Ast = new List<IStatement>()]: 
-		'{'
+		L_CURL
 			(variableDef { $Ast.AddRange($variableDef.Ast); })*
 			(statement { $Ast.AddRange($statement.Ast); })*
-		'}'
+		R_CURL
 		;
 	
 	
 		 
 statement returns [List<IStatement> Ast = new List<IStatement>()]:
-		w='while' '(' cond=expression ')' b=block  				// While loop
+		w=WHILE L_PAR cond=expression R_PAR b=block  				// While loop
 				{ $Ast.Add(new WhileLoop($w.GetLine(), $w.GetCol(), $cond.Ast, $b.Ast)); }
-		| i='if' '(' cond=expression ')' b1=block					// If-else
+		| i=IF L_PAR cond=expression R_PAR b1=block					// If-else
 				{ $Ast.Add(new IfStatement($i.GetLine(), $i.GetCol(), $cond.Ast, $b1.Ast)); }
-				('else' b2=block { ((IfStatement)$Ast[0]).Else = $b2.Ast; })?	
-		| e1=expression '=' e2=expression ';'					// Assignment
+				(ELSE b2=block { ((IfStatement)$Ast[0]).Else = $b2.Ast; })?	
+		| e1=expression ASSIGN e2=expression SEMI_COL					// Assignment
 				{ $Ast.Add(new Assignment($e1.Ast, $e2.Ast)); }
-  		| r='return' e=expression ';'							// Return statement
+  		| r=RETURN e=expression SEMI_COL							// Return statement
   				{ $Ast.Add(new Return($r.GetLine(), $r.GetCol(), $e.Ast)); }
   		| readPrint												// Read and Write
   				{ $Ast.Add($readPrint.Ast); }
-  		| funcInvocation ';'
+  		| funcInvocation SEMI_COL
   				{ $Ast.Add($funcInvocation.Ast); }
   		;
   		
@@ -147,8 +151,8 @@ statement returns [List<IStatement> Ast = new List<IStatement>()]:
 // TODO read write syntactic sugar
   		
 readPrint returns [IStatement Ast]:
- 		p='print' '(' e=expression ')' ';' { $Ast = new Print($p.GetLine(), $p.GetCol(), $e.Ast); }
-  		| r='read' '(' e=expression ')' ';'	{ $Ast = new Read($r.GetLine(), $r.GetCol(), $e.Ast); }
+ 		p=PRINT L_PAR e=expression R_PAR SEMI_COL { $Ast = new Print($p.GetLine(), $p.GetCol(), $e.Ast); }
+  		| r=READ L_PAR e=expression R_PAR SEMI_COL	{ $Ast = new Read($r.GetLine(), $r.GetCol(), $e.Ast); }
   		;
 
 
@@ -178,104 +182,33 @@ expression returns [IExpression Ast]:
 		| funcInvocation { $Ast = $funcInvocation.Ast; }
 		
 		// Parentheses
-		| '(' e=expression ')' { $Ast = $e.Ast; }
+		| L_PAR e=expression R_PAR { $Ast = $e.Ast; }
 		
 		// Indexing
-		| e1=expression '[' e2=expression ']' { $Ast = new Indexing($e1.Ast, $e2.Ast); }
+		| e1=expression L_BRACKET e2=expression R_BRACKET { $Ast = new Indexing($e1.Ast, $e2.Ast); }
 		
 		// Attribute access
-		| var=variable '.' att=ID { $Ast = new AttributeAccess($var.Ast, $att.text); }
+		| var=variable DOT att=ID { $Ast = new AttributeAccess($var.Ast, $att.text); }
 		
 		// Unary operations
-		| um='-' expression { $Ast = new UnaryMinus($um.GetLine(), $um.GetCol(), $expression.Ast); }
-		| not='!' expression { $Ast = new Negation($not.GetLine(), $not.GetCol(), $expression.Ast); }
+		| um=MINUS expression { $Ast = new UnaryMinus($um.GetLine(), $um.GetCol(), $expression.Ast); }
+		| not=NOT expression { $Ast = new Negation($not.GetLine(), $not.GetCol(), $expression.Ast); }
 		
 		// Arithmetics
-		| e1=expression op=('*'|'/'|'%') e2=expression { $Ast = new Arithmetic($op.text, $e1.Ast, $e2.Ast); }
-		| e1=expression op=('+'|'-') e2=expression { $Ast = new Arithmetic($op.text, $e1.Ast, $e2.Ast); }
+		| e1=expression op=(STAR|SLASH|PERCENT) e2=expression { $Ast = new Arithmetic($op.text, $e1.Ast, $e2.Ast); }
+		| e1=expression op=(PLUS|MINUS) e2=expression { $Ast = new Arithmetic($op.text, $e1.Ast, $e2.Ast); }
 		
 		// Cast
-		| p='(' t=primitive ')' e=expression { $Ast = new Cast($p.GetLine(), $p.GetCol(), $t.Ast, $e.Ast); }
+		| p=L_PAR t=primitive R_PAR e=expression { $Ast = new Cast($p.GetLine(), $p.GetCol(), $t.Ast, $e.Ast); }
 		
 		// Comparisons
-		| e1=expression op=('>'|'<'|'>='|'<='|'=='|'!=') e2=expression { $Ast = new Comparison($op.text, $e1.Ast, $e2.Ast); }
+		| e1=expression op=(GREATER_THAN|LESS_THAN|GREATER_EQ_THAN|LESS_EQ_THAN|EQUAL|NOT_EQUAL) e2=expression { $Ast = new Comparison($op.text, $e1.Ast, $e2.Ast); }
 		
 		// Logical operations
-		| e1=expression op=('&&'|'||') e2=expression { $Ast = new LogicalOperation($op.text, $e1.Ast, $e2.Ast); }
+		| e1=expression op=(AND|OR) e2=expression { $Ast = new LogicalOperation($op.text, $e1.Ast, $e2.Ast); }
 		;
 
 
 
-
-
-
-
-
-
-
-
-
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-// 														   // 	
-// 						LEXER RULES 					   //
-// 														   //	
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-  		 
-fragment
-DIGIT: [0-9]
-	 ;
-
-fragment
-LETTER: [a-zA-Z]
-	  ;
-	  
-fragment
-REAL: INT_CONSTANT? '.' DIGIT+
-	| INT_CONSTANT '.' DIGIT*
-	;
-
-
-ID: ('_' | LETTER) ('_' | DIGIT | LETTER)*
-  ;
-
-  		 
-INT_CONSTANT: '0'
-			| [1-9] [0-9]* 
-            ;
-
-REAL_CONSTANT: REAL | INT_CONSTANT
-			 | (REAL | INT_CONSTANT) ('e' | 'E') '-'? INT_CONSTANT
-			 ;
-			 			 
-CHAR_CONSTANT: '\'' . '\''
-			 | '\'\\' ([tnr] | '\\' | '\'')  '\''
-			 | '\'\\' INT_CONSTANT '\''
-			 ;
-			 	 
-			 
-SL_COMMENT: '//' .*? ('\r' | '\n' | EOF) -> skip
-	      ;
-	   
-ML_COMMENT: '/*' .*? '*/' -> skip
-	      ;
-
-
-
-// Nested
-ML_COMMENT_N: '/*' .*? NESTED_ML_COMMENT .*? '*/' -> skip
-	        ;	
-
-fragment
-NESTED_ML_COMMENT: 
-                 | '/*' .*? NESTED_ML_COMMENT .*? '*/'
-                 ;
-      
-     
-
-
-	   
-BLANKS: (' ' | '\t' | '\r' | '\n')+ -> skip
-	   ;
 
 

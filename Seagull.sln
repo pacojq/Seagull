@@ -5,13 +5,17 @@ VisualStudioVersion = 15.0.28307.539
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seagull", "Seagull\Seagull.csproj", "{79D5C142-87E3-4B09-B516-C0DA43EB1C1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Sandbox\Sandbox.csproj", "{AF97DCC2-8B57-4116-AC40-161DD835DF25}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seagull.CodeGeneration", "Seagull.CodeGeneration\Seagull.CodeGeneration.csproj", "{AA23493F-6D55-41D2-8E87-40C1986AC283}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seagull.Tests", "Seagull.Tests\Seagull.Tests.csproj", "{D02D63A9-9507-4A42-A492-93300A988ED5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seagull.VM", "Seagull.VM\Seagull.VM.csproj", "{70DC113A-1DAE-4F99-A0B1-9DD25AF67711}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seagull.Compiler", "Seagull.Compiler\Seagull.Compiler.csproj", "{CACC35BF-9410-401F-B3C6-146C72855093}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGeneration", "CodeGeneration", "{A4A6FFA0-26CA-4481-814D-A1B40B411F1C}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Seagull.CodeGeneration.Java", "Seagull.CodeGeneration\Seagull.CodeGeneration.Java\Seagull.CodeGeneration.Java.shproj", "{5E22FB58-F246-47DC-AFF9-E510DF809DC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seagull.CodeGeneration", "Seagull.CodeGeneration\Seagull.CodeGeneration\Seagull.CodeGeneration.csproj", "{D41C6352-61B5-4EEE-877E-D2E997F5203A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +27,6 @@ Global
 		{79D5C142-87E3-4B09-B516-C0DA43EB1C1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79D5C142-87E3-4B09-B516-C0DA43EB1C1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79D5C142-87E3-4B09-B516-C0DA43EB1C1D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AF97DCC2-8B57-4116-AC40-161DD835DF25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AF97DCC2-8B57-4116-AC40-161DD835DF25}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AF97DCC2-8B57-4116-AC40-161DD835DF25}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AF97DCC2-8B57-4116-AC40-161DD835DF25}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AA23493F-6D55-41D2-8E87-40C1986AC283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AA23493F-6D55-41D2-8E87-40C1986AC283}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AA23493F-6D55-41D2-8E87-40C1986AC283}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AA23493F-6D55-41D2-8E87-40C1986AC283}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D02D63A9-9507-4A42-A492-93300A988ED5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D02D63A9-9507-4A42-A492-93300A988ED5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D02D63A9-9507-4A42-A492-93300A988ED5}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,11 +35,23 @@ Global
 		{70DC113A-1DAE-4F99-A0B1-9DD25AF67711}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70DC113A-1DAE-4F99-A0B1-9DD25AF67711}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70DC113A-1DAE-4F99-A0B1-9DD25AF67711}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CACC35BF-9410-401F-B3C6-146C72855093}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CACC35BF-9410-401F-B3C6-146C72855093}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CACC35BF-9410-401F-B3C6-146C72855093}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CACC35BF-9410-401F-B3C6-146C72855093}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D41C6352-61B5-4EEE-877E-D2E997F5203A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D41C6352-61B5-4EEE-877E-D2E997F5203A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D41C6352-61B5-4EEE-877E-D2E997F5203A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D41C6352-61B5-4EEE-877E-D2E997F5203A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {34580613-19D0-4428-9494-F05C93400A52}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5E22FB58-F246-47DC-AFF9-E510DF809DC3} = {A4A6FFA0-26CA-4481-814D-A1B40B411F1C}
+		{D41C6352-61B5-4EEE-877E-D2E997F5203A} = {A4A6FFA0-26CA-4481-814D-A1B40B411F1C}
 	EndGlobalSection
 EndGlobal

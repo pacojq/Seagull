@@ -4,13 +4,12 @@ using System.IO;
 using Antlr4.Runtime;
 using Seagull.AST;
 using Seagull.Errors;
-using Seagull.Parser;
 
 namespace Seagull
 {
     public class SeagullCompiler
     {
-
+	    
 	    private ErrorListener _errorListener;
 
 	    public SeagullCompiler()
@@ -19,7 +18,7 @@ namespace Seagull
 	    }
 	    
 	    
-        public bool Compile(string filename)
+        public Program Compile(string filename)
         {
 	        ErrorHandler.Instance.Clear();
 	        
@@ -32,7 +31,7 @@ namespace Seagull
 	        catch (IOException e)
 	        {
 		        Console.WriteLine("Could not load the input file: " + filename);
-		        return false;
+		        return null;
 	        }
             SeagullLexer lexer = new SeagullLexer(input);
 
@@ -53,7 +52,7 @@ namespace Seagull
 		
             if (ErrorHandler.Instance.AnyError) {
                 Console.WriteLine(ErrorHandler.Instance.PrintErrors());
-                return false;
+                return null;
             }
 		
 		/*
@@ -63,11 +62,7 @@ namespace Seagull
                 ErrorHandler.getInstance().showErrors(System.err);
         */
 		
-            // * The AST is shown
-            //IntrospectorModel model = new IntrospectorModel("Program", ast);
-            //new IntrospectorTree("Introspector", model);
-
-            return true;
+            return ast;
         }
         
     }

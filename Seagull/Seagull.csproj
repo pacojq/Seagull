@@ -89,10 +89,10 @@
         <Compile Include="Errors\ErrorHandler.cs" />
         <Compile Include="Errors\ErrorListener.cs" />
         <Compile Include="Errors\ErrorType.cs" />
-        <Compile Include="Parser\ExtensionMethods.cs" />
-        <Compile Include="Parser\LexerHelper.cs" />
-        <Compile Include="Parser\SeagullLexer.cs" />
-        <Compile Include="Parser\SeagullParser.cs" />
+        <Compile Include="Grammar\ExtensionMethods.cs" />
+        <Compile Include="Grammar\LexerHelper.cs" />
+        <Compile Include="Grammar\SeagullLexer.cs" />
+        <Compile Include="Grammar\SeagullParser.cs" />
         <Compile Include="SeagullCompiler.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
@@ -102,9 +102,9 @@
     <ItemGroup>
       <Content Include="antlr-4.7.2-complete.jar" />
       <Content Include="compile.cmd" />
-      <Content Include="Parser\Seagull.g4" />
-      <Content Include="Parser\Seagull.tokens" />
-      <Content Include="Parser\SeagullLexer.tokens" />
+      <Content Include="Grammar\SeagullParser.g4" />
+      <Content Include="Grammar\SeagullLexer.g4" />
+      <Content Include="README.txt" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

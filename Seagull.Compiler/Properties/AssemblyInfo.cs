@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Seagull.CodeGeneration")]
+[assembly: AssemblyTitle("Seagull.Compiler")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Seagull.CodeGeneration")]
+[assembly: AssemblyProduct("Seagull.Compiler")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("AA23493F-6D55-41D2-8E87-40C1986AC283")]
+[assembly: Guid("CACC35BF-9410-401F-B3C6-146C72855093")]
 
 // Version information for an assembly consists of the following four values:
 //

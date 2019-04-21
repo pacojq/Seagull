@@ -1,1 +1,2 @@
-java -jar antlr-4.7.2-complete.jar -Dlanguage=CSharp Parser/Seagull.g4 -o Parser -no-listener
+java -jar antlr-4.7.2-complete.jar -Dlanguage=CSharp Grammar/SeagullLexer.g4 -o Grammar -no-listener
+java -jar antlr-4.7.2-complete.jar -Dlanguage=CSharp Grammar/SeagullParser.g4 -o Grammar -no-listener

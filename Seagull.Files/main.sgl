@@ -4,24 +4,17 @@
 
 //cool stuff we could try to achieve
 
-#define COMPILER_INSTRUCTION
+#define COMPILER_MACRO
 
 #import Math // import module
 #load math.sgl // compile and import file
 
-#import my_package
 
-#run function_name() // run in compile time
-#assert false // assert in compile time
-
-// A checking_function will be called every time we compile a
-// call to a given method, just to check everything is okay
-
-#checkcall func_name checking_function 
+#assert false // assert in compile time maybe
 
 
-#export my_package {
-        ...
+#module my_module {
+        ... 
 }
 */
 
@@ -51,6 +44,12 @@ struct Person {
     age : int;
 }
 
+struct GenericPerson<T> {
+    name : string;
+    age : int;
+    field : T; // ????
+}
+
 /*
 struct Student : Person { // Inheritance?
     course : string;
@@ -58,9 +57,15 @@ struct Student : Person { // Inheritance?
 */
 
 enum TYPES : int {
-    TYPE_A,
-    TYPE_B,
-    TYPE_C
+    TYPE_A = 0,
+    TYPE_B = 1,
+    TYPE_C = 2
+}
+
+enum TYPES : string {
+    TYPE_A = 0,
+    TYPE_B = 1,
+    TYPE_C = 2
 }
 
 
@@ -80,8 +85,8 @@ main() : void {
         age = 20;
     }
     
-    postpone print("Deleting p1"); // Postpone takes a statement and executes it at the very end of the block
-    postpone delete p1;
+    delay print("Deleting p1"); // delay takes a statement and executes it at the very end of the block
+    delay delete p1;
 
     delete p2; // Destructor
 

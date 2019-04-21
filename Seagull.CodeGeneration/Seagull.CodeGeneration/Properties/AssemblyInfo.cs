@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Sandbox")]
+[assembly: AssemblyTitle("Seagull.CodeGeneration")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Sandbox")]
+[assembly: AssemblyProduct("Seagull.CodeGeneration")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("AF97DCC2-8B57-4116-AC40-161DD835DF25")]
+[assembly: Guid("D41C6352-61B5-4EEE-877E-D2E997F5203A")]
 
 // Version information for an assembly consists of the following four values:
 //
