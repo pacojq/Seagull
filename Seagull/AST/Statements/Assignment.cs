@@ -1,3 +1,5 @@
+using Seagull.Visitor;
+
 namespace Seagull.AST.Statements
 {
     public class Assignment : AbstractStatement
@@ -11,6 +13,13 @@ namespace Seagull.AST.Statements
         {
             Left = left;
             Right = right;
+        }
+        
+        
+        
+        public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)
+        {
+            return visitor.Visit(this, p);
         }
     }
 }

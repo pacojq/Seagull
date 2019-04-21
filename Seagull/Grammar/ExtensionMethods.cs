@@ -1,6 +1,6 @@
 using Antlr4.Runtime;
 
-namespace Seagull.Parser
+namespace Seagull.Grammar
 {
     public static class ExtensionMethods
     {

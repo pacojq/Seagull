@@ -1,5 +1,6 @@
 using Seagull.AST;
 using Seagull.AST.Types;
+using Seagull.Visitor;
 
 namespace Seagull.Errors
 {
@@ -17,6 +18,12 @@ namespace Seagull.Errors
         public override string ToString()
         {
             return $"ERROR | line {Line}:{Column}\t{Description}";
+        }
+        
+        
+        public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)
+        {
+            return visitor.Visit(this, p);
         }
     }
 }

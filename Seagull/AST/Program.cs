@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using Antlr4.Runtime.Misc;
+using Seagull.Visitor;
 
 namespace Seagull.AST
 {
-    public class Program
+    public class Program : IAstNode
     {
         public int Line { get; private set; }
         public int Column { get; private set; }
-	
+        
+
         public IEnumerable<IDefinition> Definitions { get; private set; }
 
 	
@@ -19,5 +21,10 @@ namespace Seagull.AST
             Definitions = new List<IDefinition>(definitions);
         }
 	
+        
+        public TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)
+        {
+            return visitor.Visit(this, p);
+        }
     }
 }

@@ -1,6 +1,6 @@
 namespace Seagull.AST.Statements
 {
-    public class AbstractDefinition : AbstractStatement, IDefinition
+    public abstract class AbstractDefinition : AbstractStatement, IDefinition
     {
         
         public string Name { get; }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Seagull.AST.Statements.Definitions;
+using Seagull.Visitor;
 
 namespace Seagull.AST.Types
 {
@@ -16,6 +17,12 @@ namespace Seagull.AST.Types
         {
             ReturnType = returnType;
             Parameters = new List<VariableDefinition>(parameters);
+        }
+        
+        
+        public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)
+        {
+            return visitor.Visit(this, p);
         }
     }
 }

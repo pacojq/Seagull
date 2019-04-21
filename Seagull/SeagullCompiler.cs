@@ -4,6 +4,8 @@ using System.IO;
 using Antlr4.Runtime;
 using Seagull.AST;
 using Seagull.Errors;
+using Seagull.Grammar;
+using Seagull.Semantics;
 
 namespace Seagull
 {
@@ -36,7 +38,6 @@ namespace Seagull
             SeagullLexer lexer = new SeagullLexer(input);
 
             
-            
             // create a parser that feeds off the tokens buffer
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             SeagullParser parser = new SeagullParser(tokens);
@@ -46,21 +47,30 @@ namespace Seagull
             parser.AddErrorListener(_errorListener);
             lexer.AddErrorListener(_errorListener);
 		
-	    
+			// Parse the program and get the AST
             Program ast = parser.program().Ast;
 		
 		
-            if (ErrorHandler.Instance.AnyError) {
+            if (ErrorHandler.Instance.AnyError)
+            {
                 Console.WriteLine(ErrorHandler.Instance.PrintErrors());
                 return null;
             }
 		
-		/*
-            new SemanticAnalysis(ast).run();
+            
+            
+            // Semantic Analysis //
 		
-            if (ErrorHandler.getInstance().anyError())
-                ErrorHandler.getInstance().showErrors(System.err);
-        */
+            ast.Accept(new RecognitionVisitor(), null);
+            //ast.Accept(new TypeCheckingVisitor(), null);
+            //ast.Accept(new LValueVisitor(), null);
+		
+            if (ErrorHandler.Instance.AnyError)
+            {
+	            Console.WriteLine(ErrorHandler.Instance.PrintErrors());
+				return null;
+			}
+        
 		
             return ast;
         }

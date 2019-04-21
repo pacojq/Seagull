@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Seagull.AST.Types;
+using Seagull.Visitor;
 
 namespace Seagull.AST.Statements.Definitions
 {
@@ -13,6 +14,12 @@ namespace Seagull.AST.Statements.Definitions
             IEnumerable<IStatement> statements) : base(line, column, name, functionType)
         {
             Statements = new List<IStatement>(statements);
+        }
+        
+        
+        public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)
+        {
+            return visitor.Visit(this, p);
         }
 
     }

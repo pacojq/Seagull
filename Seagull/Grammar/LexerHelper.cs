@@ -1,6 +1,6 @@
 using System;
 
-namespace Seagull.Parser
+namespace Seagull.Grammar
 {
     public static class LexerHelper
     {

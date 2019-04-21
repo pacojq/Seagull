@@ -1,6 +1,6 @@
 ﻿using Seagull.AST;
 
-namespace Seagull.CodeGeneration.Java
+namespace Seagull.CodeGeneration
 {
     public class CgJava : ICodeGenerator
     {

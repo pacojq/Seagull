@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Seagull.Visitor;
 
 namespace Seagull.AST.Statements
 {
@@ -14,6 +15,12 @@ namespace Seagull.AST.Statements
         {
             Condition = condition;
             Statements = new List<IStatement>(statements);
+        }
+        
+        
+        public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)
+        {
+            return visitor.Visit(this, p);
         }
     }
 }

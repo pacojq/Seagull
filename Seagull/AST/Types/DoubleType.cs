@@ -1,3 +1,5 @@
+using Seagull.Visitor;
+
 namespace Seagull.AST.Types
 {
     public class DoubleType : AbstractType
@@ -10,6 +12,12 @@ namespace Seagull.AST.Types
         public override string ToString()
         {
             return "double";
+        }
+        
+        
+        public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)
+        {
+            return visitor.Visit(this, p);
         }
     }
 }
