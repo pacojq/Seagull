@@ -97,6 +97,7 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Semantics\RecognitionVisitor.cs" />
         <Compile Include="Semantics\SymbolTable.cs" />
+        <Compile Include="Semantics\TypeCheckingVisitor.cs" />
         <Compile Include="Visitor\AbstractVisitor.cs" />
         <Compile Include="Visitor\IVisitor.cs" />
         <Compile Include="Visitor\Void.cs" />
