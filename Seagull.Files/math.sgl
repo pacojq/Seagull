@@ -1,0 +1,30 @@
+
+
+
+delegate arithmetic : (a : int, b : int) -> int;
+
+
+
+square : (int i) -> int {
+	return i*i;
+}
+
+
+mult : (int a, int b) -> int = (int a, int b) -> {
+		return a * b;
+	}
+
+div : arithmetic = (int a, int b) -> {
+    return a / b;
+}
+
+
+sub:= (int a, int b) -> {
+    return a - b;
+}
+
+sum := (int a, int b) -> a + b;
+
+sum2 : arithmetic = (a, b) -> a + b;
+
+

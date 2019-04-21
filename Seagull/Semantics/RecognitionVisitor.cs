@@ -10,7 +10,7 @@ namespace Seagull.Semantics
 {
     public class RecognitionVisitor : AbstractVisitor<Void, Void>
     {
-        private SymbolTable _table;
+        private readonly SymbolTable _table;
 	
 		
 		public RecognitionVisitor()

@@ -1,8 +1,11 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Antlr4.Runtime;
 using Seagull.AST;
+using Seagull.AST.Statements.Definitions;
 using Seagull.Errors;
 using Seagull.Grammar;
 using Seagull.Semantics;
@@ -47,16 +50,31 @@ namespace Seagull
             parser.AddErrorListener(_errorListener);
             lexer.AddErrorListener(_errorListener);
 		
-			// Parse the program and get the AST
+            
+            
+			// Parse the program and get the AST //
+			
             Program ast = parser.program().Ast;
-		
-		
+            
             if (ErrorHandler.Instance.AnyError)
             {
                 Console.WriteLine(ErrorHandler.Instance.PrintErrors());
                 return null;
             }
-		
+            
+            
+            
+            // Import needed files //
+            
+            foreach (string import in ast.Imports)
+            {
+	            List<IDefinition> definitions;
+	            bool success = CompileLibrary(filename, import, out definitions);
+	            if (!success)
+		            return null;
+	            ast.AddLibrary(definitions);
+            }
+            
             
             
             // Semantic Analysis //
@@ -74,6 +92,44 @@ namespace Seagull
 		
             return ast;
         }
+        
+        
+        
+        
+
+        public bool CompileLibrary(string currentFile, string import, out List<IDefinition> result)
+        {
+	        // TODO relative path for the import file
+	        string dir = Path.GetDirectoryName(currentFile);
+	        string relative = import.Trim('"');
+	        string path = Path.Combine(dir, relative);
+
+	        Program program = Compile(path);
+	        
+	        if (ErrorHandler.Instance.AnyError)
+	        {
+		        Console.WriteLine(ErrorHandler.Instance.PrintErrors());
+		        result = null;
+		        return false;
+	        }
+
+	        if (program == null)
+	        {
+		        result = null;
+		        return false;
+	        }
+		        
+	        
+	        result = program.Definitions.ToList();
+
+	        // Remove the main function
+	        if (program.MainFunction != null)
+				result.Remove(program.MainFunction);
+
+	        return true;
+        }
+        
+        
         
     }
 }

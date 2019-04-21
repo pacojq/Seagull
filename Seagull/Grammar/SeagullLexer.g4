@@ -9,75 +9,83 @@ REAL: INT_CONSTANT? '.' DIGIT+
 	| INT_CONSTANT '.' DIGIT*
 	;
 	
-fragment TAG : '#' ;
-fragment NL : ('\n' | '\r' | '\r\n') ;
+fragment TAG: '#' ;
+fragment NL: ('\n' | '\r' | '\r\n') ;
 
 
 
 // TODO Compiler instructions
+
+COMP_LOAD: '#load' ;
+COMP_IMPORT: '#import' ;
+
 COMP_DEFINE: '#define' ;
 COMP_IF: '#if' ;
 COMP_ELIF: '#elif' ;
 COMP_ELSE: '#else' ;
 
 
-// Types
-VOID: 'void' ;
-INT: 'int' ;
-CHAR: 'char' ;
-DOUBLE: 'double' ;
-STRING: 'string' ;
 
+// Types
+VOID:       'void' ;
+INT:        'int' ;
+CHAR:       'char' ;
+DOUBLE:     'double' ;
+STRING:     'string' ;
+STRUCT:     'struct' ;
+ENUM:       'enum' ;
 
 // Keywords
-IF: 'if' ;
-ELSE: 'else' ;
-WHILE: 'while' ;
-FOR: 'for' ;
+IF:         'if' ;
+ELSE:       'else' ;
+WHILE:      'while' ;
+FOR:        'for' ;
 
-NEW: 'new' ;
-DELETE: 'delete' ;
-RETURN: 'return' ;
+DELEGATE:   'delegate' ;
 
-PRINT: 'print' ;
-READ: 'read' ;
-
-ASSERT: 'assert' ;
-DELAY: 'delay' ;
+NEW:        'new' ;
+DELETE:     'delete' ;
+RETURN:     'return' ;
+PRINT:      'print' ;
+READ:       'read' ;
+ASSERT:     'assert' ;
+DELAY:      'delay' ;
 
 
 
 // Signs
 
-DOT: '.' ;
-COMMA: ',' ;
-COL: ':' ;
-SEMI_COL: ';' ;
-ASSIGN: '=' ;
-STAR: '*' ;
-SLASH: '/';
-PERCENT: '%';
+DOT:        '.' ;
+COMMA:      ',' ;
+COL:        ':' ;
+SEMI_COL:   ';' ;
+ASSIGN:     '=' ;
+STAR:       '*' ;
+SLASH:      '/' ;
+PERCENT:    '%' ;
+ARROW:      '->' ;
 
-EQUAL: '==' ;
-NOT_EQUAL: '!=' ;
-LESS_THAN: '<' ;
-GREATER_THAN: '>' ;
-LESS_EQ_THAN: '<=' ;
-GREATER_EQ_THAN: '>=' ;
+PLUS:       '+' ;
+MINUS:      '-' ;
 
-PLUS: '+' ;
-MINUS: '-' ;
+NOT:        '!' ;
+AND:        '&&' ;
+OR:         '||' ;
 
-NOT: '!' ;
-AND: '&&' ;
-OR: '||' ;
+L_BRACKET:  '[' ;
+R_BRACKET:  ']' ;
+L_PAR:      '(' ;
+R_PAR:      ')' ;
+L_CURL:     '{' ;
+R_CURL:     '}' ;
 
-L_BRACKET: '[' ;
-R_BRACKET: ']' ;
-L_PAR: '(' ;
-R_PAR: ')' ;
-L_CURL: '{' ;
-R_CURL: '}' ;
+EQUAL:              '==' ;
+NOT_EQUAL:          '!=' ;
+LESS_THAN:          '<' ;
+GREATER_THAN:       '>' ;
+LESS_EQ_THAN:       '<=' ;
+GREATER_EQ_THAN:    '>=' ;
+
 
 
 
@@ -99,7 +107,8 @@ CHAR_CONSTANT: '\'' . '\''
 			 | '\'\\' INT_CONSTANT '\''
 			 ;
 	
-		 
+STRING_CONSTANT: '"' .*? '"' ;
+
 		 
 		 	 
 // Comments

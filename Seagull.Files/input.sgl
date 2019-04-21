@@ -1,7 +1,12 @@
 
+#load "math.sgl" // compile and import file
+#load "empty.sgl"
+
+/*
 a : int;
 b : double;
 c : char;
+*/
 
 // Comment
 

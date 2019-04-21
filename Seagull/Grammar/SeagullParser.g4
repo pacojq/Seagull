@@ -7,7 +7,7 @@ options { tokenVocab = SeagullLexer; }
     using System.Collections.Generic;
     
 	using Seagull.AST;
-	using Seagull.Parser;
+	using Seagull.Grammar;
 	
 	using Seagull.AST.Expressions;
 	using Seagull.AST.Expressions.Binary;
@@ -21,11 +21,24 @@ options { tokenVocab = SeagullLexer; }
 
 
 
-program returns [Program Ast, List<IDefinition> Def = new List<IDefinition>()]:
-		(d=definition { $Def.AddRange($d.Ast); })* EOF
-		{ $Ast = new Program(0, 0, $Def); }
+program returns [Program Ast, 
+                List<string> Loads = new List<string>(), 
+                List<IDefinition> Def = new List<IDefinition>()]:
+                
+		(l=load { $Loads.Add($l.File); })*
+		(d=definition { $Def.AddRange($d.Ast); })*
+		EOF
+		{ $Ast = new Program(0, 0, $Loads, $Def); }
 	    ;
 	    
+	    
+
+// Imports and loads
+load returns [string File]:
+    COMP_LOAD p=STRING_CONSTANT { $File = $p.text; }
+    ;
+
+
 
 
 
@@ -177,6 +190,7 @@ expression returns [IExpression Ast]:
 		| i=INT_CONSTANT { $Ast = new IntLiteral($i.GetLine(), $i.GetCol(), LexerHelper.LexemeToInt($i.text)); }
 		| r=REAL_CONSTANT { $Ast = new DoubleLiteral($r.GetLine(), $r.GetCol(), LexerHelper.LexemeToReal($r.text)); }
 		| c=CHAR_CONSTANT { $Ast = new CharLiteral($c.GetLine(), $c.GetCol(),LexerHelper.LexemeToChar($c.text)); }
+		| s=STRING_CONSTANT { $Ast = new CharLiteral($c.GetLine(), $c.GetCol(),LexerHelper.LexemeToChar($c.text)); } // TODO
 		
 		// Function invocation
 		| funcInvocation { $Ast = $funcInvocation.Ast; }
