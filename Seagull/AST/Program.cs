@@ -14,7 +14,7 @@ namespace Seagull.AST
         private readonly List<IDefinition> _definitions;
         public IEnumerable<IDefinition> Definitions => _definitions;
 
-        public IDefinition MainFunction => _definitions.Find(def => def is FunctionDefinition && def.Name == "main");
+        public IDefinition MainFunction => _definitions.Find(def => def.Name.Equals("main") && def is FunctionDefinition);
         
         
         private readonly List<string> _imports;
