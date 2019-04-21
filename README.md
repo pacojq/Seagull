@@ -1,0 +1,2 @@
+# Seagull
+Toy programming language
