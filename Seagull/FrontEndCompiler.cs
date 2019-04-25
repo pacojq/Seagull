@@ -5,56 +5,36 @@ using System.IO;
 using System.Linq;
 using Antlr4.Runtime;
 using Seagull.AST;
-using Seagull.AST.Statements.Definitions;
 using Seagull.Errors;
-using Seagull.Grammar;
-using Seagull.Semantics;
 
 namespace Seagull
 {
-    public class SeagullCompiler
+    public class FrontEndCompiler
     {
-	    
-	    private ErrorListener _errorListener;
 
-	    public SeagullCompiler()
+	    private SeagullGrammar _grammar;
+	    private SeagullSemantics _semantics;
+	    
+	    
+	    public FrontEndCompiler()
 	    {
-		    _errorListener = new ErrorListener();
+		    _grammar = new SeagullGrammar();
+		    _semantics = new SeagullSemantics();
 	    }
+	    
+	    
+	    
 	    
 	    
         public Program Compile(string filename)
         {
 	        ErrorHandler.Instance.Clear();
-	        
-	        // create a lexer that feeds off of input stream
-	        AntlrInputStream input;
-	        try
-	        {
-		        input = new AntlrFileStream(filename);
-	        }
-	        catch (IOException e)
-	        {
-		        Console.WriteLine("Could not load the input file: " + filename);
-		        return null;
-	        }
-            SeagullLexer lexer = new SeagullLexer(input);
+	        _semantics.SetUp();
 
-            
-            // create a parser that feeds off the tokens buffer
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-            SeagullParser parser = new SeagullParser(tokens);
-		
-            parser.RemoveErrorListeners();
-            lexer.RemoveErrorListeners();
-            parser.AddErrorListener(_errorListener);
-            lexer.AddErrorListener(_errorListener);
-		
-            
-            
-			// Parse the program and get the AST //
-			
-            Program ast = parser.program().Ast;
+	        
+	        // Syntactic analysis //
+	        
+	        Program ast = _grammar.Analyze(filename);
             
             if (ErrorHandler.Instance.AnyError)
             {
@@ -78,11 +58,9 @@ namespace Seagull
             
             
             // Semantic Analysis //
-		
-            ast.Accept(new RecognitionVisitor(), null);
-            //ast.Accept(new TypeCheckingVisitor(), null);
-            //ast.Accept(new LValueVisitor(), null);
-		
+
+            _semantics.Analyze(ast);
+            
             if (ErrorHandler.Instance.AnyError)
             {
 	            Console.WriteLine(ErrorHandler.Instance.PrintErrors());
@@ -96,8 +74,10 @@ namespace Seagull
         
         
         
-
-        public bool CompileLibrary(string currentFile, string import, out List<IDefinition> result)
+        
+        
+        
+        private bool CompileLibrary(string currentFile, string import, out List<IDefinition> result)
         {
 	        // TODO relative path for the import file
 	        string dir = Path.GetDirectoryName(currentFile);
@@ -128,6 +108,9 @@ namespace Seagull
 
 	        return true;
         }
+        
+        
+        
         
         
         

@@ -93,8 +93,11 @@
         <Compile Include="Grammar\LexerHelper.cs" />
         <Compile Include="Grammar\SeagullLexer.cs" />
         <Compile Include="Grammar\SeagullParser.cs" />
-        <Compile Include="SeagullCompiler.cs" />
+        <Compile Include="FrontEndCompiler.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="SeagullGrammar.cs" />
+        <Compile Include="SeagullSemantics.cs" />
+        <Compile Include="Semantics\DeclarationVisitor.cs" />
         <Compile Include="Semantics\RecognitionVisitor.cs" />
         <Compile Include="Semantics\SymbolTable.cs" />
         <Compile Include="Semantics\TypeCheckingVisitor.cs" />

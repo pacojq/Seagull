@@ -9,7 +9,7 @@ namespace Seagull.Compiler
         {
             string filename = args[0];
 		    
-            SeagullCompiler compiler = new SeagullCompiler();
+            FrontEndCompiler compiler = new FrontEndCompiler();
 		    
             Seagull.AST.Program program = compiler.Compile(filename);
             if (program == null)
