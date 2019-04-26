@@ -31,8 +31,8 @@ namespace Seagull
             
             // TODO return visitor: check all branches return
             
-            // TODO Check types
-            //ast.Accept(new TypeCheckingVisitor(), null);
+            // Check types
+            ast.Accept(new TypeCheckingVisitor(), null);
             
             // TODO Find expressions that are L-Value
             //ast.Accept(new LValueVisitor(), null);

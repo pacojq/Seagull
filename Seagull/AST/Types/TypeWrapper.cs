@@ -11,6 +11,16 @@ namespace Seagull.AST.Types
     /// </summary>
     public class TypeWrapper : IType
     {
+        
+        public int Line => _type.Line;
+        public int Column => _type.Column;
+
+        public bool IsLogical => _type.IsLogical;
+        
+        
+        
+        
+        
         private IType _type;
 
         
@@ -25,21 +35,18 @@ namespace Seagull.AST.Types
         }
         
         
-        
-
-
-        public int Line => _type.Line;
-
-        public int Column => _type.Column;
-
-        
-        
-        public bool IsLogical => _type.IsLogical;
 
         public bool IsEquivalent(IType other)
         {
             return _type.IsEquivalent(other);
         }
+        
+        
+        public bool Is<T>() where T : IType
+        {
+            return _type is T;
+        }
+
 
         public IType Arithmetic(IType other)
         {
@@ -66,6 +73,11 @@ namespace Seagull.AST.Types
             return _type.Cast(other);
         }
 
+        public IType New()
+        {
+            return _type.New();
+        }
+
         public IType UnaryMinus()
         {
             return _type.UnaryMinus();
@@ -85,9 +97,16 @@ namespace Seagull.AST.Types
         {
             return _type.ParenthesesOperator(line, column, arguments);
         }
+
+
         
         
-        
+        public override string ToString()
+        {
+            return _type.ToString();
+        }
+
+
         public TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)
         {
             return _type.Accept(visitor, p);

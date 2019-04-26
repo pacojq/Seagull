@@ -18,6 +18,11 @@ namespace Seagull.AST.Types
         {
             return ToString().Equals(other.ToString());
         }
+        
+        public bool Is<T>() where T : IType
+        {
+            return this is T;
+        }
 
         
         
@@ -26,7 +31,7 @@ namespace Seagull.AST.Types
         // Helper methods
 	
         private IType DefaultOperation(IType other, string description) {
-            if (other is ErrorType)
+            if (other.Is<ErrorType>())
                 return other;
             return DefaultOperation(description);
         }
@@ -43,47 +48,52 @@ namespace Seagull.AST.Types
         // - - - - - - - - - OPERATIONS - - - - - - - - - 
         
         
-        public IType Arithmetic(IType other)
+        public virtual IType Arithmetic(IType other)
         {
             return DefaultOperation(other, $"arithmetic operations with {other.ToString()}");
         }
 
-        public IType Comparison(IType other)
+        public virtual IType Comparison(IType other)
         {
             return DefaultOperation(other, $"comparisons with {other.ToString()}");
         }
 
-        public IType LogicalOperation(IType other)
+        public virtual IType LogicalOperation(IType other)
         {
             return DefaultOperation(other, $"logical operations with {other.ToString()}");
         }
 
-        public IType Indexing(IType other)
+        public virtual IType Indexing(IType other)
         {
             return DefaultOperation(other, $"indexing with {other.ToString()}");
         }
 
-        public IType Cast(IType other)
+        public virtual IType Cast(IType other)
         {
             return DefaultOperation(other, $"casts to {other.ToString()}");
         }
 
-        public IType UnaryMinus()
+        public virtual IType New()
+        {
+            return DefaultOperation($"a 'new' operation");
+        }
+
+        public virtual IType UnaryMinus()
         {
             return DefaultOperation($"a unary minus operation");
         }
 
-        public IType Not()
+        public virtual IType Not()
         {
             return DefaultOperation($"a not operation");
         }
 
-        public IType AttributeAccess(string attributeName)
+        public virtual IType AttributeAccess(string attributeName)
         {
             return DefaultOperation($"attribute access");
         }
 
-        public IType ParenthesesOperator(int line, int column, IEnumerable<IType> arguments)
+        public virtual IType ParenthesesOperator(int line, int column, IEnumerable<IType> arguments)
         {
             return DefaultOperation($"parentheses operator");
         }

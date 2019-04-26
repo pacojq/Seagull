@@ -12,11 +12,13 @@ c : char;
 
 a : Person;
 
-main: () -> void {
-
+main: () -> void
+{
+    a = birth();
 }
 
-birth: () -> Person {
-    //return new Person;
+birth: () -> Person
+{
+    return new Person;
 }
 

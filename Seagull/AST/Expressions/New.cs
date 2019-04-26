@@ -2,20 +2,20 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Expressions
 {
-    public class New : AbstractExpression, IStatement
+    public class New : AbstractExpression
     {
-        public IExpression Expression { get; }
+        public string Id { get; }
         
-        public New(int line, int column, IExpression expression) : base(line, column)
+        public New(int line, int column, string id) : base(line, column)
         {
-            Expression = expression;
+            Id = id;
         }
 
         
         
         public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)
         {
-            throw new System.NotImplementedException();
+            return visitor.Visit(this, p);
         }
     }
 }

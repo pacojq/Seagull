@@ -237,6 +237,12 @@ namespace Seagull.Visitor
 			cast.Operand.Accept(this, p);
 			return default(TR);
 		}
+
+
+		public virtual TR Visit(New newExpr, TP p)
+		{
+			return default(TR);
+		}
 	
 		
 		public virtual TR Visit(CharLiteral charLiteral, TP p)

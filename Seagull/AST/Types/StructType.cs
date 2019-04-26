@@ -14,6 +14,14 @@ namespace Seagull.AST.Types
         {
             Fields = new List<VariableDefinition>(fields);
         }
+
+
+
+        public override IType New()
+        {
+            return this;
+        }
+        
         
         
         public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)

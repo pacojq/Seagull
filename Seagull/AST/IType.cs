@@ -10,6 +10,7 @@ namespace Seagull.AST
 	
         bool IsLogical { get; }
         bool IsEquivalent(IType other);
+        bool Is<T>() where T : IType;
         
         
 	
@@ -18,6 +19,7 @@ namespace Seagull.AST
         IType LogicalOperation(IType other);
         IType Indexing(IType other);
         IType Cast(IType other);
+        IType New();
 	
         IType UnaryMinus();
         IType Not();

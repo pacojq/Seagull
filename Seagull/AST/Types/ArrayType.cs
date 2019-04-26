@@ -10,7 +10,7 @@ namespace Seagull.AST.Types
        
         public static ArrayType BuildArray(int size, IType typeOf)
         {
-            if (typeOf is ArrayType) {			
+            if (typeOf.Is<ArrayType>()) {			
                 ArrayType other = (ArrayType) typeOf;
                 other.TypeOf = BuildArray(size, other.TypeOf);
                 return other;			

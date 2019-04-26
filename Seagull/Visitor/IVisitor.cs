@@ -79,6 +79,7 @@ namespace Seagull.Visitor
 		TR Visit(Indexing indexing, TP p);
 		TR Visit(AttributeAccess attributeAccess, TP p);
 		TR Visit(Cast cast, TP p);
+		TR Visit(New newExpr, TP p);
 		TR Visit(CharLiteral charLiteral, TP p);
 		TR Visit(DoubleLiteral doubleLiteral, TP p);
 		TR Visit(FunctionInvocation functionInvocation, TP p);

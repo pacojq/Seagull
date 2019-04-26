@@ -237,43 +237,46 @@ variable returns [Variable Ast]:
 expression returns [IExpression Ast]:
 
         // Variable
-		variable { $Ast = $variable.Ast; }
+        variable { $Ast = $variable.Ast; }
 		
 		// Literals
-		| i=INT_CONSTANT { $Ast = new IntLiteral($i.GetLine(), $i.GetCol(), LexerHelper.LexemeToInt($i.text)); }
-		| r=REAL_CONSTANT { $Ast = new DoubleLiteral($r.GetLine(), $r.GetCol(), LexerHelper.LexemeToReal($r.text)); }
-		| c=CHAR_CONSTANT { $Ast = new CharLiteral($c.GetLine(), $c.GetCol(),LexerHelper.LexemeToChar($c.text)); }
-		| s=STRING_CONSTANT { $Ast = new CharLiteral($c.GetLine(), $c.GetCol(),LexerHelper.LexemeToChar($c.text)); } // TODO
+	|   i=INT_CONSTANT      { $Ast = new IntLiteral($i.GetLine(), $i.GetCol(), LexerHelper.LexemeToInt($i.text)); }
+	|   r=REAL_CONSTANT     { $Ast = new DoubleLiteral($r.GetLine(), $r.GetCol(), LexerHelper.LexemeToReal($r.text)); }
+	|   c=CHAR_CONSTANT     { $Ast = new CharLiteral($c.GetLine(), $c.GetCol(), LexerHelper.LexemeToChar($c.text)); }
+	|   s=STRING_CONSTANT   { $Ast = new CharLiteral($c.GetLine(), $c.GetCol(), LexerHelper.LexemeToChar($c.text)); }
 		
 		// Function invocation
-		| funcInvocation { $Ast = $funcInvocation.Ast; }
+	|   funcInvocation      { $Ast = $funcInvocation.Ast; }
 		
 		// Parentheses
-		| L_PAR e=expression R_PAR { $Ast = $e.Ast; }
+	|   L_PAR e=expression R_PAR { $Ast = $e.Ast; }
 		
 		// Indexing
-		| e1=expression L_BRACKET e2=expression R_BRACKET { $Ast = new Indexing($e1.Ast, $e2.Ast); }
+	|   e1=expression L_BRACKET e2=expression R_BRACKET { $Ast = new Indexing($e1.Ast, $e2.Ast); }
 		
 		// Attribute access
-		| var=variable DOT att=ID { $Ast = new AttributeAccess($var.Ast, $att.text); }
+	|   var=variable DOT att=ID { $Ast = new AttributeAccess($var.Ast, $att.text); }
+		
+		// New
+	|   n=NEW id=ID         { $Ast = new New($n.GetLine(), $n.GetCol(), $id.GetText()); }
 		
 		// Unary operations
-		| um=MINUS expression { $Ast = new UnaryMinus($um.GetLine(), $um.GetCol(), $expression.Ast); }
-		| not=NOT expression { $Ast = new Negation($not.GetLine(), $not.GetCol(), $expression.Ast); }
+	|   um=MINUS expression { $Ast = new UnaryMinus($um.GetLine(), $um.GetCol(), $expression.Ast); }
+	|   not=NOT expression { $Ast = new Negation($not.GetLine(), $not.GetCol(), $expression.Ast); }
 		
 		// Arithmetics
-		| e1=expression op=(STAR|SLASH|PERCENT) e2=expression { $Ast = new Arithmetic($op.text, $e1.Ast, $e2.Ast); }
-		| e1=expression op=(PLUS|MINUS) e2=expression { $Ast = new Arithmetic($op.text, $e1.Ast, $e2.Ast); }
+	|   e1=expression op=(STAR|SLASH|PERCENT) e2=expression { $Ast = new Arithmetic($op.text, $e1.Ast, $e2.Ast); }
+	|   e1=expression op=(PLUS|MINUS) e2=expression { $Ast = new Arithmetic($op.text, $e1.Ast, $e2.Ast); }
 		
 		// Cast
-		| p=L_PAR t=primitive R_PAR e=expression { $Ast = new Cast($p.GetLine(), $p.GetCol(), $t.Ast, $e.Ast); }
+	|   p=L_PAR t=primitive R_PAR e=expression { $Ast = new Cast($p.GetLine(), $p.GetCol(), $t.Ast, $e.Ast); }
 		
 		// Comparisons
-		| e1=expression op=(GREATER_THAN|LESS_THAN|GREATER_EQ_THAN|LESS_EQ_THAN|EQUAL|NOT_EQUAL) e2=expression { $Ast = new Comparison($op.text, $e1.Ast, $e2.Ast); }
+	|   e1=expression op=(GREATER_THAN|LESS_THAN|GREATER_EQ_THAN|LESS_EQ_THAN|EQUAL|NOT_EQUAL) e2=expression { $Ast = new Comparison($op.text, $e1.Ast, $e2.Ast); }
 		
 		// Logical operations
-		| e1=expression op=(AND|OR) e2=expression { $Ast = new LogicalOperation($op.text, $e1.Ast, $e2.Ast); }
-		;
+	|   e1=expression op=(AND|OR) e2=expression { $Ast = new LogicalOperation($op.text, $e1.Ast, $e2.Ast); }
+	;
 
 
 
