@@ -1,6 +1,6 @@
 namespace Seagull.AST
 {
-    public interface IDefinition : IAstNode
+    public interface IDefinition : IStatement
     {
         string Name { get; }
         

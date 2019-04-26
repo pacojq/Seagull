@@ -1,5 +1,6 @@
 using Seagull.AST;
 using Seagull.Semantics;
+using Seagull.Semantics.Symbols;
 
 namespace Seagull
 {
@@ -13,7 +14,10 @@ namespace Seagull
         
         public void SetUp()
         {
-            _symbolTable = new SymbolTable();
+            SymbolTable.Instance.Initialize();
+            DependencyManager.Instance.Initialize();
+            
+            _symbolTable = SymbolTable.Instance;
         }
         
         
@@ -22,6 +26,7 @@ namespace Seagull
         {
             // First find declarations. Then find variables and bind them together.
             ast.Accept(new DeclarationVisitor(_symbolTable), null);
+            DependencyManager.Instance.SolveDependencies(); // Solve dependencies first
             ast.Accept(new RecognitionVisitor(_symbolTable), null);
             
             // TODO return visitor: check all branches return

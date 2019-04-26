@@ -1,5 +1,10 @@
 lexer grammar SeagullLexer;
 
+
+
+channels { DIRECTIVE }
+
+
 // Fragments
 fragment DIGIT: [0-9] ;
 fragment LETTER: [a-zA-Z] ;
@@ -9,21 +14,12 @@ REAL: INT_CONSTANT? '.' DIGIT+
 	| INT_CONSTANT '.' DIGIT*
 	;
 	
-fragment TAG: '#' ;
 fragment NL: ('\n' | '\r' | '\r\n') ;
 
 
 
-// TODO Compiler instructions
-
-COMP_LOAD: '#load' ;
-COMP_IMPORT: '#import' ;
-
-COMP_DEFINE: '#define' ;
-COMP_IF: '#if' ;
-COMP_ELIF: '#elif' ;
-COMP_ELSE: '#else' ;
-
+// Compiler directives
+SHARP: '#'  -> mode(DIRECTIVE_MODE);
 
 
 // Types
@@ -34,14 +30,17 @@ DOUBLE:     'double' ;
 STRING:     'string' ;
 STRUCT:     'struct' ;
 ENUM:       'enum' ;
+DELEGATE:   'delegate' ;
+
 
 // Keywords
+TRUE:       'true' ;
+FALSE:      'false' ;
+
 IF:         'if' ;
 ELSE:       'else' ;
 WHILE:      'while' ;
 FOR:        'for' ;
-
-DELEGATE:   'delegate' ;
 
 NEW:        'new' ;
 DELETE:     'delete' ;
@@ -50,6 +49,12 @@ PRINT:      'print' ;
 READ:       'read' ;
 ASSERT:     'assert' ;
 DELAY:      'delay' ;
+
+PUBLIC:     'public' ;
+PRIVATE:    'private' ;
+
+LOAD:       'load' ;
+IMPORT:     'import' ;
 
 
 
@@ -94,18 +99,22 @@ GREATER_EQ_THAN:    '>=' ;
 // IDs and Constants
 ID: ('_' | LETTER) ('_' | DIGIT | LETTER)* ;
   		 
-INT_CONSTANT: '0'
-			| [1-9] [0-9]* 
-            ;
+INT_CONSTANT: 
+        '0'
+	|   [1-9] [0-9]* 
+    ;
 
-REAL_CONSTANT: REAL | INT_CONSTANT
-			 | (REAL | INT_CONSTANT) ('e' | 'E') '-'? INT_CONSTANT
-			 ;
+REAL_CONSTANT: 
+        REAL 
+    |   INT_CONSTANT
+	|   (REAL | INT_CONSTANT) ('e' | 'E') '-'? INT_CONSTANT
+    ;
 			 			 
-CHAR_CONSTANT: '\'' . '\''
-			 | '\'\\' ([tnr] | '\\' | '\'')  '\''
-			 | '\'\\' INT_CONSTANT '\''
-			 ;
+CHAR_CONSTANT: 
+        '\'' . '\''
+	|   '\'\\' ([tnr] | '\\' | '\'')  '\''
+	|   '\'\\' INT_CONSTANT '\''
+	;
 	
 STRING_CONSTANT: '"' .*? '"' ;
 
@@ -118,3 +127,24 @@ ML_COMMENT : '/*' ('/'*? ML_COMMENT | ('/'* | '*'*) ~[/*])*? '*'*? '*/' -> skip;
 BLANKS: (' ' | '\t' | NL)+ -> skip;
 
 
+
+
+
+
+
+// ==================================================== //
+//                                                      //
+//                  COMPILER DIRECTIVES                 //
+//                                                      //
+// ==================================================== //
+
+mode DIRECTIVE_MODE;
+
+DIR_DEFINE:     'define' ;
+DIR_IF:         'if' ;
+DIR_ELIF:       'elif' ;
+DIR_ELSE:       'else' ;
+
+DIR_WHITESPACE: BLANKS -> channel(HIDDEN);
+DIR_ML_COMMENT: ML_COMMENT -> channel(HIDDEN);
+DIR_NEWLINE: (NL | SL_COMMENT) -> channel(HIDDEN), mode(DEFAULT_MODE);

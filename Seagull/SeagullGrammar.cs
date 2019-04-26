@@ -35,7 +35,8 @@ namespace Seagull
             
             // create a parser that feeds off the tokens buffer
             CommonTokenStream tokens = new CommonTokenStream(lexer);
-            SeagullParser parser = new SeagullParser(tokens);
+            SeagullPreprocessorParser preprocessor = new SeagullPreprocessorParser(tokens);
+            SeagullParser parser = new SeagullParser(preprocessor.TokenStream);
 		
             parser.RemoveErrorListeners();
             lexer.RemoveErrorListeners();

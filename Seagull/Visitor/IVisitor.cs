@@ -36,6 +36,7 @@ namespace Seagull.Visitor
 		TR Visit(IntType intType, TP p);
 		TR Visit(StructType structType, TP p);
 		TR Visit(VoidType voidType, TP p);
+		TR Visit(StringType stringType, TP p);
 		
 		
 		
@@ -48,13 +49,19 @@ namespace Seagull.Visitor
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
 		TR Visit(Assignment assignment, TP p);
-		TR Visit(FunctionDefinition functionDefinition, TP p);
 		TR Visit(IfStatement ifStatement, TP p);
 		TR Visit(Read read, TP p);
 		TR Visit(Return returnStmnt, TP p);
-		TR Visit(VariableDefinition variableDefinition, TP p);
 		TR Visit(WhileLoop whileLoop, TP p);
 		TR Visit(Print print, TP p);
+
+
+		// Definitions
+		TR Visit(StructDefinition structDefinition, TP p);
+		TR Visit(VariableDefinition variableDefinition, TP p);
+		TR Visit(FunctionDefinition functionDefinition, TP p);
+		
+		TR Visit(DelegateDefinition delegateDefinition, TP p);
 		
 		
 		

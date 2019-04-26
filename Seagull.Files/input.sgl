@@ -1,6 +1,7 @@
 
-#load "math.sgl" // compile and import file
-#load "empty.sgl"
+//load "math.sgl" // compile and import file
+load "empty.sgl"
+load "person.sgl"
 
 /*
 a : int;
@@ -8,14 +9,14 @@ b : double;
 c : char;
 */
 
-// Comment
 
-/* Block comment */
+a : Person;
 
-/* /* Nested Block comment */ */
+main: () -> void {
 
+}
 
-/* a /* b /* c /* d */ 1 */ 2 */
-/* a /* b /* c */ 1 */ 2 */ 3 */
+birth: () -> Person {
+    //return new Person;
+}
 
-/* a /* b /* c /* d */ 1 */ 2 */ 3 */

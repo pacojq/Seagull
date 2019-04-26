@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using Seagull.AST.Statements.Definitions;
 using Seagull.Semantics;
+using Seagull.Semantics.Symbols;
 
 namespace Seagull.Tests.Semantics
 {
@@ -10,7 +11,8 @@ namespace Seagull.Tests.Semantics
         [Test]
         public void TestInsert()
         {
-            SymbolTable st = new SymbolTable();
+            SymbolTable st = SymbolTable.Instance;
+            
             VariableDefinition definition = new VariableDefinition(0, 0, "a", null);
             Assert.True(st.Insert(definition));
             Assert.AreEqual(definition.Scope, 0);

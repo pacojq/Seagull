@@ -13,7 +13,7 @@ namespace Seagull.AST.Types
         
         
         public FunctionType(IType returnType, IEnumerable<VariableDefinition> parameters)
-            : base(returnType.Line, returnType.Column)
+            : base(returnType.Line, returnType.Column) // TODO use other line and column
         {
             ReturnType = returnType;
             Parameters = new List<VariableDefinition>(parameters);

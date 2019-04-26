@@ -89,7 +89,10 @@ namespace Seagull.Visitor
 		}
 	
 		
-		
+		public virtual TR Visit(StringType stringType, TP p)
+		{
+			return default(TR);
+		}
 		
 		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -107,16 +110,8 @@ namespace Seagull.Visitor
 			return default(TR);
 		}
 	
-		
-		public virtual TR Visit(FunctionDefinition functionDefinition, TP p)
-		{
-			functionDefinition.Type.Accept(this, p);
-			foreach (IStatement st in functionDefinition.Statements)
-				st.Accept(this, p);
-			return default(TR);
-		}
-	
-		
+
+
 		public virtual TR Visit(IfStatement ifStatement, TP p)
 		{
 			ifStatement.Condition.Accept(this, p);
@@ -140,14 +135,7 @@ namespace Seagull.Visitor
 			returnStmnt.Value.Accept(this, p);
 			return default(TR);
 		}
-	
-		
-		public virtual TR Visit(VariableDefinition variableDefinition, TP p)
-		{
-			variableDefinition.Type.Accept(this, p);
-			return default(TR);
-		}
-	
+
 		
 		public virtual TR Visit(WhileLoop whileLoop, TP p)
 		{
@@ -166,6 +154,33 @@ namespace Seagull.Visitor
 		
 		
 		
+		
+		public virtual TR Visit(StructDefinition structDefinition, TP p)
+		{
+			structDefinition.Type.Accept(this, p);
+			return default(TR);
+		}
+
+		public virtual TR Visit(VariableDefinition variableDefinition, TP p)
+		{
+			variableDefinition.Type.Accept(this, p);
+			return default(TR);
+		}
+		
+		
+		public virtual TR Visit(FunctionDefinition functionDefinition, TP p)
+		{
+			functionDefinition.Type.Accept(this, p);
+			foreach (IStatement st in functionDefinition.Statements)
+				st.Accept(this, p);
+			return default(TR);
+		}
+
+		public virtual TR Visit(DelegateDefinition delegateDefinition, TP p)
+		{
+			delegateDefinition.Type.Accept(this, p);
+			return default(TR);
+		}
 		
 		
 		

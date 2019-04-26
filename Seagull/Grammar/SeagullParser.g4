@@ -9,6 +9,8 @@ options { tokenVocab = SeagullLexer; }
 	using Seagull.AST;
 	using Seagull.Grammar;
 	
+	using Seagull.Semantics.Symbols;
+	
 	using Seagull.AST.Expressions;
 	using Seagull.AST.Expressions.Binary;
 	using Seagull.AST.Expressions.Literals;
@@ -26,16 +28,16 @@ program returns [Program Ast,
                 List<IDefinition> Def = new List<IDefinition>()]:
                 
 		(l=load { $Loads.Add($l.File); })*
-		(d=definition { $Def.AddRange($d.Ast); })*
+		(d=definition { $Def.Add($d.Ast); })*
 		EOF
 		{ $Ast = new Program(0, 0, $Loads, $Def); }
-	    ;
+	;
 	    
 	    
 
 // Imports and loads
 load returns [string File]:
-    COMP_LOAD p=STRING_CONSTANT { $File = $p.text; }
+        LOAD p=STRING_CONSTANT { $File = $p.text; }
     ;
 
 
@@ -47,35 +49,69 @@ load returns [string File]:
 
 
 type returns [IType Ast]:
+        primitive       { $Ast = $primitive.Ast; }
+	|   functionType    { $Ast = $functionType.Ast; }
+    |   structType      { $Ast = $structType.Ast; }
 
-        // primitives
-		primitive { $Ast = $primitive.Ast; }
-		
-		// Arrays
-		| t=type L_BRACKET i=INT_CONSTANT R_BRACKET 
+	    // Array type
+	|   t=type L_BRACKET i=INT_CONSTANT R_BRACKET  
 				{ $Ast = ArrayType.BuildArray(int.Parse($i.text), $t.Ast); }
 				(L_BRACKET i2=INT_CONSTANT R_BRACKET 
 				    { $Ast = ArrayType.BuildArray( int.Parse($i2.text), $Ast); } 
 				)*
-		//| structType { $Ast = $structType.Ast; }
-		;
 		
-/*
-structType returns [StructType Ast, List<VariableDefinition> defs=new List<VariableDefinition>()]:
-		s='struct' L_CURL (variableDef { $defs.AddRange($variableDef.Ast); })* R_CURL 
-				{ $Ast = new StructType($s.GetLine(), $s.GetCol(), $defs); } 
-		;
-*/
+		// Custom type
+	|   userDefined=ID  { $Ast = DependencyManager.Instance.AddType($userDefined.GetLine(), $userDefined.GetCol(), $userDefined.GetText()); }  
+	;
+		
+
+// (a: int, b: int) -> int
+functionType returns [FunctionType Ast, 
+            List<VariableDefinition> Params = new List<VariableDefinition>(),
+            IType Rt]:
+            
+        L_PAR (p=parameters { $Params = $p.Ast;})? R_PAR ARROW ((t=type { $Rt=$t.Ast; })| (vt=voidType{ $Rt=$vt.Ast; }))
+        { $Ast = new FunctionType($Rt, $Params); }
+    ;
+    
+parameters returns [List<VariableDefinition> Ast = new List<VariableDefinition>()]: 
+		id1=ID COL t1=type
+		{ $Ast.Add(new VariableDefinition($id1.GetLine(), $id1.GetCol(), $id1.GetText(), $t1.Ast)); }
+		(COMMA id2=ID COL t2=type
+			{ $Ast.Add(new VariableDefinition($id2.GetLine(), $id2.GetCol(), $id2.GetText(), $t2.Ast)); }
+		)*
+    ;
+
+
+
+//  struct {
+//      ...
+//  }
+structType returns [StructType Ast,
+            List<VariableDefinition> Fields = new List<VariableDefinition>()]:
+
+        s=STRUCT L_CURL (f=variableDef { $Fields.Add($f.Ast); })* R_CURL 
+        { $Ast = new StructType($s.GetLine(), $s.GetCol(), $Fields); }
+    ;
+
+
+
 // Primitive types
 primitive returns [IType Ast]:
 		i=INT { $Ast = new IntType($i.GetLine(), $i.GetCol()); }
-		| c=CHAR { $Ast = new CharType($c.GetLine(), $c.GetCol()); }
-		| d=DOUBLE { $Ast = new DoubleType($d.GetLine(), $d.GetCol()); }
-		;
+	|   c=CHAR { $Ast = new CharType($c.GetLine(), $c.GetCol()); }
+	|   d=DOUBLE { $Ast = new DoubleType($d.GetLine(), $d.GetCol()); }
+	|   s=STRING { $Ast = new StringType($s.GetLine(), $s.GetCol()); }
+	;
 
 voidType returns [IType Ast]:
 		v=VOID { $Ast = new VoidType($v.GetLine(), $v.GetCol()); }
-		;
+	;
+
+
+
+
+
 
 
 
@@ -87,34 +123,48 @@ voidType returns [IType Ast]:
 // * * * * * * * * *   DEFINITIONS   * * * * * * * * * * //
 
 
-definition returns [List<IDefinition> Ast = new List<IDefinition>()]:
-		//fuctionDef { $Ast.Add($fuctionDef.Ast); }
-		/*|*/ variableDef { $Ast.AddRange($variableDef.Ast); }
-		;
+
+protectionLevel : (PUBLIC | PRIVATE) ;
+
+definition returns [IDefinition Ast]:
+		protectionLevel? fuctionDef     { $Ast = $fuctionDef.Ast; }
+	|   protectionLevel? variableDef    { $Ast = $variableDef.Ast; }
+	|   protectionLevel? structDef      { $Ast = $structDef.Ast; }
+	;
 
 
-variableDef returns [List<VariableDefinition> Ast = new List<VariableDefinition>()]: 
-        n=ID COL t=type SEMI_COL
-		    { $Ast.Add(new VariableDefinition($t.Ast.Line, $t.Ast.Column, $n.GetText(), $t.Ast)); }
+/*
+    a : int;
+    b : double = 3.0;
+    c := 1f;
+*/
+variableDef returns [VariableDefinition Ast]: 
+        n=ID COL t=type SEMI_COL { $Ast = new VariableDefinition($t.Ast.Line, $t.Ast.Column, $n.GetText(), $t.Ast); }
 		// TODO | ID ':=' expression
 		// TODO | ID COL type ASSIGN expression
-		;
-/*		
-fuctionDef returns [FunctionDefinition Ast, List<VariableDefinition> p = new List<VariableDefinition>()]: 
-		t=funcReturnType ID L_PAR (parameters { $p.AddRange($parameters.Ast); } )? R_PAR fnBlock	// Function IDefinition
-			{ $Ast = new FunctionDefinition($t.Ast.Line, $t.Ast.Column, $ID.text, new FunctionType($t.Ast, $p), $fnBlock.Ast); }
-		;
-		
-parameters returns [List<VariableDefinition> Ast = new List<VariableDefinition>()]: 
-		t1=primitive id1=ID 
-		{$Ast.Add(new VariableDefinition($t1.Ast.Line, $t1.Ast.Column, $id1.text, $t1.Ast));}
-		(',' t2=primitive id2=ID
-			{$Ast.Add(new VariableDefinition($t2.Ast.Line, $t2.Ast.Column, $id2.text, $t2.Ast));}
-		)*
-	  	;
+	;
+
+
+/*
+    method: () -> void { ... }
+    public sum: (a: int, b: int) -> int { ... }
 */
+fuctionDef returns [FunctionDefinition Ast, IType funcType]: 
+        n=ID COL t=functionType fnBlock 
+        { $Ast = new FunctionDefinition($n.GetLine(), $n.GetCol(), $n.GetText(), $t.Ast, $fnBlock.Ast); }
+    ;
+    
+    
+structDef returns [StructDefinition Ast]: 
+        n=ID COL t=structType 
+        { $Ast = new StructDefinition($n.GetLine(), $n.GetCol(), $n.GetText(), $t.Ast); }
+    ;
+    
 
-
+// TODO create a type with the delegate name
+delegate returns [IType Ast]:
+        DELEGATE n=ID functionType { $Ast = $functionType.Ast; }
+    ;
 
 
 
@@ -136,8 +186,7 @@ block returns [List<IStatement> Ast = new List<IStatement>()]:
 		
 fnBlock returns [List<IStatement> Ast = new List<IStatement>()]: 
 		L_CURL
-			(variableDef { $Ast.AddRange($variableDef.Ast); })*
-			(statement { $Ast.AddRange($statement.Ast); })*
+			((variableDef { $Ast.Add($variableDef.Ast); }) | (statement { $Ast.AddRange($statement.Ast); }))*
 		R_CURL
 		;
 	
@@ -167,6 +216,10 @@ readPrint returns [IStatement Ast]:
  		p=PRINT L_PAR e=expression R_PAR SEMI_COL { $Ast = new Print($p.GetLine(), $p.GetCol(), $e.Ast); }
   		| r=READ L_PAR e=expression R_PAR SEMI_COL	{ $Ast = new Read($r.GetLine(), $r.GetCol(), $e.Ast); }
   		;
+
+
+
+
 
 
 

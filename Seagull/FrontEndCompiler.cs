@@ -6,11 +6,14 @@ using System.Linq;
 using Antlr4.Runtime;
 using Seagull.AST;
 using Seagull.Errors;
+using Seagull.Semantics;
+using Seagull.Semantics.Symbols;
 
 namespace Seagull
 {
     public class FrontEndCompiler
     {
+	    private bool _ready = false;
 
 	    private SeagullGrammar _grammar;
 	    private SeagullSemantics _semantics;
@@ -21,16 +24,24 @@ namespace Seagull
 		    _grammar = new SeagullGrammar();
 		    _semantics = new SeagullSemantics();
 	    }
-	    
+
+
+	    private void SetUp()
+	    {
+		    if (_ready)
+			    return;
+		    
+		    ErrorHandler.Instance.Clear();
+		    _semantics.SetUp();
+	    }
 	    
 	    
 	    
 	    
         public Program Compile(string filename)
         {
-	        ErrorHandler.Instance.Clear();
-	        _semantics.SetUp();
-
+	        SetUp();
+	        
 	        
 	        // Syntactic analysis //
 	        
@@ -56,7 +67,6 @@ namespace Seagull
             }
             
             
-            
             // Semantic Analysis //
 
             _semantics.Analyze(ast);
@@ -67,11 +77,8 @@ namespace Seagull
 				return null;
 			}
         
-		
             return ast;
         }
-        
-        
         
         
         
@@ -84,21 +91,16 @@ namespace Seagull
 	        string relative = import.Trim('"');
 	        string path = Path.Combine(dir, relative);
 
-	        Program program = Compile(path);
+	        //Program program = Compile(path);
 	        
+	        Program program = _grammar.Analyze(path);
+            
 	        if (ErrorHandler.Instance.AnyError)
 	        {
 		        Console.WriteLine(ErrorHandler.Instance.PrintErrors());
-		        result = null;
+		        result = new List<IDefinition>();
 		        return false;
 	        }
-
-	        if (program == null)
-	        {
-		        result = null;
-		        return false;
-	        }
-		        
 	        
 	        result = program.Definitions.ToList();
 

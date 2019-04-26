@@ -2,34 +2,63 @@ using System;
 using System.Collections.Generic;
 using Seagull.AST;
 
-namespace Seagull.Semantics
+namespace Seagull.Semantics.Symbols
 {
     public class SymbolTable
     {
+
+        private static SymbolTable _instance;
+        public static SymbolTable Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new SymbolTable();
+                return _instance;
+            }
+        }
+
+
+
+
         public int Scope { get; private set; }
         private List<Dictionary<string, IDefinition>> _table;
 	
 	
-        public SymbolTable()  {
+        private SymbolTable()
+        {
+            Initialize();
+        }
+
+        public void Initialize()
+        {
             Scope = 0;
             _table = new List<Dictionary<string, IDefinition>>();
             _table.Add(new Dictionary<string, IDefinition>());
         }
+        
+        
+        
+        
+        
 
-        public void Set() {
+        public void Set()
+        {
             Scope ++;
             if (_table.Count >= Scope)
                 _table.Add(new Dictionary<string, IDefinition>());
         }
 	
-        public void Reset() {
+        public void Reset()
+        {
             if (Scope == 0)
                 throw new Exception("Don't you fool dare to set the Scope to -1.");
             _table[Scope].Clear();
             Scope --;
         }
 	
-        public bool Insert(IDefinition definition) {
+        public bool Insert(IDefinition definition)
+        {
             string key = definition.Name;
             if (CurrentMap().ContainsKey(key))
                 return false;
@@ -40,7 +69,8 @@ namespace Seagull.Semantics
         }
 	
 	
-        public IDefinition Find(string id) {
+        public IDefinition Find(string id)
+        {
             IDefinition def;
             for (int s = Scope; s >= 0; s --) {
                 def = FindInScope(s, id);
@@ -51,17 +81,24 @@ namespace Seagull.Semantics
         }
 	
 
-        public IDefinition FindInCurrentScope(string id) {
+        public IDefinition FindInCurrentScope(string id)
+        {
             return FindInScope(Scope, id);
         }
+
+
+
 	
 	
-	
-        private Dictionary<string, IDefinition> CurrentMap() {
+        private Dictionary<string, IDefinition> CurrentMap()
+        {
             return _table[Scope];
         }
 	
-        private IDefinition FindInScope(int scope, string id) {
+        private IDefinition FindInScope(int scope, string id)
+        {
+            if (!_table[scope].ContainsKey(id))
+                return null;
             return _table[scope][id];
         }
     }

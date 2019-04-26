@@ -3,11 +3,19 @@ using Seagull.AST.Expressions;
 using Seagull.AST.Statements.Definitions;
 using Seagull.AST.Types;
 using Seagull.Errors;
+using Seagull.Semantics.Symbols;
 using Seagull.Visitor;
 using Void = Seagull.Visitor.Void;
 
 namespace Seagull.Semantics
 {
+	
+	/// <summary>
+	/// This visitor must run after we have used the DeclarationVisitor and solved
+	/// all type dependencies.
+	/// Here we'll look for variables and bind them to their declaration in the
+	/// SymbolTable, so we can easily get their type later.
+	/// </summary>
     public class RecognitionVisitor : AbstractVisitor<Void, Void>
     {
         private readonly SymbolTable _table;
