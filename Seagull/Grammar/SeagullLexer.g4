@@ -55,6 +55,7 @@ PRIVATE:    'private' ;
 
 LOAD:       'load' ;
 IMPORT:     'import' ;
+NAMESPACE:  'namespace' ;
 
 
 
@@ -117,6 +118,8 @@ CHAR_CONSTANT:
 	;
 	
 STRING_CONSTANT: '"' .*? '"' ;
+
+BOOLEAN_CONSTANT: TRUE | FALSE ;
 
 		 
 		 	 

@@ -24,10 +24,11 @@ namespace Seagull
         
         public void Analyze(Program ast)
         {
-            // First find declarations. Then find variables and bind them together.
-            ast.Accept(new DeclarationVisitor(_symbolTable), null);
-            DependencyManager.Instance.SolveDependencies(); // Solve dependencies first
+            // Find declarations and variables, and bind them together
             ast.Accept(new RecognitionVisitor(_symbolTable), null);
+            // Solve the dependencies that may have appeared
+            DependencyManager.Instance.SolveDependencies();
+            
             
             // TODO return visitor: check all branches return
             

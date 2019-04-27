@@ -7,7 +7,8 @@ namespace Seagull.AST.Types
     
     /// <summary>
     /// Just wraps a type.
-    /// It's used by the DependencyManager.
+    /// It's used by the DependencyManager to handle user-defined types
+    /// that haven't been declared yet.
     /// </summary>
     public class TypeWrapper : IType
     {

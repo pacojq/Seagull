@@ -24,6 +24,20 @@ namespace Seagull.Grammar
             return -1;
         }
 
+        
+        public static bool LexemeToBoolean(string str)
+        {
+            try
+            {
+                return bool.Parse(str);
+            }
+            catch (FormatException e)
+            {
+                Console.WriteLine(e);
+            }
+            return false;
+        }
+        
 	
         public static char LexemeToChar(String str) {
 		

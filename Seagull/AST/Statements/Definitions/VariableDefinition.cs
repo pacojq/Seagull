@@ -9,6 +9,13 @@ namespace Seagull.AST.Statements.Definitions
             : base(line, column, name, type)
         {
         }
+
+
+
+        public override string ToString()
+        {
+            return $"{Name} : {Type}";
+        }
         
         
         public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)

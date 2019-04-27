@@ -101,5 +101,8 @@ namespace Seagull.Semantics.Symbols
                 return null;
             return _table[scope][id];
         }
+
+
+
     }
 }

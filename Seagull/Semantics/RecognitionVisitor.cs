@@ -1,3 +1,6 @@
+
+using System;
+using System.Runtime.CompilerServices;
 using Seagull.AST;
 using Seagull.AST.Expressions;
 using Seagull.AST.Statements.Definitions;
@@ -29,6 +32,105 @@ namespace Seagull.Semantics
 		
 		
 		
+		
+		
+		public override Void Visit(VariableDefinition varDefinition, Void p)
+		{
+			base.Visit(varDefinition, p);
+			
+			bool success = _table.Insert(varDefinition);
+			if (!success)
+			{
+				ErrorHandler.Instance.RaiseError(
+						varDefinition.Line, 
+						varDefinition.Column,
+						$"Trying to declare a variable which already exists: {varDefinition.Name}");
+			}
+			return null;
+		}
+		
+		
+		
+		public override Void Visit(FunctionDefinition funcDefinition, Void p)
+		{
+			// Insert and set the scope
+			bool success = _table.Insert(funcDefinition);
+			if (!success)
+			{
+				ErrorHandler.Instance.RaiseError(
+						funcDefinition.Line, 
+						funcDefinition.Column,
+						$"Trying to declare a function which already exists: {funcDefinition.Name}");
+			}
+			_table.Set();
+			
+			// Normal visitor stuff
+			base.Visit(funcDefinition, p);
+			
+			// Reset the scope
+			_table.Reset();
+			
+			return null;
+		}
+		
+		
+		
+		
+		public override Void Visit(StructDefinition structDefinition, Void p)
+		{
+			// Insert and set the scope
+			bool success = _table.Insert(structDefinition);
+			if (!success)
+			{
+				ErrorHandler.Instance.RaiseError(
+					structDefinition.Line, 
+					structDefinition.Column,
+					"Trying to declare a struct which already exists.");
+			}
+			_table.Set();
+			
+			// Normal visitor stuff
+			base.Visit(structDefinition, p);
+			
+			// Reset the scope
+			_table.Reset();
+			
+			((StructType) structDefinition.Type).Name = structDefinition.Name;
+			
+			return null;
+		}
+		
+		
+		
+		
+		
+		public override Void Visit(DelegateDefinition delegateDefinition, Void p)
+		{
+			base.Visit(delegateDefinition, p);
+			
+			bool success = _table.Insert(delegateDefinition);
+			if (!success)
+			{
+				ErrorHandler.Instance.RaiseError(
+					delegateDefinition.Line, 
+					delegateDefinition.Column,
+					"Trying to declare a delegate which already exists.");
+			}
+			return null;
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		public override Void Visit(Variable var, Void p)
 		{
 			IDefinition def = _table.Find(var.Name);
@@ -36,14 +138,15 @@ namespace Seagull.Semantics
 			if (def == null)
 			{
 				ErrorHandler.Instance.RaiseError(
-						var.Line, 
-						var.Column,
-						"Cannot use a variable which is not declared.");
+					var.Line, 
+					var.Column,
+					"Cannot use a variable which is not declared.");
 			}
 			var.Definition = def;		
 			return null;
 		}
-		
+
+
 		
 		
 		
@@ -58,11 +161,8 @@ namespace Seagull.Semantics
 			
 			if (def == null)
 			{
-				IType err = ErrorHandler.Instance.RaiseError(
-						var.Line, 
-						var.Column,
-						"Cannot invoke a function which is not declared.");
-				def = new VariableDefinition(var.Line, var.Column, var.Name, err);
+				IType t = DependencyManager.Instance.AddType(var.Line, var.Column, var.Name);
+				def = new VariableDefinition(var.Line, var.Column, var.Name, t);
 			}
 			var.Definition = def;
 			

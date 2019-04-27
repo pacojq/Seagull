@@ -3,22 +3,30 @@
 load "empty.sgl"
 load "person.sgl"
 
-/*
-a : int;
-b : double;
-c : char;
-*/
 
+namespace Hi.There {
 
-a : Person;
+    a: double;
+    
+    c : char;
+    
+    p : Person;
+    
+    sum: (a: int, b: int) -> int {
+        return a + b;
+    }
+    
+    main: () -> void
+    {
+        p = birth();
+        
+        
+        //number := sum(a, 2);
+    }
+    
+    birth: () -> Person
+    {
+        return new Person;
+    }
 
-main: () -> void
-{
-    a = birth();
 }
-
-birth: () -> Person
-{
-    return new Person;
-}
-

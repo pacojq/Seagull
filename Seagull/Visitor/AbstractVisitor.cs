@@ -1,3 +1,4 @@
+using System;
 using Seagull.AST;
 using Seagull.AST.Expressions;
 using Seagull.AST.Expressions.Binary;
@@ -95,6 +96,14 @@ namespace Seagull.Visitor
 		}
 		
 		
+		public virtual TR Visit(BooleanType booleanType, TP p)
+		{
+			return default(TR);
+		}
+		
+		
+		
+		
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		/*														 */
 		/*					   STATEMENTS						 */
@@ -153,8 +162,15 @@ namespace Seagull.Visitor
 		}
 		
 		
-		
-		
+
+		public TR Visit(NamespaceDefinition namespaceDefinition, TP p)
+		{
+			foreach (var st in namespaceDefinition.Statements)
+				st.Accept(this, p);
+			return default(TR);
+		}
+
+
 		public virtual TR Visit(StructDefinition structDefinition, TP p)
 		{
 			structDefinition.Type.Accept(this, p);
@@ -290,8 +306,20 @@ namespace Seagull.Visitor
 		{
 			return default(TR);
 		}
-        
 		
-        
+
+		public TR Visit(StringLiteral stringLiteral, TP p)
+		{
+			return default(TR);
+		}
+
+		public TR Visit(BooleanLiteral booleanLiteral, TP p)
+		{
+			return default(TR);
+		}
+		
+		
+		
+		
     }
 }

@@ -7,6 +7,10 @@ using Seagull.Errors;
 
 namespace Seagull.Semantics.Symbols
 {
+    
+    /// <summary>
+    /// We only deal with dependencies of Scope 0.
+    /// </summary>
     public class DependencyManager
     {
 
@@ -56,8 +60,6 @@ namespace Seagull.Semantics.Symbols
                 else depType.SetWrappedType(def.Type);
             }
         }
-        
-        
 
 
         /// <summary>
@@ -65,6 +67,8 @@ namespace Seagull.Semantics.Symbols
         /// If at the time we check a dependency we cannot find it in any scope,
         /// we'll raise an error.
         /// </summary>
+        /// <param name="line"></param>
+        /// <param name="column"></param>
         /// <param name="id"></param>
         /// <returns></returns>
         public IType AddType(int line, int column, string id)

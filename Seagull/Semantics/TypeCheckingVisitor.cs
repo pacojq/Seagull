@@ -215,7 +215,7 @@ namespace Seagull.Semantics
 				ErrorHandler.Instance.RaiseError(
 						returnStmnt.Line, 
 						returnStmnt.Column,
-						$"Inconsistent return type. Actualin {actualRetType}; Expectedin {retType}"
+						$"Inconsistent return type. Actual: {actualRetType}; Expected: {retType}"
 					);	
 			}
 			

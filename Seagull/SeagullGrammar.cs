@@ -3,6 +3,7 @@ using System.IO;
 using Antlr4.Runtime;
 using Seagull.AST;
 using Seagull.Errors;
+using Seagull.Grammar;
 
 namespace Seagull
 {

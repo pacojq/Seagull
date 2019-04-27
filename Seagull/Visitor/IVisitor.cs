@@ -37,6 +37,7 @@ namespace Seagull.Visitor
 		TR Visit(StructType structType, TP p);
 		TR Visit(VoidType voidType, TP p);
 		TR Visit(StringType stringType, TP p);
+		TR Visit(BooleanType booleanType, TP p);
 		
 		
 		
@@ -57,6 +58,7 @@ namespace Seagull.Visitor
 
 
 		// Definitions
+		TR Visit(NamespaceDefinition namespaceDefinition, TP p);
 		TR Visit(StructDefinition structDefinition, TP p);
 		TR Visit(VariableDefinition variableDefinition, TP p);
 		TR Visit(FunctionDefinition functionDefinition, TP p);
@@ -87,5 +89,9 @@ namespace Seagull.Visitor
 		TR Visit(Negation negation, TP p);
 		TR Visit(UnaryMinus unaryMinus, TP p);
 		TR Visit(Variable variable, TP p);
+
+		TR Visit(StringLiteral stringLiteral, TP p);
+		TR Visit(BooleanLiteral booleanLiteral, TP p);
+		
     }
 }

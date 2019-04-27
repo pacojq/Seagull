@@ -61,7 +61,7 @@ type returns [IType Ast]:
 				)*
 		
 		// Custom type
-	|   userDefined=ID  { $Ast = DependencyManager.Instance.AddType($userDefined.GetLine(), $userDefined.GetCol(), $userDefined.GetText()); }  
+	|   userDefined=ID  { $Ast = DependencyManager.Instance.AddType($userDefined.GetLine(), $userDefined.GetCol(), $userDefined.GetText()); } 
 	;
 		
 
@@ -127,10 +127,24 @@ voidType returns [IType Ast]:
 protectionLevel : (PUBLIC | PRIVATE) ;
 
 definition returns [IDefinition Ast]:
-		protectionLevel? fuctionDef     { $Ast = $fuctionDef.Ast; }
+        namespaceDef                    { $Ast = $namespaceDef.Ast; }
+    |	protectionLevel? fuctionDef     { $Ast = $fuctionDef.Ast; }
 	|   protectionLevel? variableDef    { $Ast = $variableDef.Ast; }
 	|   protectionLevel? structDef      { $Ast = $structDef.Ast; }
 	;
+
+
+namespaceDef returns[NamespaceDefinition Ast,
+            List<IDefinition> Def = new List<IDefinition>(),
+            NamespaceDefinition Parent = null]:
+            
+        n=NAMESPACE ( p=ID DOT { $Parent = SymbolsManager.Instance.AddNamespace($n.GetLine(), $n.GetCol(), $p.GetText(), $Parent); })* 
+        id=ID 
+        L_CURL
+            (d=definition { $Def.Add($d.Ast); })*
+        R_CURL
+        { $Ast = new NamespaceDefinition($n.GetLine(), $n.GetCol(), $id.GetText(), $Parent, $Def); }
+    ;
 
 
 /*
@@ -243,7 +257,8 @@ expression returns [IExpression Ast]:
 	|   i=INT_CONSTANT      { $Ast = new IntLiteral($i.GetLine(), $i.GetCol(), LexerHelper.LexemeToInt($i.text)); }
 	|   r=REAL_CONSTANT     { $Ast = new DoubleLiteral($r.GetLine(), $r.GetCol(), LexerHelper.LexemeToReal($r.text)); }
 	|   c=CHAR_CONSTANT     { $Ast = new CharLiteral($c.GetLine(), $c.GetCol(), LexerHelper.LexemeToChar($c.text)); }
-	|   s=STRING_CONSTANT   { $Ast = new CharLiteral($c.GetLine(), $c.GetCol(), LexerHelper.LexemeToChar($c.text)); }
+	|   s=STRING_CONSTANT   { $Ast = new StringLiteral($c.GetLine(), $c.GetCol(), $c.text); }
+	|   b=BOOLEAN_CONSTANT  { $Ast = new BooleanLiteral($c.GetLine(), $c.GetCol(), LexerHelper.LexemeToBoolean($c.text)); }
 		
 		// Function invocation
 	|   funcInvocation      { $Ast = $funcInvocation.Ast; }
