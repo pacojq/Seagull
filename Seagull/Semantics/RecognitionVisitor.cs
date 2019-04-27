@@ -162,7 +162,7 @@ namespace Seagull.Semantics
 			if (def == null)
 			{
 				IType t = DependencyManager.Instance.AddType(var.Line, var.Column, var.Name);
-				def = new VariableDefinition(var.Line, var.Column, var.Name, t);
+				def = new VariableDefinition(var.Line, var.Column, var.Name, t, null);
 			}
 			var.Definition = def;
 			

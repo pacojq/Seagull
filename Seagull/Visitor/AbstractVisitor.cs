@@ -180,6 +180,8 @@ namespace Seagull.Visitor
 		public virtual TR Visit(VariableDefinition variableDefinition, TP p)
 		{
 			variableDefinition.Type.Accept(this, p);
+			if (variableDefinition.Initialization != null)
+				variableDefinition.Initialization.Accept(this, p);
 			return default(TR);
 		}
 		

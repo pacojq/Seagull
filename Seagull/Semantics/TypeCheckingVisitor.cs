@@ -16,6 +16,30 @@ namespace Seagull.Semantics
 {
     public class TypeCheckingVisitor : AbstractVisitor<Void, IType>
     {
+	    
+	    
+	    public override Void Visit(VariableDefinition variableDefinition, IType p)
+	    {
+		    base.Visit(variableDefinition, variableDefinition.Type);
+		    if (variableDefinition.Initialization != null)
+		    {
+			    IExpression init = variableDefinition.Initialization;
+			    if (!init.Type.IsEquivalent(variableDefinition.Type))
+			    {
+				    ErrorHandler.Instance.RaiseError(
+					    init.Line, 
+					    init.Column,
+					    $"Cannot assign initialize to {init.Type} a variable declared as {variableDefinition.Type}."
+				    );
+			    }
+		    }
+
+		    return null;
+	    }
+	    
+	    
+	    
+	    
         public override Void Visit(Variable variable, IType p)
         {
 			base.Visit(variable, variable.Type);

@@ -75,11 +75,13 @@ functionType returns [FunctionType Ast,
     ;
     
 parameters returns [List<VariableDefinition> Ast = new List<VariableDefinition>()]: 
-		id1=ID COL t1=type
-		{ $Ast.Add(new VariableDefinition($id1.GetLine(), $id1.GetCol(), $id1.GetText(), $t1.Ast)); }
+		id1=ID COL t1=type  { $Ast.Add(new VariableDefinition($id1.GetLine(), $id1.GetCol(), $id1.GetText(), $t1.Ast, null)); }
 		(COMMA id2=ID COL t2=type
-			{ $Ast.Add(new VariableDefinition($id2.GetLine(), $id2.GetCol(), $id2.GetText(), $t2.Ast)); }
+			{ $Ast.Add(new VariableDefinition($id2.GetLine(), $id2.GetCol(), $id2.GetText(), $t2.Ast, null)); }
 		)*
+		(COMMA id2=ID COL t2=type ASSIGN l=literal
+            { $Ast.Add(new VariableDefinition($id2.GetLine(), $id2.GetCol(), $id2.GetText(), $t2.Ast, $l.Ast)); }
+        )*
     ;
 
 
@@ -153,9 +155,9 @@ namespaceDef returns[NamespaceDefinition Ast,
     c := 1f;
 */
 variableDef returns [VariableDefinition Ast]: 
-        n=ID COL t=type SEMI_COL { $Ast = new VariableDefinition($t.Ast.Line, $t.Ast.Column, $n.GetText(), $t.Ast); }
-		// TODO | ID ':=' expression
-		// TODO | ID COL type ASSIGN expression
+        n=ID COL t=type SEMI_COL { $Ast = new VariableDefinition($t.Ast.Line, $t.Ast.Column, $n.GetText(), $t.Ast, null); }
+    |   n=ID COL t=type ASSIGN e=expression SEMI_COL { $Ast = new VariableDefinition($t.Ast.Line, $t.Ast.Column, $n.GetText(), $t.Ast, $e.Ast); }
+		// TODO ID ':=' expression
 	;
 
 
@@ -190,37 +192,37 @@ delegate returns [IType Ast]:
 funcInvocation returns [FunctionInvocation Ast, List<IExpression> arguments = new List<IExpression>()]:
 		func=variable L_PAR ( e1=expression { $arguments.Add($e1.Ast); } (COMMA e2=expression { $arguments.Add($e2.Ast); })* )? R_PAR
  			{ $Ast = new FunctionInvocation($func.Ast, $arguments); }
- 		;
+ 	;
  
   	
 block returns [List<IStatement> Ast = new List<IStatement>()]: 
 		st1=statement { $Ast.AddRange($st1.Ast); }
-		| L_CURL (st2=statement { $Ast.AddRange($st2.Ast); })* R_CURL
-		;
+	|   L_CURL (st2=statement { $Ast.AddRange($st2.Ast); })* R_CURL
+	;
 		
 fnBlock returns [List<IStatement> Ast = new List<IStatement>()]: 
 		L_CURL
 			((variableDef { $Ast.Add($variableDef.Ast); }) | (statement { $Ast.AddRange($statement.Ast); }))*
 		R_CURL
-		;
+	;
 	
 	
 		 
 statement returns [List<IStatement> Ast = new List<IStatement>()]:
 		w=WHILE L_PAR cond=expression R_PAR b=block  				// While loop
 				{ $Ast.Add(new WhileLoop($w.GetLine(), $w.GetCol(), $cond.Ast, $b.Ast)); }
-		| i=IF L_PAR cond=expression R_PAR b1=block					// If-else
+	|   i=IF L_PAR cond=expression R_PAR b1=block					// If-else
 				{ $Ast.Add(new IfStatement($i.GetLine(), $i.GetCol(), $cond.Ast, $b1.Ast)); }
 				(ELSE b2=block { ((IfStatement)$Ast[0]).Else = $b2.Ast; })?	
-		| e1=expression ASSIGN e2=expression SEMI_COL					// Assignment
+	|   e1=expression ASSIGN e2=expression SEMI_COL					// Assignment
 				{ $Ast.Add(new Assignment($e1.Ast, $e2.Ast)); }
-  		| r=RETURN e=expression SEMI_COL							// Return statement
+  	|   r=RETURN e=expression SEMI_COL							// Return statement
   				{ $Ast.Add(new Return($r.GetLine(), $r.GetCol(), $e.Ast)); }
-  		| readPrint												// Read and Write
+  	|   readPrint												// Read and Write
   				{ $Ast.Add($readPrint.Ast); }
-  		| funcInvocation SEMI_COL
+  	|   funcInvocation SEMI_COL
   				{ $Ast.Add($funcInvocation.Ast); }
-  		;
+  	;
   		
 
 
@@ -228,8 +230,8 @@ statement returns [List<IStatement> Ast = new List<IStatement>()]:
   		
 readPrint returns [IStatement Ast]:
  		p=PRINT L_PAR e=expression R_PAR SEMI_COL { $Ast = new Print($p.GetLine(), $p.GetCol(), $e.Ast); }
-  		| r=READ L_PAR e=expression R_PAR SEMI_COL	{ $Ast = new Read($r.GetLine(), $r.GetCol(), $e.Ast); }
-  		;
+  	|   r=READ L_PAR e=expression R_PAR SEMI_COL	{ $Ast = new Read($r.GetLine(), $r.GetCol(), $e.Ast); }
+  	;
 
 
 
@@ -242,23 +244,11 @@ readPrint returns [IStatement Ast]:
 
 // * * * * * * * * *   EXPRESSIONS   * * * * * * * * * * //
 
-variable returns [Variable Ast]:
-		ID { $Ast = new Variable($ID.GetLine(), $ID.GetCol(), $ID.text); }
-		;
-
-
 
 expression returns [IExpression Ast]:
 
-        // Variable
         variable { $Ast = $variable.Ast; }
-		
-		// Literals
-	|   i=INT_CONSTANT      { $Ast = new IntLiteral($i.GetLine(), $i.GetCol(), LexerHelper.LexemeToInt($i.text)); }
-	|   r=REAL_CONSTANT     { $Ast = new DoubleLiteral($r.GetLine(), $r.GetCol(), LexerHelper.LexemeToReal($r.text)); }
-	|   c=CHAR_CONSTANT     { $Ast = new CharLiteral($c.GetLine(), $c.GetCol(), LexerHelper.LexemeToChar($c.text)); }
-	|   s=STRING_CONSTANT   { $Ast = new StringLiteral($c.GetLine(), $c.GetCol(), $c.text); }
-	|   b=BOOLEAN_CONSTANT  { $Ast = new BooleanLiteral($c.GetLine(), $c.GetCol(), LexerHelper.LexemeToBoolean($c.text)); }
+	|   literal { $Ast = $literal.Ast; }
 		
 		// Function invocation
 	|   funcInvocation      { $Ast = $funcInvocation.Ast; }
@@ -294,6 +284,20 @@ expression returns [IExpression Ast]:
 	;
 
 
+
+variable returns [Variable Ast]:
+		ID { $Ast = new Variable($ID.GetLine(), $ID.GetCol(), $ID.text); }
+		;
+
+
+
+literal returns [IExpression Ast]:
+	    i=INT_CONSTANT      { $Ast = new IntLiteral($i.GetLine(), $i.GetCol(), LexerHelper.LexemeToInt($i.text)); }
+	|   r=REAL_CONSTANT     { $Ast = new DoubleLiteral($r.GetLine(), $r.GetCol(), LexerHelper.LexemeToReal($r.text)); }
+	|   c=CHAR_CONSTANT     { $Ast = new CharLiteral($c.GetLine(), $c.GetCol(), LexerHelper.LexemeToChar($c.text)); }
+	|   s=STRING_CONSTANT   { $Ast = new StringLiteral($s.GetLine(), $s.GetCol(), $s.text); }
+	|   b=BOOLEAN_CONSTANT  { $Ast = new BooleanLiteral($b.GetLine(), $b.GetCol(), LexerHelper.LexemeToBoolean($b.text)); }
+	;
 
 
 
