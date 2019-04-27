@@ -70,8 +70,9 @@ functionType returns [FunctionType Ast,
             List<VariableDefinition> Params = new List<VariableDefinition>(),
             IType Rt]:
             
-        L_PAR (p=parameters { $Params = $p.Ast;})? R_PAR ARROW ((t=type { $Rt=$t.Ast; })| (vt=voidType{ $Rt=$vt.Ast; }))
-        { $Ast = new FunctionType($Rt, $Params); }
+        L_PAR (p=parameters { $Params = $p.Ast;})?  R_PAR t=type { $Rt=new VoidType($t.GetLine(), $t.GetCol()); } 
+            (ARROW ((t=type { $Rt=$t.Ast; }) | (vt=voidType{ $Rt=$vt.Ast; })) )? // if we donot specify '-> returnType', it's void
+            { $Ast = new FunctionType($Rt, $Params); }
     ;
     
 parameters returns [List<VariableDefinition> Ast = new List<VariableDefinition>()]: 

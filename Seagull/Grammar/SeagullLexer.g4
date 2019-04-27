@@ -57,6 +57,9 @@ LOAD:       'load' ;
 IMPORT:     'import' ;
 NAMESPACE:  'namespace' ;
 
+USING:      'using' ; // Imports all namespace definitions inside 
+                      // the current namespace
+
 
 
 // Signs
