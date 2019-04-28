@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Seagull.AST;
 using Seagull.AST.Statements.Definitions;
 using Seagull.AST.Types;
@@ -41,8 +43,27 @@ namespace Seagull.Semantics.Symbols
         }
 
 
+        
+        
         public void SolveDependencies()
         {
+            Parallel.ForEach(_dependencies, pair =>
+            {
+                string id = pair.Key;
+                TypeWrapper depType = pair.Value;
+
+                IDefinition def = SymbolTable.Instance.Find(id); // TODO maybe this is not fully thread safe
+                if (def == null)
+                {
+                    depType.SetWrappedType(ErrorHandler.Instance.RaiseError(
+                        depType.Line,
+                        depType.Column,
+                        "Trying to use an undefined symbol: " + id)
+                    );
+                }
+                else depType.SetWrappedType(def.Type);
+            });
+            /*
             foreach (var pair in _dependencies)
             {
                 string id = pair.Key;
@@ -59,7 +80,11 @@ namespace Seagull.Semantics.Symbols
                 }
                 else depType.SetWrappedType(def.Type);
             }
+            */
         }
+        
+        
+        
 
 
         /// <summary>
