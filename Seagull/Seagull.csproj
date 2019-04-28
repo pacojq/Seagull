@@ -96,6 +96,10 @@
         <Compile Include="Errors\ErrorHandler.cs" />
         <Compile Include="Errors\ErrorListener.cs" />
         <Compile Include="Errors\ErrorType.cs" />
+        <Compile Include="Errors\Warning.cs" />
+        <Compile Include="FrontEnd\ImportsManager.cs" />
+        <Compile Include="FrontEnd\SeagullGrammar.cs" />
+        <Compile Include="FrontEnd\SeagullSemantics.cs" />
         <Compile Include="Grammar\ExtensionMethods.cs" />
         <Compile Include="Grammar\LexerHelper.cs" />
         <Compile Include="Grammar\SeagullLexer.cs" />
@@ -103,8 +107,6 @@
         <Compile Include="FrontEndCompiler.cs" />
         <Compile Include="Grammar\SeagullPreprocessorParser.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="SeagullGrammar.cs" />
-        <Compile Include="SeagullSemantics.cs" />
         <Compile Include="Semantics\RecognitionVisitor.cs" />
         <Compile Include="Semantics\Symbols\DependencyManager.cs" />
         <Compile Include="Semantics\Symbols\SymbolsManager.cs" />

@@ -6,6 +6,7 @@ using System.Linq;
 using Antlr4.Runtime;
 using Seagull.AST;
 using Seagull.Errors;
+using Seagull.FrontEnd;
 using Seagull.Semantics;
 using Seagull.Semantics.Symbols;
 
@@ -15,24 +16,27 @@ namespace Seagull
     {
 	    private bool _ready = false;
 
-	    private SeagullGrammar _grammar;
-	    private SeagullSemantics _semantics;
+	    internal SeagullGrammar Grammar { get; }
+	    internal SeagullSemantics Semantics { get; }
+
+	    private ImportsManager _importsManager;
 	    
 	    
 	    public FrontEndCompiler()
 	    {
-		    _grammar = new SeagullGrammar();
-		    _semantics = new SeagullSemantics();
+		    Grammar = new SeagullGrammar();
+		    Semantics = new SeagullSemantics();
 	    }
 
 
-	    private void SetUp()
+	    private void SetUp(string filename)
 	    {
 		    if (_ready)
 			    return;
 		    
 		    ErrorHandler.Instance.Clear();
-		    _semantics.SetUp();
+		    Semantics.SetUp();
+		    _importsManager = new ImportsManager(this, filename);
 	    }
 	    
 	    
@@ -40,14 +44,14 @@ namespace Seagull
 	    
         public Program Compile(string filename)
         {
-	        SetUp();
+	        SetUp(filename);
 	        
 	        
 	        // Syntactic analysis //
 	        
-	        Program ast = _grammar.Analyze(filename);
+	        Program ast = Grammar.Analyze(filename);
             
-            if (ErrorHandler.Instance.AnyError)
+	        if (ErrorHandler.Instance.AnyError)
             {
                 Console.WriteLine(ErrorHandler.Instance.PrintErrors());
                 return null;
@@ -56,63 +60,30 @@ namespace Seagull
             
             
             // Import needed files //
+            _importsManager.Import(filename, ast.Imports);
+            while (!_importsManager.Ready) { /* Wait */ }
             
-            foreach (string import in ast.Imports)
-            {
-	            List<IDefinition> definitions;
-	            bool success = CompileLibrary(filename, import, out definitions);
-	            if (!success)
-		            return null;
-	            ast.AddLibrary(definitions);
-            }
+            ast.AddDefinitions(_importsManager.GetImports());
+            
             
             
             // Semantic Analysis //
 
-            _semantics.Analyze(ast);
+            Semantics.Analyze(ast);
             
             if (ErrorHandler.Instance.AnyError)
             {
 	            Console.WriteLine(ErrorHandler.Instance.PrintErrors());
 				return null;
 			}
+            
+            
+            // Print warnings
+            if (ErrorHandler.Instance.AnyWarning)
+	            Console.WriteLine(ErrorHandler.Instance.PrintWarnings());
         
             return ast;
         }
-        
-        
-        
-        
-        
-        private bool CompileLibrary(string currentFile, string import, out List<IDefinition> result)
-        {
-	        // TODO relative path for the import file
-	        string dir = Path.GetDirectoryName(currentFile);
-	        string relative = import.Trim('"');
-	        string path = Path.Combine(dir, relative);
-
-	        //Program program = Compile(path);
-	        
-	        Program program = _grammar.Analyze(path);
-            
-	        if (ErrorHandler.Instance.AnyError)
-	        {
-		        Console.WriteLine(ErrorHandler.Instance.PrintErrors());
-		        result = new List<IDefinition>();
-		        return false;
-	        }
-	        
-	        result = program.Definitions.ToList();
-
-	        // Remove the main function
-	        if (program.MainFunction != null)
-				result.Remove(program.MainFunction);
-
-	        return true;
-        }
-        
-        
-        
         
         
         

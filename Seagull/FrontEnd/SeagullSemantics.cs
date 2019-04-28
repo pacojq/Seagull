@@ -2,7 +2,7 @@ using Seagull.AST;
 using Seagull.Semantics;
 using Seagull.Semantics.Symbols;
 
-namespace Seagull
+namespace Seagull.FrontEnd
 {
     internal class SeagullSemantics
     {

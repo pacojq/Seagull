@@ -39,14 +39,14 @@ public partial class SeagullPreprocessorParser : Parser {
 		SHARP=1, VOID=2, INT=3, CHAR=4, DOUBLE=5, STRING=6, STRUCT=7, ENUM=8, 
 		DELEGATE=9, TRUE=10, FALSE=11, IF=12, ELSE=13, WHILE=14, FOR=15, NEW=16, 
 		DELETE=17, RETURN=18, PRINT=19, READ=20, ASSERT=21, DELAY=22, PUBLIC=23, 
-		PRIVATE=24, LOAD=25, IMPORT=26, NAMESPACE=27, DOT=28, COMMA=29, COL=30, 
-		SEMI_COL=31, ASSIGN=32, STAR=33, SLASH=34, PERCENT=35, ARROW=36, PLUS=37, 
-		MINUS=38, NOT=39, AND=40, OR=41, L_BRACKET=42, R_BRACKET=43, L_PAR=44, 
-		R_PAR=45, L_CURL=46, R_CURL=47, EQUAL=48, NOT_EQUAL=49, LESS_THAN=50, 
-		GREATER_THAN=51, LESS_EQ_THAN=52, GREATER_EQ_THAN=53, ID=54, INT_CONSTANT=55, 
-		REAL_CONSTANT=56, CHAR_CONSTANT=57, STRING_CONSTANT=58, BOOLEAN_CONSTANT=59, 
-		SL_COMMENT=60, ML_COMMENT=61, BLANKS=62, DIR_DEFINE=63, DIR_IF=64, DIR_ELIF=65, 
-		DIR_ELSE=66, DIR_WHITESPACE=67, DIR_ML_COMMENT=68, DIR_NEWLINE=69;
+		PRIVATE=24, LOAD=25, IMPORT=26, NAMESPACE=27, USING=28, DOT=29, COMMA=30, 
+		COL=31, SEMI_COL=32, ASSIGN=33, STAR=34, SLASH=35, PERCENT=36, ARROW=37, 
+		PLUS=38, MINUS=39, NOT=40, AND=41, OR=42, L_BRACKET=43, R_BRACKET=44, 
+		L_PAR=45, R_PAR=46, L_CURL=47, R_CURL=48, EQUAL=49, NOT_EQUAL=50, LESS_THAN=51, 
+		GREATER_THAN=52, LESS_EQ_THAN=53, GREATER_EQ_THAN=54, ID=55, INT_CONSTANT=56, 
+		REAL_CONSTANT=57, CHAR_CONSTANT=58, STRING_CONSTANT=59, BOOLEAN_CONSTANT=60, 
+		SL_COMMENT=61, ML_COMMENT=62, BLANKS=63, DIR_DEFINE=64, DIR_IF=65, DIR_ELIF=66, 
+		DIR_ELSE=67, DIR_WHITESPACE=68, DIR_ML_COMMENT=69, DIR_NEWLINE=70;
 	public const int
 		RULE_preprocessorDirective = 0, RULE_preprocessorExpression = 1;
 	public static readonly string[] ruleNames = {
@@ -57,23 +57,24 @@ public partial class SeagullPreprocessorParser : Parser {
 		null, "'#'", "'void'", "'int'", "'char'", "'double'", "'string'", "'struct'", 
 		"'enum'", "'delegate'", "'true'", "'false'", null, null, "'while'", "'for'", 
 		"'new'", "'delete'", "'return'", "'print'", "'read'", "'assert'", "'delay'", 
-		"'public'", "'private'", "'load'", "'import'", "'namespace'", "'.'", "','", 
-		"':'", "';'", "'='", "'*'", "'/'", "'%'", "'->'", "'+'", "'-'", "'!'", 
-		"'&&'", "'||'", "'['", "']'", "'('", "')'", "'{'", "'}'", "'=='", "'!='", 
-		"'<'", "'>'", "'<='", "'>='", null, null, null, null, null, null, null, 
-		null, null, "'define'", null, "'elif'"
+		"'public'", "'private'", "'load'", "'import'", "'namespace'", "'using'", 
+		"'.'", "','", "':'", "';'", "'='", "'*'", "'/'", "'%'", "'->'", "'+'", 
+		"'-'", "'!'", "'&&'", "'||'", "'['", "']'", "'('", "')'", "'{'", "'}'", 
+		"'=='", "'!='", "'<'", "'>'", "'<='", "'>='", null, null, null, null, 
+		null, null, null, null, null, "'define'", null, "'elif'"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, "SHARP", "VOID", "INT", "CHAR", "DOUBLE", "STRING", "STRUCT", "ENUM", 
 		"DELEGATE", "TRUE", "FALSE", "IF", "ELSE", "WHILE", "FOR", "NEW", "DELETE", 
 		"RETURN", "PRINT", "READ", "ASSERT", "DELAY", "PUBLIC", "PRIVATE", "LOAD", 
-		"IMPORT", "NAMESPACE", "DOT", "COMMA", "COL", "SEMI_COL", "ASSIGN", "STAR", 
-		"SLASH", "PERCENT", "ARROW", "PLUS", "MINUS", "NOT", "AND", "OR", "L_BRACKET", 
-		"R_BRACKET", "L_PAR", "R_PAR", "L_CURL", "R_CURL", "EQUAL", "NOT_EQUAL", 
-		"LESS_THAN", "GREATER_THAN", "LESS_EQ_THAN", "GREATER_EQ_THAN", "ID", 
-		"INT_CONSTANT", "REAL_CONSTANT", "CHAR_CONSTANT", "STRING_CONSTANT", "BOOLEAN_CONSTANT", 
-		"SL_COMMENT", "ML_COMMENT", "BLANKS", "DIR_DEFINE", "DIR_IF", "DIR_ELIF", 
-		"DIR_ELSE", "DIR_WHITESPACE", "DIR_ML_COMMENT", "DIR_NEWLINE"
+		"IMPORT", "NAMESPACE", "USING", "DOT", "COMMA", "COL", "SEMI_COL", "ASSIGN", 
+		"STAR", "SLASH", "PERCENT", "ARROW", "PLUS", "MINUS", "NOT", "AND", "OR", 
+		"L_BRACKET", "R_BRACKET", "L_PAR", "R_PAR", "L_CURL", "R_CURL", "EQUAL", 
+		"NOT_EQUAL", "LESS_THAN", "GREATER_THAN", "LESS_EQ_THAN", "GREATER_EQ_THAN", 
+		"ID", "INT_CONSTANT", "REAL_CONSTANT", "CHAR_CONSTANT", "STRING_CONSTANT", 
+		"BOOLEAN_CONSTANT", "SL_COMMENT", "ML_COMMENT", "BLANKS", "DIR_DEFINE", 
+		"DIR_IF", "DIR_ELIF", "DIR_ELSE", "DIR_WHITESPACE", "DIR_ML_COMMENT", 
+		"DIR_NEWLINE"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -200,13 +201,13 @@ public partial class SeagullPreprocessorParser : Parser {
 
 	private static char[] _serializedATN = {
 		'\x3', '\x608B', '\xA72A', '\x8133', '\xB9ED', '\x417C', '\x3BE7', '\x7786', 
-		'\x5964', '\x3', 'G', '\xF', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
+		'\x5964', '\x3', 'H', '\xF', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
 		'\t', '\x3', '\x3', '\x2', '\x3', '\x2', '\x3', '\x2', '\x3', '\x2', '\x5', 
 		'\x2', '\v', '\n', '\x2', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x2', 
 		'\x2', '\x4', '\x2', '\x4', '\x2', '\x3', '\x3', '\x2', '\f', '\r', '\x2', 
 		'\r', '\x2', '\n', '\x3', '\x2', '\x2', '\x2', '\x4', '\f', '\x3', '\x2', 
-		'\x2', '\x2', '\x6', '\a', '\a', '\x41', '\x2', '\x2', '\a', '\v', '\a', 
-		'\x38', '\x2', '\x2', '\b', '\t', '\a', '\x42', '\x2', '\x2', '\t', '\v', 
+		'\x2', '\x2', '\x6', '\a', '\a', '\x42', '\x2', '\x2', '\a', '\v', '\a', 
+		'\x39', '\x2', '\x2', '\b', '\t', '\a', '\x43', '\x2', '\x2', '\t', '\v', 
 		'\x5', '\x4', '\x3', '\x2', '\n', '\x6', '\x3', '\x2', '\x2', '\x2', '\n', 
 		'\b', '\x3', '\x2', '\x2', '\x2', '\v', '\x3', '\x3', '\x2', '\x2', '\x2', 
 		'\f', '\r', '\t', '\x2', '\x2', '\x2', '\r', '\x5', '\x3', '\x2', '\x2', 

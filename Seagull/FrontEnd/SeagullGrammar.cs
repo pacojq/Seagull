@@ -5,7 +5,7 @@ using Seagull.AST;
 using Seagull.Errors;
 using Seagull.Grammar;
 
-namespace Seagull
+namespace Seagull.FrontEnd
 {
     internal class SeagullGrammar
     {

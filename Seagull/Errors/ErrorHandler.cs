@@ -19,14 +19,17 @@ namespace Seagull.Errors
 
 
         public bool AnyError => _errors.Count > 0;
+        public bool AnyWarning => _warnings.Count > 0;
 
 
         private readonly List<ErrorType> _errors;
+        private readonly List<Warning> _warnings;
 
 
         private ErrorHandler()
         {
             _errors = new List<ErrorType>();
+            _warnings = new List<Warning>();
         }
         
         
@@ -38,6 +41,18 @@ namespace Seagull.Errors
             _errors.Add(error);
             return error;
         }
+        
+        
+        public void AddWarning(int line, int column, string message)
+        {
+            Warning warning = new Warning(line, column, message);
+            _warnings.Add(warning);
+        }
+        
+        
+        
+        
+        
 	
         public string PrintErrors()
         {
@@ -51,11 +66,27 @@ namespace Seagull.Errors
 
             return str.ToString();
         }
+        
+        public string PrintWarnings()
+        {
+            StringBuilder str = new StringBuilder();
+            
+            str.AppendLine($"[ {_warnings.Count} Warnings(s) appeared ]"); 
+            _warnings.Sort((e1, e2) => e1.Line - e2.Line);
+		
+            foreach (Warning w in _warnings)
+                str.AppendLine(w.ToString());
 
+            return str.ToString();
+        }
+
+        
+        
 
         public void Clear()
         {
             _errors.Clear();
+            _warnings.Clear();
         }
     }
 }

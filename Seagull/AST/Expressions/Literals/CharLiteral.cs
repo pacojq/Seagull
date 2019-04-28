@@ -1,3 +1,4 @@
+using Seagull.AST.Types;
 using Seagull.Visitor;
 
 namespace Seagull.AST.Expressions.Literals
@@ -7,6 +8,7 @@ namespace Seagull.AST.Expressions.Literals
 		public CharLiteral(int line, int column, char value)
 			: base(line, column, value)
 		{
+			Type = new CharType(line, column);
 		}
 		
 		

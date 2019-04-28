@@ -38,7 +38,7 @@ namespace Seagull.AST
             return visitor.Visit(this, p);
         }
 
-        public void AddLibrary(IEnumerable<IDefinition> definitions)
+        public void AddDefinitions(IEnumerable<IDefinition> definitions)
         {
             foreach (var def in definitions)
                 _definitions.Insert(0, def);
