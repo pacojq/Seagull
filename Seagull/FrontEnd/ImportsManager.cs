@@ -9,7 +9,7 @@ using Seagull.Errors;
 
 namespace Seagull.FrontEnd
 {
-    public class ImportsManager
+    public class ImportsManager : IDisposable
     {
 
         private int _taskCount = 0;
@@ -20,13 +20,11 @@ namespace Seagull.FrontEnd
         private readonly string _mainFile;
         private readonly string _baseDir;
         
-        private readonly Queue<string> _files;
         private readonly List<IDefinition> _imports;
         private readonly HashSet<string> _importedFiles;
         
-        private object _queueLock = new object();
-        private object _importsLock = new object();
-        private object _setLock = new object();
+        private readonly object _importsLock = new object();
+        private readonly object _setLock = new object();
         
         
 
@@ -37,9 +35,17 @@ namespace Seagull.FrontEnd
             _mainFile = mainFile;
             _baseDir = Path.GetDirectoryName(mainFile);
             
-            _files = new Queue<string>();
             _imports = new List<IDefinition>();
             _importedFiles = new HashSet<string>();
+        }
+
+
+        public void Dispose()
+        {
+            lock(_importsLock)
+                _imports.Clear();
+            lock(_setLock)
+                _importedFiles.Clear();
         }
         
         
@@ -103,9 +109,7 @@ namespace Seagull.FrontEnd
             Parallel.ForEach(program.Imports, f => Import(path, f));
             Interlocked.Decrement(ref _taskCount);
         }
-        
 
-        
-        
+
     }
 }

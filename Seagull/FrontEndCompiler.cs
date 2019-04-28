@@ -64,7 +64,7 @@ namespace Seagull
             while (!_importsManager.Ready) { /* Wait */ }
             
             ast.AddDefinitions(_importsManager.GetImports());
-            
+            _importsManager.Dispose();
             
             
             // Semantic Analysis //
