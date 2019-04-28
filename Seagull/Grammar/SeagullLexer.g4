@@ -29,6 +29,9 @@ CHAR:       'char' ;
 DOUBLE:     'double' ;
 STRING:     'string' ;
 STRUCT:     'struct' ;
+// TODO
+LONG:       'long' ;
+BYTE:       'byte' ;
 ENUM:       'enum' ;
 DELEGATE:   'delegate' ;
 
@@ -40,8 +43,15 @@ FALSE:      'false' ;
 IF:         'if' ;
 ELSE:       'else' ;
 WHILE:      'while' ;
+// TODO
 FOR:        'for' ;
+IN:         'in';
+SWITCH:     'switch' ;
+CASE:       'case' ;
+BREAK:      'break' ; 
+CONTINUE:   'continue';
 
+// TODO
 NEW:        'new' ;
 DELETE:     'delete' ;
 RETURN:     'return' ;
@@ -50,6 +60,7 @@ READ:       'read' ;
 ASSERT:     'assert' ;
 DELAY:      'delay' ;
 
+// TODO
 PUBLIC:     'public' ;
 PRIVATE:    'private' ;
 
@@ -59,10 +70,13 @@ NAMESPACE:  'namespace' ;
 
 USING:      'using' ; // Imports all namespace definitions inside 
                       // the current namespace
+                      
+// TODO
+IS:         'is' ;
 
 
 
-// Signs
+// Signs and Operators
 
 DOT:        '.' ;
 COMMA:      ',' ;
@@ -77,6 +91,18 @@ ARROW:      '->' ;
 PLUS:       '+' ;
 MINUS:      '-' ;
 
+// TODO
+PLUS_PLUS:      '++' ;
+MINUS_MINUS:    '--' ;
+
+//TODO
+ASSIGN_MUL:     '*=' ;
+ASSIGN_DIV:     '/=' ;
+ASSIGN_MOD:     '%=' ;
+ASSIGN_SUM:     '+=' ;
+ASSIGN_SUB:     '-=' ;
+
+
 NOT:        '!' ;
 AND:        '&&' ;
 OR:         '||' ;
@@ -88,12 +114,21 @@ R_PAR:      ')' ;
 L_CURL:     '{' ;
 R_CURL:     '}' ;
 
+// TODO
+BIT_AND:    '&' ;
+BIT_OR:     '|' ;
+BIT_XOR:    '^' ;
+BIT_NOT:    '~' ;
+BIT_RIGHT:  '>>' ;
+BIT_LEFT:   '<<' ;
+
 EQUAL:              '==' ;
 NOT_EQUAL:          '!=' ;
 LESS_THAN:          '<' ;
 GREATER_THAN:       '>' ;
 LESS_EQ_THAN:       '<=' ;
 GREATER_EQ_THAN:    '>=' ;
+
 
 
 
