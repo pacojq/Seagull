@@ -130,13 +130,13 @@ voidType returns [IType Ast]:
 protectionLevel : (PUBLIC | PRIVATE) ;
 
 definition returns [IDefinition Ast]:
-        namespaceDef                    { $Ast = $namespaceDef.Ast; }
+    /*    namespaceDef                    { $Ast = $namespaceDef.Ast; }
+	|*/   protectionLevel? variableDef    { $Ast = $variableDef.Ast; }
     |	protectionLevel? fuctionDef     { $Ast = $fuctionDef.Ast; }
-	|   protectionLevel? variableDef    { $Ast = $variableDef.Ast; }
 	|   protectionLevel? structDef      { $Ast = $structDef.Ast; }
 	;
 
-
+/*
 namespaceDef returns[NamespaceDefinition Ast,
             List<IDefinition> Def = new List<IDefinition>(),
             NamespaceDefinition Parent = null]:
@@ -148,7 +148,7 @@ namespaceDef returns[NamespaceDefinition Ast,
         R_CURL
         { $Ast = new NamespaceDefinition($n.GetLine(), $n.GetCol(), $id.GetText(), $Parent, $Def); }
     ;
-
+*/
 
 /*
     a : int;

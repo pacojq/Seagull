@@ -5,6 +5,7 @@ using Seagull.AST.Expressions;
 using Seagull.AST.Expressions.Binary;
 using Seagull.AST.Expressions.Literals;
 using Seagull.AST.Statements;
+using Seagull.AST.Statements.Definitions;
 using Seagull.Visitor;
 using Void = Seagull.Visitor.Void;
 
@@ -166,10 +167,24 @@ namespace Seagull.VM
             throw new System.NotImplementedException();
         }
 
+        
         public override dynamic Visit(FunctionInvocation functionInvocation, Void p)
         {
-            throw new System.NotImplementedException();
+            // TODO arguments wtf
+            
+            Console.WriteLine("Visiting function invocation: " + functionInvocation.Function.Name);
+            IDefinition def = functionInvocation.Function.Definition;
+            Console.WriteLine("Definition: " + def.Name + " - " + def.GetType().Name);
+            FunctionDefinition fDef = (FunctionDefinition) def;
+            foreach (IStatement st in fDef.Statements)
+            {
+                if (st is Return)
+                    return st.Accept(this, p);
+                st.Accept(this, p);
+            }
+            return null;
         }
+        
 
         public override dynamic Visit(Negation negation, Void p)
         {

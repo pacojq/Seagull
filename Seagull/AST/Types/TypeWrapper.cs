@@ -20,8 +20,6 @@ namespace Seagull.AST.Types
         
         
         
-        
-        
         private IType _type;
 
         

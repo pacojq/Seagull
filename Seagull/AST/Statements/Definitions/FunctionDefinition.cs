@@ -7,13 +7,16 @@ namespace Seagull.AST.Statements.Definitions
     public class FunctionDefinition : AbstractDefinition
     {
 
-        public IEnumerable<IStatement> Statements;
+        private List<IStatement> _statements;
+        public IEnumerable<IStatement> Statements => _statements;
         
         
-        public FunctionDefinition(int line, int column, string name, FunctionType functionType, 
+        public FunctionDefinition(int line, int column, string name, IType functionType, 
             IEnumerable<IStatement> statements) : base(line, column, name, functionType)
         {
-            Statements = new List<IStatement>(statements);
+            _statements = new List<IStatement>();
+            if (statements != null)
+                _statements.AddRange(statements);
         }
         
         

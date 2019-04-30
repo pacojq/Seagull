@@ -16,6 +16,8 @@ namespace Seagull.Semantics.Symbols
     public class DependencyManager
     {
 
+        private readonly object _findLock = new object();
+
         private static DependencyManager _instance;
         public static DependencyManager Instance
         {
@@ -52,7 +54,10 @@ namespace Seagull.Semantics.Symbols
                 string id = pair.Key;
                 TypeWrapper depType = pair.Value;
 
-                IDefinition def = SymbolTable.Instance.Find(id); // TODO maybe this is not fully thread safe
+                IDefinition def;
+                lock (_findLock)
+                    def = SymbolTable.Instance.Find(id);
+                
                 if (def == null)
                 {
                     depType.SetWrappedType(ErrorHandler.Instance.RaiseError(

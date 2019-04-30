@@ -36,17 +36,21 @@ public partial class SeagullPreprocessorParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		SHARP=1, VOID=2, INT=3, CHAR=4, DOUBLE=5, STRING=6, STRUCT=7, ENUM=8, 
-		DELEGATE=9, TRUE=10, FALSE=11, IF=12, ELSE=13, WHILE=14, FOR=15, NEW=16, 
-		DELETE=17, RETURN=18, PRINT=19, READ=20, ASSERT=21, DELAY=22, PUBLIC=23, 
-		PRIVATE=24, LOAD=25, IMPORT=26, NAMESPACE=27, USING=28, DOT=29, COMMA=30, 
-		COL=31, SEMI_COL=32, ASSIGN=33, STAR=34, SLASH=35, PERCENT=36, ARROW=37, 
-		PLUS=38, MINUS=39, NOT=40, AND=41, OR=42, L_BRACKET=43, R_BRACKET=44, 
-		L_PAR=45, R_PAR=46, L_CURL=47, R_CURL=48, EQUAL=49, NOT_EQUAL=50, LESS_THAN=51, 
-		GREATER_THAN=52, LESS_EQ_THAN=53, GREATER_EQ_THAN=54, ID=55, INT_CONSTANT=56, 
-		REAL_CONSTANT=57, CHAR_CONSTANT=58, STRING_CONSTANT=59, BOOLEAN_CONSTANT=60, 
-		SL_COMMENT=61, ML_COMMENT=62, BLANKS=63, DIR_DEFINE=64, DIR_IF=65, DIR_ELIF=66, 
-		DIR_ELSE=67, DIR_WHITESPACE=68, DIR_ML_COMMENT=69, DIR_NEWLINE=70;
+		SHARP=1, VOID=2, INT=3, CHAR=4, DOUBLE=5, STRING=6, STRUCT=7, LONG=8, 
+		BYTE=9, ENUM=10, DELEGATE=11, NULL=12, TRUE=13, FALSE=14, IF=15, ELSE=16, 
+		WHILE=17, FOR=18, IN=19, SWITCH=20, CASE=21, BREAK=22, CONTINUE=23, NEW=24, 
+		DELETE=25, RETURN=26, PRINT=27, READ=28, ASSERT=29, DELAY=30, PUBLIC=31, 
+		PRIVATE=32, LOAD=33, IMPORT=34, NAMESPACE=35, USING=36, IS=37, DOT=38, 
+		COMMA=39, COL=40, SEMI_COL=41, ASSIGN=42, STAR=43, SLASH=44, PERCENT=45, 
+		ARROW=46, PLUS=47, MINUS=48, PLUS_PLUS=49, MINUS_MINUS=50, ASSIGN_MUL=51, 
+		ASSIGN_DIV=52, ASSIGN_MOD=53, ASSIGN_SUM=54, ASSIGN_SUB=55, NOT=56, AND=57, 
+		OR=58, L_BRACKET=59, R_BRACKET=60, L_PAR=61, R_PAR=62, L_CURL=63, R_CURL=64, 
+		BIT_AND=65, BIT_OR=66, BIT_XOR=67, BIT_NOT=68, BIT_RIGHT=69, BIT_LEFT=70, 
+		EQUAL=71, NOT_EQUAL=72, LESS_THAN=73, GREATER_THAN=74, LESS_EQ_THAN=75, 
+		GREATER_EQ_THAN=76, ID=77, INT_CONSTANT=78, REAL_CONSTANT=79, CHAR_CONSTANT=80, 
+		STRING_CONSTANT=81, BOOLEAN_CONSTANT=82, SL_COMMENT=83, ML_COMMENT=84, 
+		BLANKS=85, DIR_DEFINE=86, DIR_IF=87, DIR_ELIF=88, DIR_ELSE=89, DIR_WHITESPACE=90, 
+		DIR_ML_COMMENT=91, DIR_NEWLINE=92;
 	public const int
 		RULE_preprocessorDirective = 0, RULE_preprocessorExpression = 1;
 	public static readonly string[] ruleNames = {
@@ -55,22 +59,28 @@ public partial class SeagullPreprocessorParser : Parser {
 
 	private static readonly string[] _LiteralNames = {
 		null, "'#'", "'void'", "'int'", "'char'", "'double'", "'string'", "'struct'", 
-		"'enum'", "'delegate'", "'true'", "'false'", null, null, "'while'", "'for'", 
-		"'new'", "'delete'", "'return'", "'print'", "'read'", "'assert'", "'delay'", 
-		"'public'", "'private'", "'load'", "'import'", "'namespace'", "'using'", 
-		"'.'", "','", "':'", "';'", "'='", "'*'", "'/'", "'%'", "'->'", "'+'", 
-		"'-'", "'!'", "'&&'", "'||'", "'['", "']'", "'('", "')'", "'{'", "'}'", 
-		"'=='", "'!='", "'<'", "'>'", "'<='", "'>='", null, null, null, null, 
-		null, null, null, null, null, "'define'", null, "'elif'"
+		"'long'", "'byte'", "'enum'", "'delegate'", "'null'", "'true'", "'false'", 
+		null, null, "'while'", "'for'", "'in'", "'switch'", "'case'", "'break'", 
+		"'continue'", "'new'", "'delete'", "'return'", "'print'", "'read'", "'assert'", 
+		"'delay'", "'public'", "'private'", "'load'", "'import'", "'namespace'", 
+		"'using'", "'is'", "'.'", "','", "':'", "';'", "'='", "'*'", "'/'", "'%'", 
+		"'->'", "'+'", "'-'", "'++'", "'--'", "'*='", "'/='", "'%='", "'+='", 
+		"'-='", "'!'", "'&&'", "'||'", "'['", "']'", "'('", "')'", "'{'", "'}'", 
+		"'&'", "'|'", "'^'", "'~'", "'>>'", "'<<'", "'=='", "'!='", "'<'", "'>'", 
+		"'<='", "'>='", null, null, null, null, null, null, null, null, null, 
+		"'define'", null, "'elif'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, "SHARP", "VOID", "INT", "CHAR", "DOUBLE", "STRING", "STRUCT", "ENUM", 
-		"DELEGATE", "TRUE", "FALSE", "IF", "ELSE", "WHILE", "FOR", "NEW", "DELETE", 
-		"RETURN", "PRINT", "READ", "ASSERT", "DELAY", "PUBLIC", "PRIVATE", "LOAD", 
-		"IMPORT", "NAMESPACE", "USING", "DOT", "COMMA", "COL", "SEMI_COL", "ASSIGN", 
-		"STAR", "SLASH", "PERCENT", "ARROW", "PLUS", "MINUS", "NOT", "AND", "OR", 
-		"L_BRACKET", "R_BRACKET", "L_PAR", "R_PAR", "L_CURL", "R_CURL", "EQUAL", 
-		"NOT_EQUAL", "LESS_THAN", "GREATER_THAN", "LESS_EQ_THAN", "GREATER_EQ_THAN", 
+		null, "SHARP", "VOID", "INT", "CHAR", "DOUBLE", "STRING", "STRUCT", "LONG", 
+		"BYTE", "ENUM", "DELEGATE", "NULL", "TRUE", "FALSE", "IF", "ELSE", "WHILE", 
+		"FOR", "IN", "SWITCH", "CASE", "BREAK", "CONTINUE", "NEW", "DELETE", "RETURN", 
+		"PRINT", "READ", "ASSERT", "DELAY", "PUBLIC", "PRIVATE", "LOAD", "IMPORT", 
+		"NAMESPACE", "USING", "IS", "DOT", "COMMA", "COL", "SEMI_COL", "ASSIGN", 
+		"STAR", "SLASH", "PERCENT", "ARROW", "PLUS", "MINUS", "PLUS_PLUS", "MINUS_MINUS", 
+		"ASSIGN_MUL", "ASSIGN_DIV", "ASSIGN_MOD", "ASSIGN_SUM", "ASSIGN_SUB", 
+		"NOT", "AND", "OR", "L_BRACKET", "R_BRACKET", "L_PAR", "R_PAR", "L_CURL", 
+		"R_CURL", "BIT_AND", "BIT_OR", "BIT_XOR", "BIT_NOT", "BIT_RIGHT", "BIT_LEFT", 
+		"EQUAL", "NOT_EQUAL", "LESS_THAN", "GREATER_THAN", "LESS_EQ_THAN", "GREATER_EQ_THAN", 
 		"ID", "INT_CONSTANT", "REAL_CONSTANT", "CHAR_CONSTANT", "STRING_CONSTANT", 
 		"BOOLEAN_CONSTANT", "SL_COMMENT", "ML_COMMENT", "BLANKS", "DIR_DEFINE", 
 		"DIR_IF", "DIR_ELIF", "DIR_ELSE", "DIR_WHITESPACE", "DIR_ML_COMMENT", 
@@ -201,13 +211,13 @@ public partial class SeagullPreprocessorParser : Parser {
 
 	private static char[] _serializedATN = {
 		'\x3', '\x608B', '\xA72A', '\x8133', '\xB9ED', '\x417C', '\x3BE7', '\x7786', 
-		'\x5964', '\x3', 'H', '\xF', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
+		'\x5964', '\x3', '^', '\xF', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
 		'\t', '\x3', '\x3', '\x2', '\x3', '\x2', '\x3', '\x2', '\x3', '\x2', '\x5', 
 		'\x2', '\v', '\n', '\x2', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x2', 
-		'\x2', '\x4', '\x2', '\x4', '\x2', '\x3', '\x3', '\x2', '\f', '\r', '\x2', 
-		'\r', '\x2', '\n', '\x3', '\x2', '\x2', '\x2', '\x4', '\f', '\x3', '\x2', 
-		'\x2', '\x2', '\x6', '\a', '\a', '\x42', '\x2', '\x2', '\a', '\v', '\a', 
-		'\x39', '\x2', '\x2', '\b', '\t', '\a', '\x43', '\x2', '\x2', '\t', '\v', 
+		'\x2', '\x4', '\x2', '\x4', '\x2', '\x3', '\x3', '\x2', '\xF', '\x10', 
+		'\x2', '\r', '\x2', '\n', '\x3', '\x2', '\x2', '\x2', '\x4', '\f', '\x3', 
+		'\x2', '\x2', '\x2', '\x6', '\a', '\a', 'X', '\x2', '\x2', '\a', '\v', 
+		'\a', 'O', '\x2', '\x2', '\b', '\t', '\a', 'Y', '\x2', '\x2', '\t', '\v', 
 		'\x5', '\x4', '\x3', '\x2', '\n', '\x6', '\x3', '\x2', '\x2', '\x2', '\n', 
 		'\b', '\x3', '\x2', '\x2', '\x2', '\v', '\x3', '\x3', '\x2', '\x2', '\x2', 
 		'\f', '\r', '\t', '\x2', '\x2', '\x2', '\r', '\x5', '\x3', '\x2', '\x2', 
