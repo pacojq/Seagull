@@ -1,5 +1,6 @@
 
 using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Seagull.AST;
 using Seagull.AST.Expressions;
@@ -28,10 +29,6 @@ namespace Seagull.Semantics
 		{
 			_table = table;
 		}
-		
-		
-		
-		
 		
 		
 		public override Void Visit(VariableDefinition varDefinition, Void p)

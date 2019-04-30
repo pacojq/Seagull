@@ -1,12 +1,10 @@
 using System;
+using System.Collections.Generic;
 using Seagull.AST;
 using Seagull.AST.Expressions;
 using Seagull.AST.Expressions.Binary;
 using Seagull.AST.Expressions.Literals;
 using Seagull.AST.Statements;
-using Seagull.AST.Statements.Definitions;
-using Seagull.AST.Types;
-using Seagull.Errors;
 using Seagull.Visitor;
 using Void = Seagull.Visitor.Void;
 
@@ -14,11 +12,28 @@ namespace Seagull.VM
 {
     internal class Interpreter : AbstractVisitor<dynamic, Void>
     {
+
+        private Dictionary<IExpression, dynamic> _values;
+
+        public Interpreter()
+        {
+            _values = new Dictionary<IExpression, dynamic>();
+        }
+
+        public void SetUp()
+        {
+            _values.Clear();
+        }
+        
+        
+        
+        
         
         
         public override dynamic Visit(AST.Program program, Void p)
         {
-            throw new System.NotImplementedException();
+            program.MainFunction.Accept(this, p);
+            return null;
         }
 
         
@@ -30,7 +45,12 @@ namespace Seagull.VM
 
         public override dynamic Visit(Assignment assignment, Void p)
         {
-            throw new System.NotImplementedException();
+            IExpression key = assignment.Left;
+            if (!_values.ContainsKey(key))
+                _values.Add(key, null);
+
+            _values[key] = assignment.Right.Accept(this, p);
+            return null;
         }
 
         public override dynamic Visit(IfStatement ifStatement, Void p)
@@ -65,7 +85,14 @@ namespace Seagull.VM
 
         public override dynamic Visit(WhileLoop whileLoop, Void p)
         {
-            throw new System.NotImplementedException();
+            while (whileLoop.Condition.Accept(this, p));
+            {
+                foreach (IStatement st in whileLoop.Statements)
+                {
+                    st.Accept(this, p);
+                }
+            }
+            return null;
         }
 
         public override dynamic Visit(Print print, Void p)
@@ -86,7 +113,17 @@ namespace Seagull.VM
 
         public override dynamic Visit(Arithmetic arithmetic, Void p)
         {
-            throw new System.NotImplementedException();
+            var a = arithmetic.Left.Accept(this, p);
+            var b = arithmetic.Right.Accept(this, p);
+            switch (arithmetic.Operator)
+            {
+                case "+": return a + b;
+                case "-": return a - b;
+                case "/": return a / b;
+                case "*": return a * b;
+                
+                default: return null;
+            }
         }
 
         public override dynamic Visit(Comparison comparison, Void p)

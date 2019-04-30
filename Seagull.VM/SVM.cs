@@ -14,6 +14,7 @@ namespace Seagull.VM
         
         public void Run(AST.Program program)
         {
+            _interpreter.SetUp();
             program.Accept(_interpreter, null);
         }
         

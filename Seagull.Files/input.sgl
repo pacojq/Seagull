@@ -2,12 +2,10 @@
 //load "math.sgl" // compile and import file
 load "empty.sgl"
 load "person.sgl"
-load "person.sgl"
-load "person.sgl"
 
 
-namespace Hi.There
-{
+//namespace Hi.There
+//{
 
     a: double;
     
@@ -33,4 +31,4 @@ namespace Hi.There
         return new Person;
     }
 
-}
+//}
