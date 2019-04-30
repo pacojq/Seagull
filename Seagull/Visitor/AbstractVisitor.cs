@@ -163,7 +163,7 @@ namespace Seagull.Visitor
 		
 		
 
-		public TR Visit(NamespaceDefinition namespaceDefinition, TP p)
+		public virtual TR Visit(NamespaceDefinition namespaceDefinition, TP p)
 		{
 			foreach (var st in namespaceDefinition.Statements)
 				st.Accept(this, p);
@@ -310,12 +310,12 @@ namespace Seagull.Visitor
 		}
 		
 
-		public TR Visit(StringLiteral stringLiteral, TP p)
+		public virtual TR Visit(StringLiteral stringLiteral, TP p)
 		{
 			return default(TR);
 		}
 
-		public TR Visit(BooleanLiteral booleanLiteral, TP p)
+		public virtual TR Visit(BooleanLiteral booleanLiteral, TP p)
 		{
 			return default(TR);
 		}

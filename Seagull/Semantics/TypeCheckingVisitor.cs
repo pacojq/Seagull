@@ -27,7 +27,7 @@ namespace Seagull.Semantics
 			    if (!init.Type.IsEquivalent(variableDefinition.Type))
 			    {
 				    ErrorHandler.Instance.RaiseError(
-					    init.Line, 
+					    init.Line,
 					    init.Column,
 					    $"Cannot assign initialize to {init.Type} a variable declared as {variableDefinition.Type}."
 				    );
