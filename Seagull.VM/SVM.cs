@@ -3,7 +3,7 @@ namespace Seagull.VM
     public class SVM
     {
 
-        private Interpreter _interpreter;
+        private readonly Interpreter _interpreter;
 
         public SVM()
         {
@@ -15,6 +15,7 @@ namespace Seagull.VM
         public void Run(AST.Program program)
         {
             _interpreter.SetUp();
+            program.Accept(new OffsetVisitor(), null);
             program.Accept(_interpreter, null);
         }
         

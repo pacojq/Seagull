@@ -4,6 +4,10 @@ namespace Seagull.AST.Types
 {
     public class StringType : AbstractType
     {
+        
+        public override int NumberOfBytes => 0; // TODO
+        
+        
         public StringType(int line, int column) : base(line, column)
         {
         }

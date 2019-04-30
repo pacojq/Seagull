@@ -5,6 +5,10 @@ namespace Seagull.AST.Types
 {
     public class IntType : AbstractType
     {
+        
+        public override int NumberOfBytes => 2;
+        
+        
         public IntType(int line, int column) : base(line, column)
         {
         }

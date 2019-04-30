@@ -4,6 +4,9 @@ namespace Seagull.AST.Types
 {
     public class VoidType : AbstractType
     {
+        
+        public override int NumberOfBytes => 0;
+        
         public VoidType(int line, int column) : base(line, column)
         {
         }

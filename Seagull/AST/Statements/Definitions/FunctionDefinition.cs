@@ -7,6 +7,8 @@ namespace Seagull.AST.Statements.Definitions
     public class FunctionDefinition : AbstractDefinition
     {
 
+        public int LocalBytesSum { get; set; }
+        
         private List<IStatement> _statements;
         public IEnumerable<IStatement> Statements => _statements;
         

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Seagull.AST.Statements.Definitions;
 using Seagull.Errors;
 using Seagull.Visitor;
@@ -8,6 +9,12 @@ namespace Seagull.AST.Types
 {
     public class StructType : AbstractType
     {
+
+        public override int NumberOfBytes => Fields
+            .Select(f => f.Type)
+            .Sum(t => t.NumberOfBytes);
+        
+
 
         public string Name { get; internal set; }
         public IEnumerable<VariableDefinition> Fields => _fields;

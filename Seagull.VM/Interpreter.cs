@@ -13,12 +13,14 @@ namespace Seagull.VM
 {
     internal class Interpreter : AbstractVisitor<dynamic, Void>
     {
-
-        private Dictionary<IExpression, dynamic> _values;
+        // The int is the offset
+        //private Dictionary<int, dynamic> _values;
+        
+        private Dictionary<string, dynamic> _values;
 
         public Interpreter()
         {
-            _values = new Dictionary<IExpression, dynamic>();
+            _values = new Dictionary<string, dynamic>();
         }
 
         public void SetUp()
@@ -33,7 +35,12 @@ namespace Seagull.VM
         
         public override dynamic Visit(AST.Program program, Void p)
         {
-            program.MainFunction.Accept(this, p);
+            FunctionDefinition main = (FunctionDefinition) program.MainFunction;
+
+            foreach (IStatement st in main.Statements)
+            {
+                st.Accept(this, p);    
+            }
             return null;
         }
 
@@ -46,11 +53,13 @@ namespace Seagull.VM
 
         public override dynamic Visit(Assignment assignment, Void p)
         {
-            IExpression key = assignment.Left;
-            if (!_values.ContainsKey(key))
-                _values.Add(key, null);
-
-            _values[key] = assignment.Right.Accept(this, p);
+            IExpression left = assignment.Left;
+            if (left is Variable)
+            {
+                Variable v = (Variable) left;
+                _values[v.Name] = assignment.Right.Accept(this, p);
+            }
+            
             return null;
         }
 
@@ -106,6 +115,16 @@ namespace Seagull.VM
         
 
         
+        public override dynamic Visit(VariableDefinition variableDefinition, Void p)
+        {
+            _values.Add(variableDefinition.Name, 0);
+            return null;
+        }
+        
+        
+        
+        
+        
         
         
         // ====================== EXPRESSIONS ====================== //
@@ -157,25 +176,13 @@ namespace Seagull.VM
             throw new System.NotImplementedException();
         }
 
-        public override dynamic Visit(CharLiteral charLiteral, Void p)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override dynamic Visit(DoubleLiteral doubleLiteral, Void p)
-        {
-            throw new System.NotImplementedException();
-        }
-
+        
         
         public override dynamic Visit(FunctionInvocation functionInvocation, Void p)
         {
             // TODO arguments wtf
             
-            Console.WriteLine("Visiting function invocation: " + functionInvocation.Function.Name);
-            IDefinition def = functionInvocation.Function.Definition;
-            Console.WriteLine("Definition: " + def.Name + " - " + def.GetType().Name);
-            FunctionDefinition fDef = (FunctionDefinition) def;
+            FunctionDefinition fDef = (FunctionDefinition) functionInvocation.Function.Definition;
             foreach (IStatement st in fDef.Statements)
             {
                 if (st is Return)
@@ -193,12 +200,12 @@ namespace Seagull.VM
 
         public override dynamic Visit(UnaryMinus unaryMinus, Void p)
         {
-            throw new System.NotImplementedException();
+            return -unaryMinus.Operand.Accept(this, null);
         }
 
         public override dynamic Visit(Variable variable, Void p)
         {
-            throw new System.NotImplementedException();
+            return _values[variable.Name];
         }
 
         
@@ -208,6 +215,17 @@ namespace Seagull.VM
         {
             return intLiteral.Value;
         }
+        
+        public override dynamic Visit(CharLiteral charLiteral, Void p)
+        {
+            return charLiteral.Value;
+        }
+
+        public override dynamic Visit(DoubleLiteral doubleLiteral, Void p)
+        {
+            return doubleLiteral.Value;
+        }
+
         
         public override dynamic Visit(StringLiteral stringLiteral, Void p)
         {

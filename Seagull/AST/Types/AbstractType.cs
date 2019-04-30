@@ -5,7 +5,7 @@ namespace Seagull.AST.Types
 {
     public abstract class AbstractType : AbstractAstNode, IType
     {
-
+        public abstract int NumberOfBytes { get; }
         public virtual bool IsLogical => false;
         
         

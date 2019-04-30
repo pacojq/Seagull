@@ -7,5 +7,6 @@ namespace Seagull.AST
         IType Type { get; }
         
         int Scope { get; set; }
+        int Offset { get; set; }
     }
 }

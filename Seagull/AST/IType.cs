@@ -5,6 +5,8 @@ namespace Seagull.AST
     public interface IType : IAstNode
     {
         
+	    int NumberOfBytes { get; }
+	    
         
         // Operations
 	

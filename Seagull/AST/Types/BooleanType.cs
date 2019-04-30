@@ -4,6 +4,10 @@ namespace Seagull.AST.Types
 {
     public class BooleanType : AbstractType
     {
+        
+        public override int NumberOfBytes => 1;
+        
+        
         public BooleanType(int line, int column) : base(line, column)
         {
         }

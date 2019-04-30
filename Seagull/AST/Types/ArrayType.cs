@@ -4,6 +4,10 @@ namespace Seagull.AST.Types
 {
     public class ArrayType : AbstractType
     {
+        
+        public override int NumberOfBytes => Size * TypeOf.NumberOfBytes;
+        
+        
         public int Size { get; }
         public IType TypeOf { get; private set; }
         

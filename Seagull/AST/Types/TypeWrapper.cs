@@ -13,6 +13,8 @@ namespace Seagull.AST.Types
     public class TypeWrapper : IType
     {
         
+        public int NumberOfBytes => _type.NumberOfBytes;
+        
         public int Line => _type.Line;
         public int Column => _type.Column;
 

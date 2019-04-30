@@ -7,10 +7,6 @@ load "person.sgl"
 //namespace Hi.There
 //{
 
-    a: double;
-    
-    c : char;
-    
     p : Person;
     
     sum: (a: int, b: int) -> int
@@ -28,6 +24,7 @@ load "person.sgl"
     
     birth: () -> Person
     {
+        print("a new person is born!");
         return new Person;
     }
 

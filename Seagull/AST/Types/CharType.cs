@@ -4,6 +4,10 @@ namespace Seagull.AST.Types
 {
     public class CharType : AbstractType
     {
+        
+        public override int NumberOfBytes => 1;
+        
+        
         public CharType(int line, int column) : base(line, column)
         {
         }

@@ -9,7 +9,7 @@ namespace Seagull.AST.Statements
         
         public int Scope { get; set; }
         
-        
+        public int Offset { get; set; }
         
         public AbstractDefinition(int line, int column, string name, IType type) : base(line, column)
         {
