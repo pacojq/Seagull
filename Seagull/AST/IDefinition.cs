@@ -12,6 +12,6 @@ namespace Seagull.AST
         int Offset { get; set; }
         
         
-        NamespaceDefinition Namespace { get; set; }
+        INamespaceDefinition Namespace { get; set; }
     }
 }

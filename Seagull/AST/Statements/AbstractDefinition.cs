@@ -13,7 +13,7 @@ namespace Seagull.AST.Statements
         
         public int Offset { get; set; }
         
-        public NamespaceDefinition Namespace { get; set; }
+        public INamespaceDefinition Namespace { get; set; }
 
         public AbstractDefinition(int line, int column, string name, IType type) : base(line, column)
         {

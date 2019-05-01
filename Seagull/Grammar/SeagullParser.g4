@@ -61,7 +61,7 @@ type returns [IType Ast]:
 				)*
 		
 		// Custom type
-	|   userDefined=ID  { $Ast = DependencyManager.Instance.AddType($userDefined.GetLine(), $userDefined.GetCol(), $userDefined.GetText()); } 
+	|   userDefined=ID  { $Ast = new UnknownType($userDefined.GetLine(), $userDefined.GetCol(), $userDefined.GetText()); } 
 	;
 		
 
@@ -139,7 +139,7 @@ definition returns [IDefinition Ast]:
 
 namespaceDef returns[NamespaceDefinition Ast,
             List<IDefinition> Def = new List<IDefinition>(),
-            NamespaceDefinition Parent = null]:
+            NamespaceDefinition Parent = NamespaceManager.DefaultNamespace]:
             
         n=NAMESPACE ( p=ID DOT { $Parent = NamespaceManager.Instance.Define($n.GetLine(), $n.GetCol(), $p.GetText(), $Parent); })* 
         id=ID { $Ast = NamespaceManager.Instance.Define($id.GetLine(), $id.GetCol(), $id.GetText(), $Parent); }

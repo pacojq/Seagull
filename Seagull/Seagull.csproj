@@ -71,8 +71,10 @@
         <Compile Include="AST\Statements\AbstractStatement.cs" />
         <Compile Include="AST\Statements\Assignment.cs" />
         <Compile Include="AST\Statements\AbstractDefinition.cs" />
+        <Compile Include="AST\Statements\Definitions\AbstractNamespaceDefinition.cs" />
         <Compile Include="AST\Statements\Definitions\DelegateDefinition.cs" />
         <Compile Include="AST\Statements\Definitions\FunctionDefinition.cs" />
+        <Compile Include="AST\Statements\Definitions\INamespaceDefinition.cs" />
         <Compile Include="AST\Statements\Definitions\NamespaceDefinition.cs" />
         <Compile Include="AST\Statements\Definitions\StructDefinition.cs" />
         <Compile Include="AST\Statements\Definitions\VariableDefinition.cs" />
@@ -92,7 +94,7 @@
         <Compile Include="AST\Types\NamespaceType.cs" />
         <Compile Include="AST\Types\StringType.cs" />
         <Compile Include="AST\Types\StructType.cs" />
-        <Compile Include="AST\Types\TypeWrapper.cs" />
+        <Compile Include="AST\Types\UnknownType.cs" />
         <Compile Include="AST\Types\VoidType.cs" />
         <Compile Include="Errors\ErrorHandler.cs" />
         <Compile Include="Errors\ErrorListener.cs" />
@@ -108,7 +110,9 @@
         <Compile Include="FrontEndCompiler.cs" />
         <Compile Include="Grammar\SeagullPreprocessorParser.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Semantics\AbstractSemanticVisitor.cs" />
         <Compile Include="Semantics\DefinitionSeekVisitor.cs" />
+        <Compile Include="Semantics\DependencyVisitor.cs" />
         <Compile Include="Semantics\RecognitionVisitor.cs" />
         <Compile Include="Semantics\Symbols\DependencyManager.cs" />
         <Compile Include="Semantics\Symbols\NamespaceManager.cs" />

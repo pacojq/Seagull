@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Seagull.AST.Statements.Definitions;
@@ -8,6 +9,7 @@ namespace Seagull.Semantics.Symbols
 	public class NamespaceManager
 	{
 
+		
 		private static NamespaceManager _instance;
 		public static NamespaceManager Instance
 		{
@@ -20,6 +22,9 @@ namespace Seagull.Semantics.Symbols
 		}
 
 
+		private readonly NamespaceDefinition _defaultNamespace;
+		public static NamespaceDefinition DefaultNamespace => Instance._defaultNamespace;
+
 
 		private readonly IDictionary<string, NamespaceType> _namespaces;
 
@@ -28,6 +33,7 @@ namespace Seagull.Semantics.Symbols
 		private NamespaceManager()
 		{
 			_namespaces = new Dictionary<string, NamespaceType>();
+			_defaultNamespace = Define(0, 0, "", null);
 		}
 
 
@@ -38,6 +44,8 @@ namespace Seagull.Semantics.Symbols
 				key += parent.Name + ".";
 			key += id;
 
+			Console.WriteLine("New namespace defined: '{0}'", id);
+
 			NamespaceType type;
 			if (!_namespaces.ContainsKey(key))
 				_namespaces.Add(key, new NamespaceType(line, column));
@@ -46,14 +54,11 @@ namespace Seagull.Semantics.Symbols
 			NamespaceDefinition result = new NamespaceDefinition(line, column, id, type);
 
 			if (parent != null)
-			{
 				((NamespaceType) parent.Type).AddSubNamespace(id);
-			}
 			
 			return result;
 		}
 
 
-		
 	}
 }

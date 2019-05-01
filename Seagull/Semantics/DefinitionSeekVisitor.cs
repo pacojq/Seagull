@@ -6,12 +6,12 @@ using Seagull.Visitor;
 
 namespace Seagull.Semantics
 {
-	public class DefinitionSeekVisitor : AbstractVisitor<Void, Void>
+	public class DefinitionSeekVisitor : AbstractSemanticVisitor<Void, Void>
 	{
 		
 		private readonly SymbolManager _manager;
 
-		public DefinitionSeekVisitor(SymbolManager manager)
+		public DefinitionSeekVisitor(SymbolManager manager) : base(manager)
 		{
 			_manager = manager;
 		}
@@ -31,6 +31,7 @@ namespace Seagull.Semantics
 					varDefinition.Column,
 					$"Trying to declare a variable which already exists: {varDefinition.Name}");
 			}
+			
 			return null;
 		}
 		
@@ -48,14 +49,8 @@ namespace Seagull.Semantics
 					funcDefinition.Column,
 					$"Trying to declare a function which already exists: {funcDefinition.Name}");
 			}
-			_manager.Push(funcDefinition, funcDefinition.Name);
 			
-			// Normal visitor stuff
 			base.Visit(funcDefinition, p);
-			
-			// Reset the scope
-			_manager.Pop();
-			
 			return null;
 		}
 		
@@ -64,7 +59,7 @@ namespace Seagull.Semantics
 		public override Void Visit(StructDefinition structDefinition, Void p)
 		{
 			// Insert and set the scope
-			bool success = _table.Insert(structDefinition);
+			bool success = _manager.Insert(structDefinition);
 			if (!success)
 			{
 				ErrorHandler.Instance.RaiseError(
@@ -72,16 +67,9 @@ namespace Seagull.Semantics
 					structDefinition.Column,
 					"Trying to declare a struct which already exists.");
 			}
-			_table.Set();
-			
-			// Normal visitor stuff
-			base.Visit(structDefinition, p);
-			
-			// Reset the scope
-			_table.Reset();
-			
 			((StructType) structDefinition.Type).Name = structDefinition.Name;
-			
+
+			base.Visit(structDefinition, p);
 			return null;
 		}
 		
@@ -91,7 +79,7 @@ namespace Seagull.Semantics
 		{
 			base.Visit(delegateDefinition, p);
 			
-			bool success = _table.Insert(delegateDefinition);
+			bool success = _manager.Insert(delegateDefinition);
 			if (!success)
 			{
 				ErrorHandler.Instance.RaiseError(

@@ -5,25 +5,14 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Statements.Definitions
 {
-    public class NamespaceDefinition : AbstractDefinition
+    public class NamespaceDefinition : AbstractNamespaceDefinition
     {
 
-        private readonly List<IDefinition> _definitions;
-        public IEnumerable<IDefinition> Definitions => _definitions;
 
-        
-        
-        public NamespaceDefinition(int line, int column, string name, NamespaceType type) 
+
+        public NamespaceDefinition(int line, int column, string name, NamespaceType type)
             : base(line, column, name, type)
         {
-            _definitions = new List<IDefinition>();
-        }
-
-
-        public void AddDefinition(IDefinition def)
-        {
-            _definitions.Add(def);
-            def.Namespace = this;
         }
 
 

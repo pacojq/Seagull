@@ -14,8 +14,16 @@ using Void = Seagull.Visitor.Void;
 
 namespace Seagull.Semantics
 {
-    public class TypeCheckingVisitor : AbstractVisitor<Void, IType>
+    public class TypeCheckingVisitor : AbstractSemanticVisitor<Void, IType>
     {
+	    
+	    private SymbolManager _manager;
+	    public TypeCheckingVisitor(SymbolManager manager) : base(manager)
+	    {
+		    _manager = manager;
+	    }
+	    
+	    
 	    
 	    
 	    public override Void Visit(VariableDefinition variableDefinition, IType p)
@@ -134,7 +142,7 @@ namespace Seagull.Semantics
 		public override Void Visit(New newExpr, IType p)
 		{
 			base.Visit(newExpr, p);
-			IDefinition def = SymbolTable.Instance.Find(newExpr.Id);
+			IDefinition def = SymbolManager.Instance.Find(newExpr.Id);
 			
 			if (def == null)
 			{
@@ -215,14 +223,6 @@ namespace Seagull.Semantics
 		
 		
 	
-		
-		public override Void Visit(FunctionDefinition functionDefinition, IType p)
-		{		
-			base.Visit(functionDefinition, functionDefinition.Type);
-			return null;
-		}
-		
-		
 		public override Void Visit(Return returnStmnt, IType p)
 		{
 			base.Visit(returnStmnt, p);
