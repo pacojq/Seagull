@@ -89,6 +89,7 @@
         <Compile Include="AST\Types\Extensions.cs" />
         <Compile Include="AST\Types\FunctionType.cs" />
         <Compile Include="AST\Types\IntType.cs" />
+        <Compile Include="AST\Types\NamespaceType.cs" />
         <Compile Include="AST\Types\StringType.cs" />
         <Compile Include="AST\Types\StructType.cs" />
         <Compile Include="AST\Types\TypeWrapper.cs" />
@@ -107,9 +108,11 @@
         <Compile Include="FrontEndCompiler.cs" />
         <Compile Include="Grammar\SeagullPreprocessorParser.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Semantics\DefinitionSeekVisitor.cs" />
         <Compile Include="Semantics\RecognitionVisitor.cs" />
         <Compile Include="Semantics\Symbols\DependencyManager.cs" />
-        <Compile Include="Semantics\Symbols\SymbolsManager.cs" />
+        <Compile Include="Semantics\Symbols\NamespaceManager.cs" />
+        <Compile Include="Semantics\Symbols\SymbolManager.cs" />
         <Compile Include="Semantics\Symbols\SymbolTable.cs" />
         <Compile Include="Semantics\TypeCheckingVisitor.cs" />
         <Compile Include="Visitor\AbstractVisitor.cs" />

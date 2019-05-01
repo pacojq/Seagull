@@ -1,3 +1,5 @@
+using Seagull.AST.Statements.Definitions;
+
 namespace Seagull.AST.Statements
 {
     public abstract class AbstractDefinition : AbstractStatement, IDefinition
@@ -11,6 +13,8 @@ namespace Seagull.AST.Statements
         
         public int Offset { get; set; }
         
+        public NamespaceDefinition Namespace { get; set; }
+
         public AbstractDefinition(int line, int column, string name, IType type) : base(line, column)
         {
             Name = name;

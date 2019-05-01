@@ -25,6 +25,7 @@ namespace Seagull.FrontEnd
         public void Analyze(Program ast)
         {
             // Find declarations and variables, and bind them together
+            ast.Accept(new DefinitionSeekVisitor(_symbolTable), null);
             ast.Accept(new RecognitionVisitor(_symbolTable), null);
             // Solve the dependencies that may have appeared
             DependencyManager.Instance.SolveDependencies();

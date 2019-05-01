@@ -9,10 +9,10 @@ namespace Seagull.AST
         public int Line { get; private set; }
         public int Column { get; private set; }
 
-
-
+        
         private readonly List<IDefinition> _definitions;
         public IEnumerable<IDefinition> Definitions => _definitions;
+        
 
         public IDefinition MainFunction => _definitions.Find(def => def.Name.Equals("main") && def is FunctionDefinition);
         

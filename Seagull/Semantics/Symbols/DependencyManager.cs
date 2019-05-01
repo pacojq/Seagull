@@ -49,6 +49,7 @@ namespace Seagull.Semantics.Symbols
         
         public void SolveDependencies()
         {
+            /*
             Parallel.ForEach(_dependencies, pair =>
             {
                 string id = pair.Key;
@@ -68,6 +69,7 @@ namespace Seagull.Semantics.Symbols
                 }
                 else depType.SetWrappedType(def.Type);
             });
+            */
             /*
             foreach (var pair in _dependencies)
             {

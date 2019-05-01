@@ -7,25 +7,11 @@ namespace Seagull.Semantics.Symbols
     public class SymbolTable
     {
 
-        private static SymbolTable _instance;
-        public static SymbolTable Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    _instance = new SymbolTable();
-                return _instance;
-            }
-        }
-
-
-
-
         public int Scope { get; private set; }
         private List<Dictionary<string, IDefinition>> _table;
 	
 	
-        private SymbolTable()
+        public SymbolTable()
         {
             Initialize();
         }
