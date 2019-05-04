@@ -7,8 +7,8 @@ namespace Seagull.AST.Statements
         
         public string Name { get; }
         
-        public IType Type { get; }
-        
+        public IType Type { get; internal set; }
+
         public int Scope { get; set; }
         
         public int Offset { get; set; }

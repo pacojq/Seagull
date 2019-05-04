@@ -4,7 +4,7 @@ namespace Seagull.AST.Expressions
 {
 	public class Cast : AbstractExpression
 	{
-		public IType TargetType { get; }
+		public IType TargetType { get; internal set; }
 		public IExpression Operand { get; }
 		
 		public Cast(int line, int column, IType targetType, IExpression op)

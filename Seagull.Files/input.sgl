@@ -18,7 +18,6 @@ load "person.sgl"
     {
         p = birth();
         
-        
         number : int = sum(p.Age, 2);
     }
     

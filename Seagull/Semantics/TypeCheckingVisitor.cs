@@ -45,6 +45,23 @@ namespace Seagull.Semantics
 		    return null;
 	    }
 	    
+	    public override Void Visit(FunctionDefinition funcDefinition, IType p)
+	    {
+		    SymbolManager.PushNamespace(funcDefinition);
+		    
+		    funcDefinition.Type.Accept(this, p);
+		    foreach (IStatement st in funcDefinition.Statements)
+			    st.Accept(this, funcDefinition.Type);
+		    
+		    SymbolManager.PopNamespace();
+			
+		    return null;
+	    }
+	    
+	    
+	    
+	    
+	    
 	    
 	    
 	    
