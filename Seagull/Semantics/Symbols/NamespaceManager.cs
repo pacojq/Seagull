@@ -44,14 +44,14 @@ namespace Seagull.Semantics.Symbols
 				key += parent.Name + ".";
 			key += id;
 
-			Console.WriteLine("New namespace defined: '{0}'", id);
+			Console.WriteLine("New namespace defined: '{0}'", key);
 
 			NamespaceType type;
 			if (!_namespaces.ContainsKey(key))
 				_namespaces.Add(key, new NamespaceType(line, column));
 			type = _namespaces[key];
 			
-			NamespaceDefinition result = new NamespaceDefinition(line, column, id, type);
+			NamespaceDefinition result = new NamespaceDefinition(line, column, key, type);
 
 			if (parent != null)
 				((NamespaceType) parent.Type).AddSubNamespace(id);

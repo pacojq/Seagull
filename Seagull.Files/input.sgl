@@ -4,8 +4,8 @@ load "empty.sgl"
 load "person.sgl"
 
 
-//namespace Hi.There
-//{
+namespace Hi.There
+{
 
     p : Person;
     
@@ -27,4 +27,4 @@ load "person.sgl"
         return new Person;
     }
 
-//}
+}
