@@ -40,7 +40,7 @@ namespace Seagull.Semantics.Symbols
 		public NamespaceDefinition Define(int line, int column, string id, NamespaceDefinition parent)
 		{
 			string key = "";
-			if (parent != null)
+			if (parent != null && parent != DefaultNamespace)
 				key += parent.Name + ".";
 			key += id;
 

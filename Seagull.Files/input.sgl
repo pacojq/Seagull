@@ -1,5 +1,5 @@
 
-//load "math.sgl" // compile and import file
+load "math.sgl" // compile and import file
 load "empty.sgl"
 load "person.sgl"
 
