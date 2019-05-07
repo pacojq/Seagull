@@ -4,8 +4,8 @@ load "empty.sgl"
 load "person.sgl"
 
 
-namespace Hi.There
-{
+//namespace Hi.There
+//{
 
     p : Person;
     
@@ -19,6 +19,7 @@ namespace Hi.There
         p = birth();
         
         number : int = sum(p.Age, 2);
+        print(number);
     }
     
     birth: () -> Person
@@ -27,4 +28,4 @@ namespace Hi.There
         return new Person;
     }
 
-}
+//}

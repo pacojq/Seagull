@@ -173,7 +173,7 @@ namespace Seagull.VM
 
         public override dynamic Visit(New newExpr, Void p)
         {
-            throw new System.NotImplementedException();
+            return new Instance();
         }
 
         

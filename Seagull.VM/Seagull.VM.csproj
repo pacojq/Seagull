@@ -39,6 +39,7 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Instance.cs" />
         <Compile Include="Interpreter.cs" />
         <Compile Include="OffsetVisitor.cs" />
         <Compile Include="Program.cs" />
