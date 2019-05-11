@@ -134,6 +134,12 @@
       <Content Include="README.txt" />
       <Content Include="TODO.txt" />
     </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Seagull.Logging\Seagull.Logging.csproj">
+        <Project>{cb3d907f-cc80-4303-9f26-bfade1a0119f}</Project>
+        <Name>Seagull.Logging</Name>
+      </ProjectReference>
+    </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.

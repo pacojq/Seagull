@@ -53,7 +53,7 @@ namespace Seagull
             
 	        if (ErrorHandler.Instance.AnyError)
             {
-                Console.WriteLine(ErrorHandler.Instance.PrintErrors());
+                ErrorHandler.Instance.PrintErrors();
                 return null;
             }
             
@@ -76,14 +76,14 @@ namespace Seagull
             
             if (ErrorHandler.Instance.AnyError)
             {
-	            Console.WriteLine(ErrorHandler.Instance.PrintErrors());
+	            ErrorHandler.Instance.PrintErrors();
 				return null;
 			}
             
             
             // Print warnings
             if (ErrorHandler.Instance.AnyWarning)
-	            Console.WriteLine(ErrorHandler.Instance.PrintWarnings());
+	            ErrorHandler.Instance.PrintWarnings();
         
             return ast;
         }
