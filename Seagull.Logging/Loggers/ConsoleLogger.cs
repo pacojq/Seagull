@@ -81,12 +81,16 @@ namespace Seagull.Logging.Loggers
         
         public void LogDebug(string msg)
         {
+#if DEBUG
             ConsolePrint(msg, ConsoleColor.Magenta, DEBUG_FLAG);
+#endif
         }
 
         public void LogDebug(string msg, params object[] arg)
         {
+#if DEBUG
             LogDebug(string.Format(msg, arg));
+#endif
         }
     }
 }
