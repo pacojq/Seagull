@@ -141,8 +141,17 @@ namespaceDef returns[NamespaceDefinition Ast,
             List<IDefinition> Def = new List<IDefinition>(),
             NamespaceDefinition Parent = NamespaceManager.DefaultNamespace]:
             
-        n=NAMESPACE ( p=ID DOT { $Parent = NamespaceManager.Instance.Define($n.GetLine(), $n.GetCol(), $p.GetText(), $Parent); })* 
-        id=ID { $Ast = NamespaceManager.Instance.Define($id.GetLine(), $id.GetCol(), $id.GetText(), $Parent); }
+        n=NAMESPACE (p=ID DOT 
+            { 
+                var ns = NamespaceManager.Instance.Define($n.GetLine(), $n.GetCol(), $p.GetText(), $Parent);
+                $Parent.AddDefinition(ns);
+                $Parent = ns;
+            })* 
+        id=ID 
+            { 
+                $Ast = NamespaceManager.Instance.Define($id.GetLine(), $id.GetCol(), $id.GetText(), $Parent);
+                $Parent.AddDefinition($Ast);
+            }
         L_CURL
             (d=definition { $Ast.AddDefinition($d.Ast); })*
         R_CURL
@@ -260,7 +269,7 @@ expression returns [IExpression Ast]:
 	|   e1=expression L_BRACKET e2=expression R_BRACKET { $Ast = new Indexing($e1.Ast, $e2.Ast); }
 		
 		// Attribute access
-	|   e=expression DOT att=ID { $Ast = new AttributeAccess(e.Ast, $att.text); }
+	|   e=expression DOT att=ID { $Ast = new AttributeAccess($e.Ast, $att.text); }
 		
 		// New
 	|   n=NEW id=ID { $Ast = new New($n.GetLine(), $n.GetCol(), $id.GetText()); }

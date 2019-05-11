@@ -114,7 +114,6 @@
         <Compile Include="Semantics\DefinitionSeekVisitor.cs" />
         <Compile Include="Semantics\DependencyVisitor.cs" />
         <Compile Include="Semantics\RecognitionVisitor.cs" />
-        <Compile Include="Semantics\Symbols\DependencyManager.cs" />
         <Compile Include="Semantics\Symbols\NamespaceManager.cs" />
         <Compile Include="Semantics\Symbols\SymbolManager.cs" />
         <Compile Include="Semantics\Symbols\SymbolTable.cs" />

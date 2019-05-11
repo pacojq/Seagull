@@ -39,15 +39,23 @@ namespace Seagull.Semantics
 		private IType Solve(IType dependency)
 		{
 			UnknownType ut = (UnknownType) dependency;
-			IType result = _manager.Find(ut.Name).Type;
-			if (!(result is ErrorType))
+			IDefinition def = _manager.Find(ut.Name);
+			
+			if (def == null)
 			{
-				Console.WriteLine("[{0} : {1}] DEPENDENCY SOLVED: {2}",
+				return ErrorHandler.Instance.RaiseError(
 					ut.Line,
 					ut.Column,
-					ut.Name);
+					"Symbol not found: " + ut.Name
+				);
 			}
-			return result;
+			
+			Console.WriteLine("[{0} : {1}] DEPENDENCY SOLVED: {2}",
+				ut.Line,
+				ut.Column,
+				ut.Name);
+			
+			return def.Type;
 		}
 		
 		

@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Seagull.AST;
 using Seagull.AST.Statements.Definitions;
-using Seagull.AST.Types;
 using Seagull.Errors;
 
 namespace Seagull.Semantics.Symbols
@@ -50,8 +48,6 @@ namespace Seagull.Semantics.Symbols
         private readonly Stack<INamespaceDefinition> _namespaces;
 
 
-
-        private readonly DependencyManager _dependencyManager;
         
 
 
@@ -59,10 +55,8 @@ namespace Seagull.Semantics.Symbols
         {
             _symbolTables = new Dictionary<string, SymbolTable>();
             _namespaces = new Stack<INamespaceDefinition>();
-            
+
             PushNamespace(NamespaceManager.DefaultNamespace);
-            
-            _dependencyManager = new DependencyManager();
         }
         
         
@@ -88,17 +82,6 @@ namespace Seagull.Semantics.Symbols
         
         
         
-        // ================== USER DEFINED SYMBOLS ================== //
-
-        public IType AddUserDefined(int line, int column, string id)
-        {
-            return _dependencyManager.AddType(line, column, id);
-        }
-
-        public void SolveDependencies()
-        {
-            _dependencyManager.SolveDependencies();
-        }
         
         
         // ================== SYMBOL TABLE FACADE ================== //
@@ -113,6 +96,10 @@ namespace Seagull.Semantics.Symbols
         {
             CurrentSymbolTable.Reset();
         }
+        
+        
+        
+        
         
         public bool Insert(IDefinition definition)
         {
@@ -129,15 +116,49 @@ namespace Seagull.Semantics.Symbols
         
         public IDefinition Find(string id)
         {
+            // Find in current namespace
             INamespaceDefinition ns = _namespaces.Peek();
-            while (ns != null)
-            {
-                IDefinition result = _symbolTables[ns.Fullname].Find(id);
-                if (result != null)
-                    return result;
-                ns = ns.Namespace;
-            }
+            return FindInNamespace(id, ns);
+            
+            // TODO find in imported namespaces
+            
+            // TODO find in default namespace ?
+            
             return null;
+        }
+        
+        
+        /// <summary>
+        /// Finds a definition for a given <see cref="id"/> in the wished namespace.
+        /// If we cannot find it there, we'll look for it in the parent namespaces. 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="ns"></param>
+        /// <returns></returns>
+        private IDefinition FindInNamespace(string id, INamespaceDefinition ns)
+        {
+            if (ns == null) // Not found in the Default namespace.
+                return null;
+
+            Console.WriteLine("Looking for {0} in namespace '{1}'", id, ns.Fullname);
+            
+            // Find in current namespace
+            if (!_symbolTables.ContainsKey(ns.Fullname))
+            {
+                Console.WriteLine("Key {0} not found.", ns.Fullname);
+                return FindInNamespace(id, ns.Namespace);
+            }
+            
+            
+            IDefinition result = _symbolTables[ns.Fullname].Find(id);
+            if (result != null)
+            {
+                Console.WriteLine("Result found: {0}", result);
+                return result;
+            }
+
+            // ... and in parent namespaces
+            return FindInNamespace(id, ns.Namespace);
         }
 
         
