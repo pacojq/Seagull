@@ -967,7 +967,11 @@ public partial class SeagullParser : Parser {
 					{
 					State = 203; _localctx.p = Match(ID);
 					State = 204; Match(DOT);
-					 _localctx.Parent =  NamespaceManager.Instance.Define(_localctx.n.GetLine(), _localctx.n.GetCol(), _localctx.p.GetText(), _localctx.Parent); 
+					 
+					                var ns = NamespaceManager.Instance.Define(_localctx.n.GetLine(), _localctx.n.GetCol(), _localctx.p.GetText(), _localctx.Parent);
+					                _localctx.Parent.AddDefinition(ns);
+					                _localctx.Parent =  ns;
+					            
 					}
 					} 
 				}
@@ -976,7 +980,10 @@ public partial class SeagullParser : Parser {
 				_alt = Interpreter.AdaptivePredict(TokenStream,16,Context);
 			}
 			State = 211; _localctx.id = Match(ID);
-			 _localctx.Ast =  NamespaceManager.Instance.Define(_localctx.id.GetLine(), _localctx.id.GetCol(), _localctx.id.GetText(), _localctx.Parent); 
+			 
+			                _localctx.Ast =  NamespaceManager.Instance.Define(_localctx.id.GetLine(), _localctx.id.GetCol(), _localctx.id.GetText(), _localctx.Parent);
+			                _localctx.Parent.AddDefinition(_localctx.Ast);
+			            
 			State = 213; Match(L_CURL);
 			State = 219;
 			ErrorHandler.Sync(this);
