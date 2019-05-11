@@ -4,6 +4,7 @@ namespace Seagull.Logging.Loggers
 {
     public class ConsoleLogger : ILogger
     {
+        private readonly object _locker = new object();
         
         private const int WARNING_FLAG = 0;
         private const int ERROR_FLAG = 1;
@@ -11,20 +12,31 @@ namespace Seagull.Logging.Loggers
 
         private void ConsolePrint(string msg, ConsoleColor col, int flag = -1)
         {
-            var temp = Console.ForegroundColor;
-            Console.ForegroundColor = col;
-
-            string strFlag;
-            switch (flag)
+            lock (_locker)
             {
-                case WARNING_FLAG: strFlag = "WARNING | "; break;
-                case ERROR_FLAG:   strFlag = "ERROR   | "; break;
-                case DEBUG_FLAG:   strFlag = "DEBUG   | "; break;
-                default:           strFlag = "          "; break;
+                var temp = Console.ForegroundColor;
+                Console.ForegroundColor = col;
+
+                string strFlag;
+                switch (flag)
+                {
+                    case WARNING_FLAG:
+                        strFlag = "WARNING | ";
+                        break;
+                    case ERROR_FLAG:
+                        strFlag = "ERROR   | ";
+                        break;
+                    case DEBUG_FLAG:
+                        strFlag = "DEBUG   | ";
+                        break;
+                    default:
+                        strFlag = "          ";
+                        break;
+                }
+
+                Console.WriteLine(strFlag + msg);
+                Console.ForegroundColor = temp;
             }
-            
-            Console.WriteLine(strFlag + msg);
-            Console.ForegroundColor = temp;
         }
         
         
