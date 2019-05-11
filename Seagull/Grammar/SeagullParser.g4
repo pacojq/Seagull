@@ -61,7 +61,7 @@ type returns [IType Ast]:
 				)*
 		
 		// Custom type
-	|   userDefined=ID  { $Ast = DependencyManager.Instance.AddType($userDefined.GetLine(), $userDefined.GetCol(), $userDefined.GetText()); } 
+	|   userDefined=ID  { $Ast = new UnknownType($userDefined.GetLine(), $userDefined.GetCol(), $userDefined.GetText()); } 
 	;
 		
 
@@ -130,25 +130,33 @@ voidType returns [IType Ast]:
 protectionLevel : (PUBLIC | PRIVATE) ;
 
 definition returns [IDefinition Ast]:
-    /*    namespaceDef                    { $Ast = $namespaceDef.Ast; }
-	|*/   protectionLevel? variableDef    { $Ast = $variableDef.Ast; }
+        namespaceDef                    { $Ast = $namespaceDef.Ast; }
+	|   protectionLevel? variableDef    { $Ast = $variableDef.Ast; }
     |	protectionLevel? fuctionDef     { $Ast = $fuctionDef.Ast; }
 	|   protectionLevel? structDef      { $Ast = $structDef.Ast; }
 	;
 
-/*
+
 namespaceDef returns[NamespaceDefinition Ast,
             List<IDefinition> Def = new List<IDefinition>(),
-            NamespaceDefinition Parent = null]:
+            NamespaceDefinition Parent = NamespaceManager.DefaultNamespace]:
             
-        n=NAMESPACE ( p=ID DOT { $Parent = SymbolsManager.Instance.AddNamespace($n.GetLine(), $n.GetCol(), $p.GetText(), $Parent); })* 
+        n=NAMESPACE (p=ID DOT 
+            { 
+                var ns = NamespaceManager.Instance.Define($n.GetLine(), $n.GetCol(), $p.GetText(), $Parent);
+                $Parent.AddDefinition(ns);
+                $Parent = ns;
+            })* 
         id=ID 
+            { 
+                $Ast = NamespaceManager.Instance.Define($id.GetLine(), $id.GetCol(), $id.GetText(), $Parent);
+                $Parent.AddDefinition($Ast);
+            }
         L_CURL
-            (d=definition { $Def.Add($d.Ast); })*
+            (d=definition { $Ast.AddDefinition($d.Ast); })*
         R_CURL
-        { $Ast = new NamespaceDefinition($n.GetLine(), $n.GetCol(), $id.GetText(), $Parent, $Def); }
     ;
-*/
+
 
 /*
     a : int;
@@ -252,7 +260,7 @@ expression returns [IExpression Ast]:
 	|   literal { $Ast = $literal.Ast; }
 		
 		// Function invocation
-	|   funcInvocation      { $Ast = $funcInvocation.Ast; }
+	|   funcInvocation { $Ast = $funcInvocation.Ast; }
 		
 		// Parentheses
 	|   L_PAR e=expression R_PAR { $Ast = $e.Ast; }
@@ -261,10 +269,10 @@ expression returns [IExpression Ast]:
 	|   e1=expression L_BRACKET e2=expression R_BRACKET { $Ast = new Indexing($e1.Ast, $e2.Ast); }
 		
 		// Attribute access
-	|   var=variable DOT att=ID { $Ast = new AttributeAccess($var.Ast, $att.text); }
+	|   e=expression DOT att=ID { $Ast = new AttributeAccess($e.Ast, $att.text); }
 		
 		// New
-	|   n=NEW id=ID         { $Ast = new New($n.GetLine(), $n.GetCol(), $id.GetText()); }
+	|   n=NEW id=ID { $Ast = new New($n.GetLine(), $n.GetCol(), $id.GetText()); }
 		
 		// Unary operations
 	|   um=MINUS expression { $Ast = new UnaryMinus($um.GetLine(), $um.GetCol(), $expression.Ast); }

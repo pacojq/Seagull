@@ -66,6 +66,9 @@ namespace Seagull
             ast.AddDefinitions(_importsManager.GetImports());
             _importsManager.Dispose();
             
+            if (ErrorHandler.Instance.AnyError)
+				return null;
+            
             
             // Semantic Analysis //
 

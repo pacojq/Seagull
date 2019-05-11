@@ -100,10 +100,13 @@ namespace Seagull.Visitor
 		{
 			return default(TR);
 		}
-		
-		
-		
-		
+
+		public virtual TR Visit(UnknownType unknown, TP p)
+		{
+			return default(TR);
+		}
+
+
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		/*														 */
 		/*					   STATEMENTS						 */
@@ -162,11 +165,10 @@ namespace Seagull.Visitor
 		}
 		
 		
-
 		public virtual TR Visit(NamespaceDefinition namespaceDefinition, TP p)
 		{
-			foreach (var st in namespaceDefinition.Statements)
-				st.Accept(this, p);
+			foreach (var def in namespaceDefinition.Definitions)
+				def.Accept(this, p);
 			return default(TR);
 		}
 

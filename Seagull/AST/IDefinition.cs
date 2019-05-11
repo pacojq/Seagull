@@ -1,3 +1,5 @@
+using Seagull.AST.Statements.Definitions;
+
 namespace Seagull.AST
 {
     public interface IDefinition : IStatement
@@ -8,5 +10,8 @@ namespace Seagull.AST
         
         int Scope { get; set; }
         int Offset { get; set; }
+        
+        
+        INamespaceDefinition Namespace { get; set; }
     }
 }

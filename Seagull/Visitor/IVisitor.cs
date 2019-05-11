@@ -38,7 +38,9 @@ namespace Seagull.Visitor
 		TR Visit(VoidType voidType, TP p);
 		TR Visit(StringType stringType, TP p);
 		TR Visit(BooleanType booleanType, TP p);
-		
+
+
+		TR Visit(UnknownType unknown, TP p);
 		
 		
 		

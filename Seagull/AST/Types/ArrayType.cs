@@ -9,7 +9,7 @@ namespace Seagull.AST.Types
         
         
         public int Size { get; }
-        public IType TypeOf { get; private set; }
+        public IType TypeOf { get; internal set; }
         
        
         public static ArrayType BuildArray(int size, IType typeOf)

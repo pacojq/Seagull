@@ -13,7 +13,7 @@ namespace Seagull.AST.Types
         public override int NumberOfBytes => ReturnType.NumberOfBytes;
         
         
-        public IType ReturnType { get; }
+        public IType ReturnType { get; internal set; }
 
         private readonly List<VariableDefinition> _params;
         public IEnumerable<VariableDefinition> Parameters => _params;

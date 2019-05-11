@@ -11,7 +11,7 @@ namespace Seagull.Tests.Semantics
         [Test]
         public void TestInsert()
         {
-            SymbolTable st = SymbolTable.Instance;
+            SymbolTable st = new SymbolTable();
             
             VariableDefinition definition = new VariableDefinition(0, 0, "a", null, null);
             Assert.True(st.Insert(definition));
