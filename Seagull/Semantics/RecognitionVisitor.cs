@@ -7,6 +7,7 @@ using Seagull.AST.Expressions;
 using Seagull.AST.Statements.Definitions;
 using Seagull.AST.Types;
 using Seagull.Errors;
+using Seagull.Logging;
 using Seagull.Semantics.Symbols;
 using Seagull.Visitor;
 using Void = Seagull.Visitor.Void;
@@ -52,7 +53,7 @@ namespace Seagull.Semantics
 		{
 			//base.Visit(func, p);
 			
-			Console.WriteLine("RecognitionVisitor visiting function invocation: " + func.Function.Name);
+			Logger.Instance.LogDebug("RecognitionVisitor visiting function invocation: " + func.Function.Name);
 			
 			// There's no need to call visit on func.getFunction.
 			// We're gonna do that job here.

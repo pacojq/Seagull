@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using Seagull.Logging;
 
 namespace Seagull.Errors
 {
@@ -54,30 +55,24 @@ namespace Seagull.Errors
         
         
 	
-        public string PrintErrors()
+        public void PrintErrors()
         {
-            StringBuilder str = new StringBuilder();
-            
-            str.AppendLine($"[ {_errors.Count} Error(s) found ]"); 
+            ILogger logger = Logger.Instance;
+            logger.Log($"[ {_errors.Count} Error(s) found ]"); 
             _errors.Sort((e1, e2) => e1.Line - e2.Line);
 		
             foreach (ErrorType e in _errors)
-                str.AppendLine(e.ToString());
-
-            return str.ToString();
+                logger.LogError(e.GetDetails());
         }
         
-        public string PrintWarnings()
+        public void PrintWarnings()
         {
-            StringBuilder str = new StringBuilder();
-            
-            str.AppendLine($"[ {_warnings.Count} Warnings(s) appeared ]"); 
+            ILogger logger = Logger.Instance;
+            logger.Log($"[ {_warnings.Count} Warnings(s) appeared ]"); 
             _warnings.Sort((e1, e2) => e1.Line - e2.Line);
 		
             foreach (Warning w in _warnings)
-                str.AppendLine(w.ToString());
-
-            return str.ToString();
+                logger.LogWarning(w.GetDetails());
         }
 
         

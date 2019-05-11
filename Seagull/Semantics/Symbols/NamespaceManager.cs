@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Seagull.AST.Statements.Definitions;
 using Seagull.AST.Types;
+using Seagull.Logging;
 
 namespace Seagull.Semantics.Symbols
 {
@@ -65,7 +66,7 @@ namespace Seagull.Semantics.Symbols
 				key += parent.Name + ".";
 			key += id;
 
-			Console.WriteLine("New namespace defined: '{0}'", key);
+			Logger.Instance.LogDebug("New namespace defined: '{0}'", key);
 
 			if (!_namespaceTypes.ContainsKey(key))
 				_namespaceTypes.Add(key, new NamespaceType(line, column));

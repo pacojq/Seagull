@@ -4,6 +4,7 @@ using Seagull.AST.Expressions;
 using Seagull.AST.Statements.Definitions;
 using Seagull.AST.Types;
 using Seagull.Errors;
+using Seagull.Logging;
 using Seagull.Semantics.Symbols;
 using Void = Seagull.Visitor.Void;
 
@@ -28,7 +29,7 @@ namespace Seagull.Semantics
 
 		public override bool Visit(UnknownType unknown, Void p)
 		{
-			Console.WriteLine("[{0} : {1}] DEPENDENCY FOUND: {2}",
+			Logger.Instance.LogDebug("[{0} : {1}] DEPENDENCY FOUND: {2}",
 				unknown.Line,
 				unknown.Column,
 				unknown.Name);
@@ -50,7 +51,7 @@ namespace Seagull.Semantics
 				);
 			}
 			
-			Console.WriteLine("[{0} : {1}] DEPENDENCY SOLVED: {2}",
+			Logger.Instance.LogDebug("[{0} : {1}] DEPENDENCY SOLVED: {2}",
 				ut.Line,
 				ut.Column,
 				ut.Name);

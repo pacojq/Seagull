@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Seagull.AST;
 using Seagull.AST.Statements.Definitions;
 using Seagull.Errors;
+using Seagull.Logging;
 
 namespace Seagull.Semantics.Symbols
 {
@@ -104,7 +105,7 @@ namespace Seagull.Semantics.Symbols
         public bool Insert(IDefinition definition)
         {
             INamespaceDefinition ns = _namespaces.Peek();
-            Console.WriteLine("inserting definition '{0}' in namespace '{1}'", definition.Name, ns.Fullname);
+            Logger.Instance.LogDebug("inserting definition '{0}' in namespace '{1}'", definition.Name, ns.Fullname);
             if (CurrentSymbolTable.Insert(definition))
             {
                 definition.Namespace = ns;
@@ -140,12 +141,12 @@ namespace Seagull.Semantics.Symbols
             if (ns == null) // Not found in the Default namespace.
                 return null;
 
-            Console.WriteLine("Looking for {0} in namespace '{1}'", id, ns.Fullname);
+            Logger.Instance.LogDebug("Looking for {0} in namespace '{1}'", id, ns.Fullname);
             
             // Find in current namespace
             if (!_symbolTables.ContainsKey(ns.Fullname))
             {
-                Console.WriteLine("Key {0} not found.", ns.Fullname);
+                Logger.Instance.LogDebug("Key {0} not found.", ns.Fullname);
                 return FindInNamespace(id, ns.Namespace);
             }
             
@@ -153,7 +154,7 @@ namespace Seagull.Semantics.Symbols
             IDefinition result = _symbolTables[ns.Fullname].Find(id);
             if (result != null)
             {
-                Console.WriteLine("Result found: {0}", result);
+                Logger.Instance.LogDebug("Result found: {0}", result);
                 return result;
             }
 

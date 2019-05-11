@@ -89,7 +89,7 @@ namespace Seagull.FrontEnd
             
             if (ErrorHandler.Instance.AnyError)
             {
-                Console.WriteLine(ErrorHandler.Instance.PrintErrors());
+                ErrorHandler.Instance.PrintErrors();
                 Interlocked.Decrement(ref _taskCount);
                 return;
             }
