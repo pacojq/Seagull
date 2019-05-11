@@ -108,7 +108,7 @@ namespace Seagull.VM
         public override dynamic Visit(Print print, Void p)
         {
             string str = print.Expression.Accept(this, p).ToString();
-            Console.Write(str);
+            Console.Write(str.Trim('"'));
             return null;
         }
 
