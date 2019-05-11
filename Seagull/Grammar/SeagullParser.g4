@@ -251,7 +251,7 @@ expression returns [IExpression Ast]:
 	|   literal { $Ast = $literal.Ast; }
 		
 		// Function invocation
-	|   funcInvocation      { $Ast = $funcInvocation.Ast; }
+	|   funcInvocation { $Ast = $funcInvocation.Ast; }
 		
 		// Parentheses
 	|   L_PAR e=expression R_PAR { $Ast = $e.Ast; }
@@ -260,10 +260,10 @@ expression returns [IExpression Ast]:
 	|   e1=expression L_BRACKET e2=expression R_BRACKET { $Ast = new Indexing($e1.Ast, $e2.Ast); }
 		
 		// Attribute access
-	|   var=variable DOT att=ID { $Ast = new AttributeAccess($var.Ast, $att.text); }
+	|   e=expression DOT att=ID { $Ast = new AttributeAccess(e.Ast, $att.text); }
 		
 		// New
-	|   n=NEW id=ID         { $Ast = new New($n.GetLine(), $n.GetCol(), $id.GetText()); }
+	|   n=NEW id=ID { $Ast = new New($n.GetLine(), $n.GetCol(), $id.GetText()); }
 		
 		// Unary operations
 	|   um=MINUS expression { $Ast = new UnaryMinus($um.GetLine(), $um.GetCol(), $expression.Ast); }
