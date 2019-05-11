@@ -1,7 +1,21 @@
 
-Person : struct {
 
+
+Person : struct {
+    
     Name : string;
     Age : int;
+
+}
+
+
+namespace People {
+
+    Person : struct {
+    
+        Name : string;
+        Age : int;
+    
+    }
 
 }

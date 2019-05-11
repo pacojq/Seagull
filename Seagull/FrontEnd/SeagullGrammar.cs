@@ -4,6 +4,7 @@ using Antlr4.Runtime;
 using Seagull.AST;
 using Seagull.Errors;
 using Seagull.Grammar;
+using Seagull.Logging;
 
 namespace Seagull.FrontEnd
 {
@@ -28,7 +29,7 @@ namespace Seagull.FrontEnd
             }
             catch (IOException e)
             {
-                Console.WriteLine("Could not load the input file: " + filename);
+                Logger.Instance.LogError("Could not load the input file: " + filename);
                 return null;
             }
             SeagullLexer lexer = new SeagullLexer(input);

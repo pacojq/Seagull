@@ -18,7 +18,6 @@ namespace Seagull.Semantics
 		
 		
 		
-		
 		public override Void Visit(VariableDefinition varDefinition, Void p)
 		{
 			base.Visit(varDefinition, p);

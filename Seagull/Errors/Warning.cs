@@ -17,7 +17,12 @@ namespace Seagull.Errors
         
         public override string ToString()
         {
-            return $"WARNING | line {Line}:{Column}\t{Description}";
+            return $"WARNING | {GetDetails()}";
+        }
+        
+        public string GetDetails()
+        {
+            return $"Line {Line}:{Column}\t{Description}";
         }
     }
 }
