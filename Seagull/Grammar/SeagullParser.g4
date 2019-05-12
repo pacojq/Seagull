@@ -25,12 +25,14 @@ options { tokenVocab = SeagullLexer; }
 
 program returns [Program Ast, 
                 List<string> Loads = new List<string>(), 
+                List<string> Imports = new List<string>(),
                 List<IDefinition> Def = new List<IDefinition>()]:
                 
 		(l=load { $Loads.Add($l.File); })*
+		(i=imp { $Imports.Add($i.Namespace); })*
 		(d=definition { $Def.Add($d.Ast); })*
 		EOF
-		{ $Ast = new Program(0, 0, $Loads, $Def); }
+		{ $Ast = new Program(0, 0, $Loads, $Imports, $Def); }
 	;
 	    
 	    
@@ -40,7 +42,10 @@ load returns [string File]:
         LOAD p=STRING_CONSTANT { $File = $p.text; }
     ;
 
-
+imp returns [string Namespace]:
+        IMPORT ns1=ID { $Namespace = $ns1.GetText(); } 
+        ( DOT ns2=ID { $Namespace += "." + $ns2.GetText(); } )* SEMI_COL
+    ;
 
 
 

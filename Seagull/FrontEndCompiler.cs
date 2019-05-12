@@ -19,7 +19,7 @@ namespace Seagull
 	    internal SeagullGrammar Grammar { get; }
 	    internal SeagullSemantics Semantics { get; }
 
-	    private ImportsManager _importsManager;
+	    private LoadedFilesManager _loadedFilesManager;
 	    
 	    
 	    public FrontEndCompiler()
@@ -36,7 +36,7 @@ namespace Seagull
 		    
 		    ErrorHandler.Instance.Clear();
 		    Semantics.SetUp();
-		    _importsManager = new ImportsManager(this, filename);
+		    _loadedFilesManager = new LoadedFilesManager(this, filename);
 	    }
 	    
 	    
@@ -59,12 +59,12 @@ namespace Seagull
             
             
             
-            // Import needed files //
-            _importsManager.Import(filename, ast.Imports);
-            while (!_importsManager.Ready) { /* Wait */ }
+            // Load needed files //
+            _loadedFilesManager.Load(filename, ast.Loads);
+            while (!_loadedFilesManager.Ready) { /* Wait */ }
             
-            ast.AddDefinitions(_importsManager.GetImports());
-            _importsManager.Dispose();
+            ast.AddDefinitions(_loadedFilesManager.GetImports());
+            _loadedFilesManager.Dispose();
             
             if (ErrorHandler.Instance.AnyError)
 				return null;
