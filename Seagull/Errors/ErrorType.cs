@@ -29,6 +29,11 @@ namespace Seagull.Errors
         }
         
         
+        protected override IType DefaultOperation(string description)
+        {
+            return this;
+        }
+        
         public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)
         {
             return visitor.Visit(this, p);

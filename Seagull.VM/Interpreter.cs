@@ -54,6 +54,7 @@ namespace Seagull.VM
         public override dynamic Visit(Assignment assignment, Void p)
         {
             IExpression left = assignment.Left;
+            
             if (left is Variable)
             {
                 Variable v = (Variable) left;
@@ -95,7 +96,7 @@ namespace Seagull.VM
 
         public override dynamic Visit(WhileLoop whileLoop, Void p)
         {
-            while (whileLoop.Condition.Accept(this, p));
+            while (whileLoop.Condition.Accept(this, p))
             {
                 foreach (IStatement st in whileLoop.Statements)
                 {
@@ -108,7 +109,9 @@ namespace Seagull.VM
         public override dynamic Visit(Print print, Void p)
         {
             string str = print.Expression.Accept(this, p).ToString();
-            Console.Write(str.Trim('"'));
+            str = str.Trim('"');
+            str = str.Replace("\\n", "\n");
+            Console.Write(str);
             return null;
         }
 
@@ -141,19 +144,42 @@ namespace Seagull.VM
                 case "-": return a - b;
                 case "/": return a / b;
                 case "*": return a * b;
+                case "%": return a % b;
                 
-                default: return null;
+                default: throw new Exception("Invalid operator: " + arithmetic.Operator);
             }
         }
 
         public override dynamic Visit(Comparison comparison, Void p)
         {
-            throw new System.NotImplementedException();
+            var a = comparison.Left.Accept(this, p);
+            var b = comparison.Right.Accept(this, p);
+
+            switch (comparison.Operator)
+            {
+                case "<": return a < b;
+                case ">": return a > b;
+                case "<=": return a <= b;
+                case ">=": return a >= b;
+                case "==": return a == b;
+                case "!=": return a != b;
+                
+                default: throw new Exception("Invalid operator: " + comparison.Operator);
+            }
         }
 
         public override dynamic Visit(LogicalOperation logicalOperation, Void p)
         {
-            throw new System.NotImplementedException();
+            var a = logicalOperation.Left.Accept(this, p);
+            var b = logicalOperation.Right.Accept(this, p);
+
+            switch (logicalOperation.Operator)
+            {
+                case "&&": return a && b;
+                case "||": return a || b;
+                
+                default: throw new Exception("Invalid operator: " + logicalOperation.Operator);
+            }
         }
 
         public override dynamic Visit(Indexing indexing, Void p)

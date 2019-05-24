@@ -32,12 +32,17 @@ namespace Seagull.Semantics
 		    if (variableDefinition.Initialization != null)
 		    {
 			    IExpression init = variableDefinition.Initialization;
+			    
+			    // We already have an error. Don't rise a new one
+			    if (init.Type is ErrorType)
+				    return null;
+			    
 			    if (!init.Type.IsEquivalent(variableDefinition.Type))
 			    {
 				    ErrorHandler.Instance.RaiseError(
 					    init.Line,
 					    init.Column,
-					    $"Cannot assign initialize to {init.Type} a variable declared as {variableDefinition.Type}."
+					    $"Cannot initialize to {init.Type} a variable declared as {variableDefinition.Type}."
 				    );
 			    }
 		    }
@@ -82,7 +87,7 @@ namespace Seagull.Semantics
 			foreach (IExpression expr in functionInvocation.Arguments)
 				arguments.Add(expr.Type);
 			
-			functionInvocation.Type = def.Type.ParenthesesOperator(
+			functionInvocation.Type = def.Type.TypeCheckParentheses(
 							functionInvocation.Line,
 							functionInvocation.Column,
 							arguments
@@ -99,7 +104,7 @@ namespace Seagull.Semantics
 		public override Void Visit(Arithmetic arithmetic, IType p)
 		{
 			base.Visit(arithmetic, p);
-			arithmetic.Type = arithmetic.Left.Type.Arithmetic(arithmetic.Right.Type);		
+			arithmetic.Type = arithmetic.Left.Type.TypeCheckArithmetic(arithmetic.Right.Type);		
 			return null;
 		}
 		
@@ -107,7 +112,7 @@ namespace Seagull.Semantics
 		public override Void Visit(LogicalOperation logicalOperation, IType p)
 		{
 			base.Visit(logicalOperation, p);
-			logicalOperation.Type = logicalOperation.Left.Type.LogicalOperation(logicalOperation.Right.Type);		
+			logicalOperation.Type = logicalOperation.Left.Type.TypeCheckLogicalOperation(logicalOperation.Right.Type);		
 			return null;
 		}
 		
@@ -115,7 +120,7 @@ namespace Seagull.Semantics
 		public override Void Visit(Comparison comparison, IType p)
 		{
 			base.Visit(comparison, p);
-			comparison.Type = comparison.Left.Type.Comparison(comparison.Right.Type);
+			comparison.Type = comparison.Left.Type.TypeCheckComparison(comparison.Right.Type);
 			return null;
 		}
 		
@@ -131,7 +136,7 @@ namespace Seagull.Semantics
 			IType t1 = assignment.Left.Type;
 			IType t2 = assignment.Right.Type;
 
-			if (t2.Is<ErrorType>())
+			if (t2 is ErrorType)
 				return null;
 			
 			if (!t1.IsEquivalent(t2))
@@ -150,7 +155,7 @@ namespace Seagull.Semantics
 		public override Void Visit(Cast cast, IType p)
 		{
 			base.Visit(cast, p);
-			cast.Type = cast.Operand.Type.Cast(cast.TargetType);
+			cast.Type = cast.Operand.Type.TypeCheckCast(cast.TargetType);
 			return null;
 		}
 		
@@ -171,7 +176,7 @@ namespace Seagull.Semantics
 				return null;
 			}
 			
-			newExpr.Type = def.Type.New();
+			newExpr.Type = def.Type.TypeCheckNew();
 			return null;
 		}
 		
@@ -180,7 +185,7 @@ namespace Seagull.Semantics
 		public override Void Visit(AttributeAccess attributeAccess, IType p)
 		{
 			base.Visit(attributeAccess, p);
-			attributeAccess.Type = attributeAccess.Operand.Type.AttributeAccess(attributeAccess.AttributeName);
+			attributeAccess.Type = attributeAccess.Operand.Type.TypeCheckAttributeAccess(attributeAccess.AttributeName);
 			return null;
 		}
 		
@@ -189,7 +194,7 @@ namespace Seagull.Semantics
 		public override Void Visit(Indexing indexing, IType p)
 		{
 			base.Visit(indexing, p);
-			indexing.Type = indexing.Operand.Type.Indexing(indexing.Index.Type);
+			indexing.Type = indexing.Operand.Type.TypeCheckIndexing(indexing.Index.Type);
 			return null;
 		}
 		
@@ -248,7 +253,7 @@ namespace Seagull.Semantics
 			IType retType = ft.ReturnType;
 			IType actualRetType = returnStmnt.Value.Type;
 			
-			if (actualRetType.Is<ErrorType>())
+			if (actualRetType is ErrorType)
 				return null; // We already have an error
 			
 			if (!actualRetType.IsEquivalent(retType))

@@ -6,10 +6,20 @@ namespace Seagull.AST.Types
     {
         
         public override int NumberOfBytes => 1;
-        
-        
+
+
+        public override bool IsLogical => true;
+
         public BooleanType(int line, int column) : base(line, column)
         {
+        }
+
+
+        public override IType TypeCheckLogicalOperation(IType other)
+        {
+            if (IsEquivalent(other))
+                return this;
+            return base.TypeCheckLogicalOperation(other);
         }
 
 

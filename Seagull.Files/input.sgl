@@ -1,9 +1,16 @@
 
 load "math.sgl" // compile and import file
-load "empty.sgl"
-load "person.sgl"
+//load "empty.sgl"
+//load "person.sgl"
 
-
+/*
+Person : struct {
+    
+        Name : string;
+        Age : int;
+    
+    }
+*/
 //namespace Hi.There
 //{
 

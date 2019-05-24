@@ -72,6 +72,8 @@
         <Compile Include="AST\Statements\AbstractStatement.cs" />
         <Compile Include="AST\Statements\Assignment.cs" />
         <Compile Include="AST\Statements\AbstractDefinition.cs" />
+        <Compile Include="AST\Statements\Break.cs" />
+        <Compile Include="AST\Statements\Continue.cs" />
         <Compile Include="AST\Statements\Definitions\AbstractNamespaceDefinition.cs" />
         <Compile Include="AST\Statements\Definitions\DelegateDefinition.cs" />
         <Compile Include="AST\Statements\Definitions\FunctionDefinition.cs" />
@@ -113,13 +115,13 @@
         <Compile Include="Grammar\SeagullPreprocessorParser.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Semantics\AbstractSemanticVisitor.cs" />
-        <Compile Include="Semantics\DefinitionSeekVisitor.cs" />
-        <Compile Include="Semantics\DependencyVisitor.cs" />
-        <Compile Include="Semantics\RecognitionVisitor.cs" />
+        <Compile Include="Semantics\Recognition\DefinitionSeekVisitor.cs" />
+        <Compile Include="Semantics\Recognition\DependencyVisitor.cs" />
+        <Compile Include="Semantics\Recognition\RecognitionVisitor.cs" />
         <Compile Include="Semantics\Symbols\NamespaceManager.cs" />
         <Compile Include="Semantics\Symbols\SymbolManager.cs" />
         <Compile Include="Semantics\Symbols\SymbolTable.cs" />
-        <Compile Include="Semantics\TypeCheckingVisitor.cs" />
+        <Compile Include="Semantics\TypeChecking\TypeCheckingVisitor.cs" />
         <Compile Include="Visitor\AbstractVisitor.cs" />
         <Compile Include="Visitor\IVisitor.cs" />
         <Compile Include="Visitor\Void.cs" />

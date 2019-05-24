@@ -29,18 +29,23 @@ namespace Seagull.AST.Types
         
         
         
-        public override IType ParenthesesOperator(int line, int column, IEnumerable<IType> arguments)
+        public override IType TypeCheckParentheses(int line, int column, IEnumerable<IType> arguments)
         {
             var args = arguments.ToList();
 		
-            if (args.Count != _params.Count) {
+            if (args.Count != _params.Count)
+            {
                 return ErrorHandler.Instance.RaiseError(
                     line, column,
                     $"Invalid number of arguments in function call. Actual: {args.Count}; Expected: {_params.Count}");
-            }		
-            for (int i = 0; i < args.Count; i ++) {
-			
+            }	
+            
+            for (int i = 0; i < args.Count; i ++)
+            {
                 IType arg = args[i];
+                if (arg is ErrorType)
+                    return arg;
+                
                 IType param = _params[i].Type;
                 if (!arg.IsEquivalent(param))
                 {
@@ -49,6 +54,7 @@ namespace Seagull.AST.Types
                         $"Invalid argument type in function call. Actual: {arg}; Expected: {param}");
                 }
             }
+            
             return this.ReturnType;
         }
         

@@ -20,7 +20,7 @@ namespace Seagull.AST.Types
         }
 
 
-        public override IType Arithmetic(IType other)
+        public override IType TypeCheckArithmetic(IType other)
         {
             switch (other.ToString())
             {
@@ -28,11 +28,11 @@ namespace Seagull.AST.Types
                 case "int":     return this;
                 case "double":  return other;
             }
-            return base.Arithmetic(other);
+            return base.TypeCheckArithmetic(other);
         }
         
         
-        public override IType Comparison(IType other)
+        public override IType TypeCheckComparison(IType other)
         {
             switch (other.ToString())
             {
@@ -41,7 +41,7 @@ namespace Seagull.AST.Types
                 case "double":
                     return new BooleanType(Line, Column);
             }
-            return base.Arithmetic(other);
+            return base.TypeCheckArithmetic(other);
         }
         
         

@@ -54,13 +54,13 @@ namespace Seagull.AST.Types
 
 
 
-        public override IType New()
+        public override IType TypeCheckNew()
         {
             return this;
         }
         
         
-        public override IType AttributeAccess(string attribute)
+        public override IType TypeCheckAttributeAccess(string attribute)
         {
             VariableDefinition def = FindField(attribute);
             if (def == null)

@@ -228,26 +228,32 @@ statement returns [List<IStatement> Ast = new List<IStatement>()]:
 		w=WHILE L_PAR cond=expression R_PAR b=block 
 		    { $Ast.Add(new WhileLoop($w.GetLine(), $w.GetCol(), $cond.Ast, $b.Ast)); }
 	
+	    // Continue / Break
+	|   c=CONTINUE SEMI_COL { $Ast.Add(new Continue($c.GetLine(), $c.GetCol())); }
+	|   br=BREAK SEMI_COL   { $Ast.Add(new Break($br.GetLine(), $br.GetCol())); }
+	
 	    // If / Else
 	|   i=IF L_PAR cond=expression R_PAR b1=block
             { $Ast.Add(new IfStatement($i.GetLine(), $i.GetCol(), $cond.Ast, $b1.Ast)); }
             (ELSE b2=block { ((IfStatement)$Ast[0]).Else = $b2.Ast; })?	
 	
 	    // Assignment
-	|   e1=expression ASSIGN e2=expression SEMI_COL	
-				{ $Ast.Add(new Assignment($e1.Ast, $e2.Ast)); }
-  	|   r=RETURN e=expression SEMI_COL							// Return statement
-  				{ $Ast.Add(new Return($r.GetLine(), $r.GetCol(), $e.Ast)); }
-  	|   readPrint												// Read and Write
-  				{ $Ast.Add($readPrint.Ast); }
-  	|   funcInvocation SEMI_COL
-  				{ $Ast.Add($funcInvocation.Ast); }
+	|   e1=expression ASSIGN e2=expression SEMI_COL	{ $Ast.Add(new Assignment($e1.Ast, $e2.Ast)); }
+  	
+  	    // Return statement
+  	|   r=RETURN e=expression SEMI_COL  { $Ast.Add(new Return($r.GetLine(), $r.GetCol(), $e.Ast)); }
+  	|   r=RETURN SEMI_COL               { $Ast.Add(new Return($r.GetLine(), $r.GetCol(), null)); }
+  	
+  	    // Read / Print
+  	|   readPrint { $Ast.Add($readPrint.Ast); }
+  	
+  	    // Function invocation
+  	|   funcInvocation SEMI_COL { $Ast.Add($funcInvocation.Ast); }
   	;
   		
 
 
 // TODO read write syntactic sugar
-  		
 readPrint returns [IStatement Ast]:
  		p=PRINT L_PAR e=expression R_PAR SEMI_COL { $Ast = new Print($p.GetLine(), $p.GetCol(), $e.Ast); }
   	|   r=READ L_PAR e=expression R_PAR SEMI_COL	{ $Ast = new Read($r.GetLine(), $r.GetCol(), $e.Ast); }

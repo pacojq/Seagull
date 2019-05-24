@@ -8,26 +8,25 @@ namespace Seagull.AST
 	    int NumberOfBytes { get; }
 	    
         
-        // Operations
-	
         bool IsLogical { get; }
         bool IsEquivalent(IType other);
-        bool Is<T>() where T : IType;
         
         
 	
-        IType Arithmetic(IType other);
-        IType Comparison(IType other);
-        IType LogicalOperation(IType other);
-        IType Indexing(IType other);
-        IType Cast(IType other);
-        IType New();
+        // Type checking
+        
+        IType TypeCheckArithmetic(IType other);
+        IType TypeCheckComparison(IType other);
+        IType TypeCheckLogicalOperation(IType other);
+        IType TypeCheckIndexing(IType other);
+        IType TypeCheckCast(IType other);
+        IType TypeCheckNew();
 	
-        IType UnaryMinus();
-        IType Not();
+        IType TypeCheckUnaryMinus();
+        IType TypeCheckNot();
 
-        IType AttributeAccess(string attributeName);
-        IType ParenthesesOperator(int line, int column, IEnumerable<IType> arguments);
+        IType TypeCheckAttributeAccess(string attributeName);
+        IType TypeCheckParentheses(int line, int column, IEnumerable<IType> arguments);
 
         
     }
