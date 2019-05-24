@@ -290,6 +290,9 @@ expression returns [IExpression Ast]:
 		
 		// Logical operations
 	|   e1=expression op=(AND|OR) e2=expression { $Ast = new LogicalOperation($op.text, $e1.Ast, $e2.Ast); }
+	
+	    // Ternary operator
+	|   e1=expression QUESTION e2=expression COL e3=expression { $Ast = new TernaryOperator($e1.Ast, $e2.Ast, $e3.Ast); }
 	;
 
 

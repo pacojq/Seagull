@@ -90,6 +90,7 @@ STAR:       '*' ;
 SLASH:      '/' ;
 PERCENT:    '%' ;
 ARROW:      '->' ;
+QUESTION:   '?' ;
 
 PLUS:       '+' ;
 MINUS:      '-' ;

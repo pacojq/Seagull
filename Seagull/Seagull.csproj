@@ -60,6 +60,7 @@
         <Compile Include="AST\Expressions\Literals\StringLiteral.cs" />
         <Compile Include="AST\Expressions\Negation.cs" />
         <Compile Include="AST\Expressions\New.cs" />
+        <Compile Include="AST\Expressions\TernaryOperator.cs" />
         <Compile Include="AST\Expressions\UnaryMinus.cs" />
         <Compile Include="AST\Expressions\Variable.cs" />
         <Compile Include="AST\IAstNode.cs" />

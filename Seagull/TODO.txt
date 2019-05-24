@@ -1,0 +1,13 @@
+
+
+==== LOOPS ====
+
+for loop
+break; continue;
+
+
+
+==== FUNCTIONS ====
+
+multiple returns.
+Identify returns and bind them to their function.
