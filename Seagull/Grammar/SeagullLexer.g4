@@ -39,6 +39,7 @@ DELEGATE:   'delegate' ;
 // Keywords
 // TODO
 NULL:       'null' ;
+PTR:        'ptr' ;
 
 TRUE:       'true' ;
 FALSE:      'false' ;

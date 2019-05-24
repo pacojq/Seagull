@@ -8,7 +8,6 @@ namespace People {
     
         Name : string;
         Age : int;
-    
     }
 
 }

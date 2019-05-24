@@ -1,0 +1,29 @@
+
+
+namespace Lists
+{
+    List : struct
+    {
+        Head: ListNode;
+    }
+    
+    ListNode : struct
+    {
+        Next: ListNode;
+        Element: ptr;
+    }
+    
+    
+    list_create() : List ->
+    {
+        list := new List;
+        return list;
+    }
+    
+    list_add(list: List, any element) : List ->
+    {
+        list := new List;
+        return list;
+    }
+
+}

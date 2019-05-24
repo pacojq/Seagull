@@ -92,10 +92,10 @@
         <Compile Include="AST\Types\BooleanType.cs" />
         <Compile Include="AST\Types\CharType.cs" />
         <Compile Include="AST\Types\DoubleType.cs" />
-        <Compile Include="AST\Types\Extensions.cs" />
         <Compile Include="AST\Types\FunctionType.cs" />
         <Compile Include="AST\Types\IntType.cs" />
         <Compile Include="AST\Types\NamespaceType.cs" />
+        <Compile Include="AST\Types\PointerType.cs" />
         <Compile Include="AST\Types\StringType.cs" />
         <Compile Include="AST\Types\StructType.cs" />
         <Compile Include="AST\Types\UnknownType.cs" />

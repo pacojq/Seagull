@@ -30,7 +30,7 @@ program returns [Program Ast,
                 
 		(l=load { $Loads.Add($l.File); })*
 		(i=imp { $Imports.Add($i.Namespace); })*
-		(d=definition { $Def.Add($d.Ast); })*
+		(protectionLevel? d=definition { $Def.Add($d.Ast); })*
 		EOF
 		{ $Ast = new Program(0, 0, $Loads, $Imports, $Def); }
 	;
@@ -98,7 +98,7 @@ parameters returns [List<VariableDefinition> Ast = new List<VariableDefinition>(
 structType returns [StructType Ast,
             List<VariableDefinition> Fields = new List<VariableDefinition>()]:
 
-        s=STRUCT L_CURL (f=variableDef { $Fields.Add($f.Ast); })* R_CURL 
+        s=STRUCT L_CURL (protectionLevel? f=variableDef { $Fields.Add($f.Ast); })* R_CURL 
         { $Ast = new StructType($s.GetLine(), $s.GetCol(), $Fields); }
     ;
 
@@ -106,10 +106,11 @@ structType returns [StructType Ast,
 
 // Primitive types
 primitive returns [IType Ast]:
-		i=INT { $Ast = new IntType($i.GetLine(), $i.GetCol()); }
-	|   c=CHAR { $Ast = new CharType($c.GetLine(), $c.GetCol()); }
-	|   d=DOUBLE { $Ast = new DoubleType($d.GetLine(), $d.GetCol()); }
-	|   s=STRING { $Ast = new StringType($s.GetLine(), $s.GetCol()); }
+        ptr=PTR     { $Ast = new PointerType($ptr.GetLine(), $ptr.GetCol()); }
+	|	i=INT       { $Ast = new IntType($i.GetLine(), $i.GetCol()); }
+	|   c=CHAR      { $Ast = new CharType($c.GetLine(), $c.GetCol()); }
+	|   d=DOUBLE    { $Ast = new DoubleType($d.GetLine(), $d.GetCol()); }
+	|   s=STRING    { $Ast = new StringType($s.GetLine(), $s.GetCol()); }
 	;
 
 voidType returns [IType Ast]:
@@ -135,10 +136,10 @@ voidType returns [IType Ast]:
 protectionLevel : (PUBLIC | PRIVATE) ;
 
 definition returns [IDefinition Ast]:
-        namespaceDef                    { $Ast = $namespaceDef.Ast; }
-	|   protectionLevel? variableDef    { $Ast = $variableDef.Ast; }
-    |	protectionLevel? fuctionDef     { $Ast = $fuctionDef.Ast; }
-	|   protectionLevel? structDef      { $Ast = $structDef.Ast; }
+        namespaceDef    { $Ast = $namespaceDef.Ast; }
+	|   variableDef     { $Ast = $variableDef.Ast; }
+    |	fuctionDef      { $Ast = $fuctionDef.Ast; }
+	|   structDef       { $Ast = $structDef.Ast; }
 	;
 
 
@@ -208,34 +209,52 @@ funcInvocation returns [FunctionInvocation Ast, List<IExpression> arguments = ne
  			{ $Ast = new FunctionInvocation($func.Ast, $arguments); }
  	;
  
-  	
-block returns [List<IStatement> Ast = new List<IStatement>()]: 
-		st1=statement { $Ast.AddRange($st1.Ast); }
-	|   L_CURL (st2=statement { $Ast.AddRange($st2.Ast); })* R_CURL
-	;
-		
+
+// A function block is different than a simple statement block, since it might contain variable definitions.
 fnBlock returns [List<IStatement> Ast = new List<IStatement>()]: 
+		
 		L_CURL
-			((variableDef { $Ast.Add($variableDef.Ast); }) | (statement { $Ast.AddRange($statement.Ast); }))*
+		    { List<IStatement> delayed = new List<IStatement>(); } // Statements might be delayed
+        (
+            (c1=fnBlockContent { $Ast.AddRange($c1.Ast); })
+          | (DELAY c2=fnBlockContent { delayed.AddRange($c2.Ast); })
+        )*
+			{ $Ast.AddRange(delayed); }
 		R_CURL
 	;
+	
+fnBlockContent returns [List<IStatement> Ast = new List<IStatement>()]: 
+        variableDef { $Ast.Add($variableDef.Ast); } 
+    |   block=statement { $Ast.AddRange($block.Ast); }
+    ;
+	
 	
 	
 		 
 statement returns [List<IStatement> Ast = new List<IStatement>()]:
 		
+		// Block of statements
+		L_CURL
+            { List<IStatement> delayed = new List<IStatement>(); } // Statements might be delayed
+            (
+                (st1=statement { $Ast.AddRange($st1.Ast); })
+              | (DELAY st2=statement { delayed.AddRange($st2.Ast); })
+            )*
+            { $Ast.AddRange(delayed); }
+        R_CURL
+		
 		// While loop
-		w=WHILE L_PAR cond=expression R_PAR b=block 
-		    { $Ast.Add(new WhileLoop($w.GetLine(), $w.GetCol(), $cond.Ast, $b.Ast)); }
+	|	w=WHILE L_PAR cond=expression R_PAR st=statement
+		    { $Ast.Add(new WhileLoop($w.GetLine(), $w.GetCol(), $cond.Ast, $st.Ast)); }
 	
 	    // Continue / Break
 	|   c=CONTINUE SEMI_COL { $Ast.Add(new Continue($c.GetLine(), $c.GetCol())); }
 	|   br=BREAK SEMI_COL   { $Ast.Add(new Break($br.GetLine(), $br.GetCol())); }
 	
 	    // If / Else
-	|   i=IF L_PAR cond=expression R_PAR b1=block
-            { $Ast.Add(new IfStatement($i.GetLine(), $i.GetCol(), $cond.Ast, $b1.Ast)); }
-            (ELSE b2=block { ((IfStatement)$Ast[0]).Else = $b2.Ast; })?	
+	|   i=IF L_PAR cond=expression R_PAR st1=statement
+            { $Ast.Add(new IfStatement($i.GetLine(), $i.GetCol(), $cond.Ast, $st1.Ast)); }
+            (ELSE st2=statement  { ((IfStatement)$Ast[0]).Else = $st2.Ast; })?	
 	
 	    // Assignment
 	|   e1=expression ASSIGN e2=expression SEMI_COL	{ $Ast.Add(new Assignment($e1.Ast, $e2.Ast)); }

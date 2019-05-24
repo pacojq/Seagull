@@ -1,24 +1,13 @@
 
 
 /*
-
 //cool stuff we could try to achieve
 
 #define COMPILER_MACRO
 
-#import Math // import module
-#load math.sgl // compile and import file
-
-
 #assert false // assert in compile time maybe
 
-
-#module my_module {
-        ... 
-}
 */
-
-
 
 // Comment
 
@@ -31,8 +20,6 @@
         /* Block comment */
     */
 */
-
-
 
 
 
