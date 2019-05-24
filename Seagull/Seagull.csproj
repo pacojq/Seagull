@@ -81,6 +81,7 @@
         <Compile Include="AST\Statements\Definitions\NamespaceDefinition.cs" />
         <Compile Include="AST\Statements\Definitions\StructDefinition.cs" />
         <Compile Include="AST\Statements\Definitions\VariableDefinition.cs" />
+        <Compile Include="AST\Statements\ForeachLoop.cs" />
         <Compile Include="AST\Statements\ForLoop.cs" />
         <Compile Include="AST\Statements\IfStatement.cs" />
         <Compile Include="AST\Statements\Print.cs" />

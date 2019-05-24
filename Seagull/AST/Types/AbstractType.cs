@@ -9,8 +9,9 @@ namespace Seagull.AST.Types
     {
         public abstract int NumberOfBytes { get; }
         public virtual bool IsLogical => false;
-        
-        
+        public virtual bool IsEnumerable => false;
+
+
         protected AbstractType(int line, int column) : base(line, column)
         {
         }

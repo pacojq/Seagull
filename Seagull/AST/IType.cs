@@ -9,6 +9,8 @@ namespace Seagull.AST
 	    
         
         bool IsLogical { get; }
+        bool IsEnumerable { get; }
+        
         bool IsEquivalent(IType other);
         
         

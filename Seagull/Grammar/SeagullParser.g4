@@ -230,6 +230,8 @@ fnBlockContent returns [List<IStatement> Ast = new List<IStatement>()]:
 	
 	
 	
+	
+	
 		 
 statement returns [List<IStatement> Ast = new List<IStatement>()]:
 		
@@ -246,6 +248,12 @@ statement returns [List<IStatement> Ast = new List<IStatement>()]:
 		// While loop
 	|	w=WHILE L_PAR cond=expression R_PAR st=statement
 		    { $Ast.Add(new WhileLoop($w.GetLine(), $w.GetCol(), $cond.Ast, $st.Ast)); }
+		    
+        // For / Foreach loop
+    |   f=FOR L_PAR init=statement cond=expression SEMI_COL incr=statement R_PAR st=statement
+            { $Ast.Add(new ForLoop($f.GetLine(), $f.GetCol(), $init.Ast, $cond.Ast, $incr.Ast, $st.Ast)); }
+    |   f=FOR L_PAR e=variable IN col=expression R_PAR st=statement
+            { $Ast.Add(new ForeachLoop($f.GetLine(), $f.GetCol(), $e.Ast, $col.Ast, $st.Ast)); }
 	
 	    // Continue / Break
 	|   c=CONTINUE SEMI_COL { $Ast.Add(new Continue($c.GetLine(), $c.GetCol())); }
