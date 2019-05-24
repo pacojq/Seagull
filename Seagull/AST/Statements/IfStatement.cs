@@ -17,6 +17,7 @@ namespace Seagull.AST.Statements
         {
             Condition = condition;
             Then = thenPart;
+            Else = new List<IStatement>();
         }
         
         

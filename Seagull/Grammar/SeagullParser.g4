@@ -218,12 +218,18 @@ fnBlock returns [List<IStatement> Ast = new List<IStatement>()]:
 	
 		 
 statement returns [List<IStatement> Ast = new List<IStatement>()]:
-		w=WHILE L_PAR cond=expression R_PAR b=block  				// While loop
-				{ $Ast.Add(new WhileLoop($w.GetLine(), $w.GetCol(), $cond.Ast, $b.Ast)); }
-	|   i=IF L_PAR cond=expression R_PAR b1=block					// If-else
-				{ $Ast.Add(new IfStatement($i.GetLine(), $i.GetCol(), $cond.Ast, $b1.Ast)); }
-				(ELSE b2=block { ((IfStatement)$Ast[0]).Else = $b2.Ast; })?	
-	|   e1=expression ASSIGN e2=expression SEMI_COL					// Assignment
+		
+		// While loop
+		w=WHILE L_PAR cond=expression R_PAR b=block 
+		    { $Ast.Add(new WhileLoop($w.GetLine(), $w.GetCol(), $cond.Ast, $b.Ast)); }
+	
+	    // If / Else
+	|   i=IF L_PAR cond=expression R_PAR b1=block
+            { $Ast.Add(new IfStatement($i.GetLine(), $i.GetCol(), $cond.Ast, $b1.Ast)); }
+            (ELSE b2=block { ((IfStatement)$Ast[0]).Else = $b2.Ast; })?	
+	
+	    // Assignment
+	|   e1=expression ASSIGN e2=expression SEMI_COL	
 				{ $Ast.Add(new Assignment($e1.Ast, $e2.Ast)); }
   	|   r=RETURN e=expression SEMI_COL							// Return statement
   				{ $Ast.Add(new Return($r.GetLine(), $r.GetCol(), $e.Ast)); }
