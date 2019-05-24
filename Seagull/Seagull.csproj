@@ -102,7 +102,7 @@
         <Compile Include="Errors\ErrorListener.cs" />
         <Compile Include="Errors\ErrorType.cs" />
         <Compile Include="Errors\Warning.cs" />
-        <Compile Include="FrontEnd\ImportsManager.cs" />
+        <Compile Include="FrontEnd\LoadedFilesManager.cs" />
         <Compile Include="FrontEnd\SeagullGrammar.cs" />
         <Compile Include="FrontEnd\SeagullSemantics.cs" />
         <Compile Include="Grammar\ExtensionMethods.cs" />

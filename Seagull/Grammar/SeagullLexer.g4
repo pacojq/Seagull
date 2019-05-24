@@ -71,8 +71,24 @@ LOAD:       'load' ;
 IMPORT:     'import' ;
 NAMESPACE:  'namespace' ;
 
-USING:      'using' ; // Imports all namespace definitions inside 
-                      // the current namespace
+
+// TODO
+OWNED:      'owned' ;  // "Imports" all namespace definitions inside 
+                       // the current namespace, so we can reference them
+                       // in a transparent way.
+                       //
+                       // Vector : struct { X: int; Y: int; Z: int; }
+                       //
+                       // Transform : struct {
+                       //   owned Position : Vector;
+                       // }
+                       //
+                       // ...
+                       // t := new Transform;
+                       // t.X += 5;
+                       // print( t.Y );
+                       // ...
+                       //
                       
 // TODO
 IS:         'is' ;

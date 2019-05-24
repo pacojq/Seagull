@@ -1,13 +1,6 @@
 
 
 
-Person : struct {
-    
-    Name : string;
-    Age : int;
-
-}
-
 
 namespace People {
 

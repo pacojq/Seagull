@@ -35,7 +35,7 @@ null
 'load'
 'import'
 'namespace'
-'using'
+'owned'
 'is'
 '.'
 ','
@@ -130,7 +130,7 @@ PRIVATE
 LOAD
 IMPORT
 NAMESPACE
-USING
+OWNED
 IS
 DOT
 COMMA

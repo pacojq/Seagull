@@ -17,17 +17,29 @@ namespace Seagull.AST
         public IDefinition MainFunction => _definitions.Find(def => def.Name.Equals("main") && def is FunctionDefinition);
         
         
+        /// <summary>
+        /// Imported files
+        /// </summary>
+        private readonly List<string> _loads;
+        public IEnumerable<string> Loads => _loads;
+        
+        
+        /// <summary>
+        /// Imported namespaces
+        /// </summary>
         private readonly List<string> _imports;
         public IEnumerable<string> Imports => _imports;
 
 
-        public Program(int line, int column, IEnumerable<string> imports, IEnumerable<IDefinition> definitions)
+        public Program(int line, int column, IEnumerable<string> loads, IEnumerable<string> imports, IEnumerable<IDefinition> definitions)
         {
             Line = line;
             Column = column;
+            _loads = new List<string>();
             _imports = new List<string>();
             _definitions = new List<IDefinition>();
             
+            _loads.AddRange(loads);
             _imports.AddRange(imports);
             _definitions.AddRange(definitions);
         }
