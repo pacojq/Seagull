@@ -29,17 +29,15 @@ CHAR:       'char' ;
 DOUBLE:     'double' ;
 STRING:     'string' ;
 STRUCT:     'struct' ;
-// TODO
 LONG:       'long' ;
 BYTE:       'byte' ;
-ENUM:       'enum' ;
-DELEGATE:   'delegate' ;
+ENUM:       'enum' ; // TODO
+DELEGATE:   'delegate' ; // TODO
 
 
 // Keywords
-// TODO
-NULL:       'null' ;
-PTR:        'ptr' ;
+NULL:       'null' ; // TODO
+PTR:        'ptr' ; // TODO
 
 TRUE:       'true' ;
 FALSE:      'false' ;
@@ -47,26 +45,24 @@ FALSE:      'false' ;
 IF:         'if' ;
 ELSE:       'else' ;
 WHILE:      'while' ;
-// TODO
+
 FOR:        'for' ;
 IN:         'in';
-SWITCH:     'switch' ;
-CASE:       'case' ;
+SWITCH:     'switch' ; // TODO
+CASE:       'case' ; // TODO
 BREAK:      'break' ; 
 CONTINUE:   'continue';
 
-// TODO
 NEW:        'new' ;
-DELETE:     'delete' ;
+DELETE:     'delete' ; // TODO
 RETURN:     'return' ;
 PRINT:      'print' ;
-READ:       'read' ;
-ASSERT:     'assert' ;
+READ:       'read' ; 
+ASSERT:     'assert' ; // TODO
 DELAY:      'delay' ;
 
-// TODO
-PUBLIC:     'public' ;
-PRIVATE:    'private' ;
+PUBLIC:     'public' ; // TODO
+PRIVATE:    'private' ; // TODO
 
 LOAD:       'load' ;
 IMPORT:     'import' ;
@@ -91,8 +87,8 @@ OWNED:      'owned' ;  // "Imports" all namespace definitions inside
                        // ...
                        //
                       
-// TODO
-IS:         'is' ;
+IS:         'is' ; // TODO
+DEFAULT:    'default' ;
 
 
 

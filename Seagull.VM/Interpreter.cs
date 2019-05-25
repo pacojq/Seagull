@@ -98,8 +98,13 @@ namespace Seagull.VM
         {
             while (whileLoop.Condition.Accept(this, p))
             {
+                bool cont = false;
                 foreach (IStatement st in whileLoop.Statements)
                 {
+                    if (cont) continue;
+                    if (st is Break) return null;
+                    if (st is Continue) cont = true;
+                    
                     st.Accept(this, p);
                 }
             }

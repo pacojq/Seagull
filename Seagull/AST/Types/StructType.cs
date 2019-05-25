@@ -15,8 +15,9 @@ namespace Seagull.AST.Types
             .Sum(t => t.NumberOfBytes);
         
 
+        public string StructName { get; internal set; }
+        
 
-        public string Name { get; internal set; }
         public IEnumerable<VariableDefinition> Fields => _fields;
 
         private readonly List<VariableDefinition> _fields;
@@ -25,21 +26,19 @@ namespace Seagull.AST.Types
             : base(line, column)
         {
             _fields = new List<VariableDefinition>(fields);
-            InitName(); // build name from fields
-        }
-
-        private void InitName()
-        {
-            Name = "struct ";
-            Name += "{ ";
+            
+            
+            StructName = "struct ";
+            StructName += "{ ";
             if (_fields.Count > 0)
             {
-                Name += _fields[0].ToString();
+                StructName += _fields[0].ToString();
                 for (int i = 1; i < _fields.Count; i ++)
-                    Name += ", " + _fields[i].ToString();
+                    StructName += ", " + _fields[i].ToString();
             }
-            Name += " }";
+            StructName += " }";
         }
+
         
         
         
@@ -80,7 +79,7 @@ namespace Seagull.AST.Types
 
         public override string ToString()
         {
-            return Name;
+            return StructName;
         }
         
         

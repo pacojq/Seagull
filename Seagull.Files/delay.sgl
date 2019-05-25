@@ -2,10 +2,16 @@
 
 main: ()
 {
-    // May print 13524
-    print("1");
-    delay print("2");
-    print("3");
-    delay print("4");
-    print("5");
+    delay print("end of the function");    
+    
+    {
+        // May print 13524
+        print("1");
+        delay print("2");
+        print("3");
+        delay print("4");
+        print("5");
+    }
+    print("\n");
 }
+

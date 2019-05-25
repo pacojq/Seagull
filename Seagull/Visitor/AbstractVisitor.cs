@@ -74,8 +74,18 @@ namespace Seagull.Visitor
 		{
 			return default(TR);
 		}
-	
-		
+
+		public virtual TR Visit(NamespaceType namespaceType, TP p)
+		{
+			return default(TR);
+		}
+
+		public virtual TR Visit(PointerType pointerType, TP p)
+		{
+			return default(TR);
+		}
+
+
 		public virtual TR Visit(StructType structType, TP p)
 		{
 			foreach (VariableDefinition def in structType.Fields)
@@ -121,7 +131,35 @@ namespace Seagull.Visitor
 			assignment.Right.Accept(this, p);
 			return default(TR);
 		}
-	
+
+		public virtual TR Visit(Break br, TP p)
+		{
+			return default(TR);
+		}
+
+		public virtual TR Visit(Continue cont, TP p)
+		{
+			return default(TR);
+		}
+
+		public virtual TR Visit(ForeachLoop foreachLoop, TP p)
+		{
+			foreachLoop.Element.Accept(this, p);
+			foreachLoop.Collection.Accept(this, p);
+			foreach (IStatement st in foreachLoop.Statements)
+				st.Accept(this, p);
+			return default(TR);
+		}
+
+		public virtual TR Visit(ForLoop forLoop, TP p)
+		{
+			forLoop.Initialization.Accept(this, p);
+			forLoop.Condition.Accept(this, p);
+			forLoop.Increment.Accept(this, p);
+			foreach (IStatement st in forLoop.Statements)
+				st.Accept(this, p);
+			return default(TR);
+		}
 
 
 		public virtual TR Visit(IfStatement ifStatement, TP p)
@@ -263,8 +301,16 @@ namespace Seagull.Visitor
 		{
 			return default(TR);
 		}
-	
-		
+
+		public virtual TR Visit(TernaryOperator ternary, TP p)
+		{
+			ternary.Condition.Accept(this, p);
+			ternary.ThenExpr.Accept(this, p);
+			ternary.ElseExpr.Accept(this, p);
+			return default(TR);
+		}
+
+
 		public virtual TR Visit(CharLiteral charLiteral, TP p)
 		{
 			return default(TR);

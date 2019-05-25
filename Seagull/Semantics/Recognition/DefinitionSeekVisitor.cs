@@ -66,7 +66,7 @@ namespace Seagull.Semantics
 					structDefinition.Column,
 					"Trying to declare a struct which already exists.");
 			}
-			((StructType) structDefinition.Type).Name = structDefinition.Name;
+			((StructType) structDefinition.Type).StructName = structDefinition.Name;
 
 			base.Visit(structDefinition, p);
 			return null;

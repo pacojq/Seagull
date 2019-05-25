@@ -50,9 +50,9 @@ enum TYPES : int {
 }
 
 enum TYPES : string {
-    TYPE_A = 0,
-    TYPE_B = 1,
-    TYPE_C = 2
+    TYPE_A = "0",
+    TYPE_B = "1",
+    TYPE_C = "2"
 }
 
 

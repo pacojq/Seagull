@@ -1,5 +1,6 @@
 using Seagull.AST;
 using Seagull.Semantics;
+using Seagull.Semantics.Loops;
 using Seagull.Semantics.Symbols;
 
 namespace Seagull.FrontEnd
@@ -23,6 +24,9 @@ namespace Seagull.FrontEnd
             ast.Accept(new RecognitionVisitor(_sm), null);
             
             // TODO return visitor: check all branches return
+            
+            // Loop visitor: check break/continue statements
+            ast.Accept(new LoopVisitor(), null);
             
             // Check types
             ast.Accept(new TypeCheckingVisitor(_sm), null);

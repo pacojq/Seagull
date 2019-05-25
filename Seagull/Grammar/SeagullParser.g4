@@ -71,9 +71,8 @@ type returns [IType Ast]:
 		
 
 // (a: int, b: int) -> int
-functionType returns [FunctionType Ast, 
-            List<VariableDefinition> Params = new List<VariableDefinition>(),
-            IType Rt]:
+functionType returns [FunctionType Ast]
+             locals [List<VariableDefinition> Params = new List<VariableDefinition>(), IType Rt]:
             
         L_PAR (p=parameters { $Params = $p.Ast;})?  par=R_PAR { $Rt=new VoidType($par.GetLine(), $par.GetCol()); } 
             (ARROW ((t=type { $Rt=$t.Ast; }) | (vt=voidType{ $Rt=$vt.Ast; })) )? // if we donot specify '-> returnType', it's void
@@ -95,11 +94,60 @@ parameters returns [List<VariableDefinition> Ast = new List<VariableDefinition>(
 //  struct {
 //      ...
 //  }
-structType returns [StructType Ast,
-            List<VariableDefinition> Fields = new List<VariableDefinition>()]:
+structType  returns [StructType Ast]
+            locals [List<VariableDefinition> Fields = new List<VariableDefinition>()]:
 
         s=STRUCT L_CURL (protectionLevel? f=variableDef { $Fields.Add($f.Ast); })* R_CURL 
         { $Ast = new StructType($s.GetLine(), $s.GetCol(), $Fields); }
+    ;
+    
+    
+    
+
+//  enum<int> {
+//      TYPE_A = 0,
+//      TYPE_B = 1,
+//      TYPE_C = 2
+//  }
+enumType    returns [EnumType Ast] 
+            locals [IType typeOf, List<EnumElementDefinition> defs = new List<EnumElementDefinition>()]:
+ 
+        // Default enum (int type)
+        (e=ENUM (LESS_THAN INT GREATER_THAN)? { $typeOf = new IntType($e.GetLine(), $e.GetCol());}
+            L_CURL
+            (
+                {int count = 0;}
+                d1=enumElement[$typeOf, count] { $defs.Add($d1.Ast); count ++; }
+                (COMMA d2=enumElement[$typeOf, count] 
+                    { $defs.Add($d2.Ast); count ++; } )*
+            )?
+            R_CURL
+            { $Ast = new EnumType($e.GetLine(), $e.GetCol(), $typeOf, $defs); }
+        )
+    |   (e=ENUM LESS_THAN t=type GREATER_THAN // TODO primitive or ID ?
+            L_CURL
+            (
+                d1=enumElement[$t.Ast, 0] { $defs.Add($d1.Ast); }
+                (COMMA d2=enumElement[$t.Ast, 0] { $defs.Add($d2.Ast); })*
+            )?
+            R_CURL
+            { $Ast = new EnumType($e.GetLine(), $e.GetCol(), $t.Ast, $defs); }
+        )
+    ;
+
+
+enumElement[IType typeOf, int defaultInt] returns [EnumElementDefinition Ast]:
+
+        id=ID ASSIGN expr=expression
+        { $Ast = new EnumElementDefinition($id.GetLine(), $id.GetCol(), $id.text, $expr.Ast, $typeOf); }
+        
+    |   id=ID
+        {
+            IExpression def = new IntLiteral($id.GetLine(), $id.GetCol(), defaultInt);
+            if (!($typeOf is IntType))
+                def = new Default($id.GetLine(), $id.GetCol(), $typeOf);
+            $Ast = new EnumElementDefinition($id.GetLine(), $id.GetCol(), $id.text, def, $typeOf); 
+        }
     ;
 
 
@@ -107,9 +155,11 @@ structType returns [StructType Ast,
 // Primitive types
 primitive returns [IType Ast]:
         ptr=PTR     { $Ast = new PointerType($ptr.GetLine(), $ptr.GetCol()); }
+    |   c=CHAR      { $Ast = new CharType($c.GetLine(), $c.GetCol()); }
+    |   b=BYTE      { $Ast = new ByteType($b.GetLine(), $b.GetCol()); }
 	|	i=INT       { $Ast = new IntType($i.GetLine(), $i.GetCol()); }
-	|   c=CHAR      { $Ast = new CharType($c.GetLine(), $c.GetCol()); }
 	|   d=DOUBLE    { $Ast = new DoubleType($d.GetLine(), $d.GetCol()); }
+	|   l=LONG      { $Ast = new LongType($l.GetLine(), $l.GetCol()); }
 	|   s=STRING    { $Ast = new StringType($s.GetLine(), $s.GetCol()); }
 	;
 
@@ -143,9 +193,8 @@ definition returns [IDefinition Ast]:
 	;
 
 
-namespaceDef returns[NamespaceDefinition Ast,
-            List<IDefinition> Def = new List<IDefinition>(),
-            NamespaceDefinition Parent = NamespaceManager.DefaultNamespace]:
+namespaceDef returns[NamespaceDefinition Ast]
+             locals [List<IDefinition> Def = new List<IDefinition>(), NamespaceDefinition Parent = NamespaceManager.DefaultNamespace]:
             
         n=NAMESPACE (p=ID DOT 
             { 
@@ -251,7 +300,7 @@ statement returns [List<IStatement> Ast = new List<IStatement>()]:
 		    
         // For / Foreach loop
     |   f=FOR L_PAR init=statement cond=expression SEMI_COL incr=statement R_PAR st=statement
-            { $Ast.Add(new ForLoop($f.GetLine(), $f.GetCol(), $init.Ast, $cond.Ast, $incr.Ast, $st.Ast)); }
+            { $Ast.Add(new ForLoop($f.GetLine(), $f.GetCol(), $init.Ast[0], $cond.Ast, $incr.Ast[0], $st.Ast)); }
     |   f=FOR L_PAR e=variable IN col=expression R_PAR st=statement
             { $Ast.Add(new ForeachLoop($f.GetLine(), $f.GetCol(), $e.Ast, $col.Ast, $st.Ast)); }
 	
@@ -268,7 +317,7 @@ statement returns [List<IStatement> Ast = new List<IStatement>()]:
 	|   e1=expression ASSIGN e2=expression SEMI_COL	{ $Ast.Add(new Assignment($e1.Ast, $e2.Ast)); }
   	
   	    // Return statement
-  	|   r=RETURN e=expression SEMI_COL  { $Ast.Add(new Return($r.GetLine(), $r.GetCol(), $e.Ast)); }
+  	|   r=RETURN expr=expression SEMI_COL  { $Ast.Add(new Return($r.GetLine(), $r.GetCol(), $expr.Ast)); }
   	|   r=RETURN SEMI_COL               { $Ast.Add(new Return($r.GetLine(), $r.GetCol(), null)); }
   	
   	    // Read / Print
@@ -317,6 +366,9 @@ expression returns [IExpression Ast]:
 		
 		// New
 	|   n=NEW id=ID { $Ast = new New($n.GetLine(), $n.GetCol(), $id.GetText()); }
+	
+	    // Default TODO: primitive or ID
+	|   def=DEFAULT L_PAR type R_PAR { $Ast = new Default($def.GetLine(), $def.GetCol(), $type.Ast); }
 		
 		// Unary operations
 	|   um=MINUS expression { $Ast = new UnaryMinus($um.GetLine(), $um.GetCol(), $expression.Ast); }
