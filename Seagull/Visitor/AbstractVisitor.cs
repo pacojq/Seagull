@@ -47,8 +47,13 @@ namespace Seagull.Visitor
 			arrayType.TypeOf.Accept(this, p);
 			return default(TR);
 		}
-	
-		
+
+
+		public virtual TR Visit(ByteType byteType, TP p)
+		{
+			return default(TR);
+		}
+
 		public virtual TR Visit(CharType charType, TP p)
 		{
 			return default(TR);
@@ -59,8 +64,15 @@ namespace Seagull.Visitor
 		{
 			return default(TR);
 		}
-	
-		
+
+		public virtual TR Visit(EnumType enumType, TP p)
+		{
+			foreach (EnumElementDefinition def in enumType.Elements)
+				def.Accept(this, p);
+			return default(TR);
+		}
+
+
 		public virtual TR Visit(FunctionType functionType, TP p)
 		{
 			functionType.ReturnType.Accept(this, p);
@@ -71,6 +83,11 @@ namespace Seagull.Visitor
 	
 		
 		public virtual TR Visit(IntType intType, TP p)
+		{
+			return default(TR);
+		}
+
+		public virtual TR Visit(LongType longType, TP p)
 		{
 			return default(TR);
 		}
@@ -224,8 +241,15 @@ namespace Seagull.Visitor
 				variableDefinition.Initialization.Accept(this, p);
 			return default(TR);
 		}
-		
-		
+
+
+		public virtual TR Visit(EnumElementDefinition enumElementDefinition, TP p)
+		{
+			enumElementDefinition.Type.Accept(this, p);
+			enumElementDefinition.Value.Accept(this, p);
+			return default(TR);
+		}
+
 		public virtual TR Visit(FunctionDefinition functionDefinition, TP p)
 		{
 			functionDefinition.Type.Accept(this, p);
@@ -239,9 +263,14 @@ namespace Seagull.Visitor
 			delegateDefinition.Type.Accept(this, p);
 			return default(TR);
 		}
-		
-		
-		
+
+		public virtual TR Visit(EnumDefinition enumDefinition, TP p)
+		{
+			enumDefinition.Type.Accept(this, p);
+			return default(TR);
+		}
+
+
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		/*														 */
 		/*					   EXPRESSIONS						 */
@@ -293,6 +322,12 @@ namespace Seagull.Visitor
 		{
 			cast.TargetType.Accept(this, p);
 			cast.Operand.Accept(this, p);
+			return default(TR);
+		}
+
+		public virtual TR Visit(Default def, TP p)
+		{
+			def.Type.Accept(this, p);
 			return default(TR);
 		}
 

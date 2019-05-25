@@ -1,13 +1,27 @@
 
 
 
-
-namespace People {
-
-    Person : struct {
-    
-        Name : string;
-        Age : int;
-    }
-
+struct Person {
+    Name : string;
+    Age : int;
+    Nationality : Nationality;
 }
+
+struct Athlete /*: Person TODO inheritance */ {
+    Sport : Sport;
+}
+
+enum Nationality : string {
+
+    SPANISH = "es",
+    BRITISH = "uk",
+    FRENCH = "fr"
+}
+
+enum Sport {
+    
+    SOCCER,
+    BASKETBALL,
+    TENNIS
+}
+

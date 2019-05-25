@@ -10,7 +10,7 @@ namespace Seagull.AST.Statements.Definitions
 
         public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)
         {
-            throw new System.NotImplementedException();
+            return visitor.Visit(this, p);
         }
     }
 }

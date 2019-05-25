@@ -31,10 +31,13 @@ namespace Seagull.Visitor
 		
 		TR Visit(ArrayType arrayType, TP p);
 		TR Visit(BooleanType booleanType, TP p);
+		TR Visit(ByteType byteType, TP p);
 		TR Visit(CharType charType, TP p);
 		TR Visit(DoubleType doubleType, TP p);
+		TR Visit(EnumType enumType, TP p);
 		TR Visit(FunctionType functionType, TP p);
 		TR Visit(IntType intType, TP p);
+		TR Visit(LongType longType, TP p);
 		TR Visit(NamespaceType namespaceType, TP p);
 		TR Visit(PointerType pointerType, TP p);
 		TR Visit(StringType stringType, TP p);
@@ -67,6 +70,8 @@ namespace Seagull.Visitor
 
 		// Definitions //
 		TR Visit(DelegateDefinition delegateDefinition, TP p);
+		TR Visit(EnumDefinition enumDefinition, TP p);
+		TR Visit(EnumElementDefinition enumElementDefinition, TP p);
 		TR Visit(FunctionDefinition functionDefinition, TP p);
 		TR Visit(NamespaceDefinition namespaceDefinition, TP p);
 		TR Visit(StructDefinition structDefinition, TP p);
@@ -101,6 +106,7 @@ namespace Seagull.Visitor
 		// All expressions
 		TR Visit(AttributeAccess attributeAccess, TP p);
 		TR Visit(Cast cast, TP p);
+		TR Visit(Default def, TP p);
 		TR Visit(FunctionInvocation functionInvocation, TP p);
 		TR Visit(Indexing indexing, TP p);
 		TR Visit(Negation negation, TP p);

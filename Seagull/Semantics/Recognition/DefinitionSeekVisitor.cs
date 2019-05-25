@@ -73,6 +73,21 @@ namespace Seagull.Semantics
 		}
 		
 		
+		public override Void Visit(EnumDefinition enumDefinition, Void p)
+		{
+			base.Visit(enumDefinition, p);
+			
+			bool success = _manager.Insert(enumDefinition);
+			if (!success)
+			{
+				ErrorHandler.Instance.RaiseError(
+					enumDefinition.Line, 
+					enumDefinition.Column,
+					"Trying to declare an enum which already exists.");
+			}
+			return null;
+		}
+		
 		
 		public override Void Visit(DelegateDefinition delegateDefinition, Void p)
 		{

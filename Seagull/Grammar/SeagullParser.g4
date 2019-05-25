@@ -91,48 +91,35 @@ parameters returns [List<VariableDefinition> Ast = new List<VariableDefinition>(
 
 
 
-//  struct {
-//      ...
+//  [struct Person] {
+//      Name : string;
+//      Age : int;
 //  }
 structType  returns [StructType Ast]
             locals [List<VariableDefinition> Fields = new List<VariableDefinition>()]:
 
-        s=STRUCT L_CURL (protectionLevel? f=variableDef { $Fields.Add($f.Ast); })* R_CURL 
-        { $Ast = new StructType($s.GetLine(), $s.GetCol(), $Fields); }
+        c=L_CURL (protectionLevel? f=variableDef { $Fields.Add($f.Ast); })* R_CURL 
+        { $Ast = new StructType($c.GetLine(), $c.GetCol(), $Fields); }
     ;
     
     
     
 
-//  enum<int> {
+//  [enum Types : int] {
 //      TYPE_A = 0,
 //      TYPE_B = 1,
 //      TYPE_C = 2
 //  }
-enumType    returns [EnumType Ast] 
-            locals [IType typeOf, List<EnumElementDefinition> defs = new List<EnumElementDefinition>()]:
+enumType[IType typeOf] returns [EnumType Ast] 
+            locals [List<EnumElementDefinition> defs = new List<EnumElementDefinition>()]:
  
-        // Default enum (int type)
-        (e=ENUM (LESS_THAN INT GREATER_THAN)? { $typeOf = new IntType($e.GetLine(), $e.GetCol());}
-            L_CURL
-            (
-                {int count = 0;}
-                d1=enumElement[$typeOf, count] { $defs.Add($d1.Ast); count ++; }
-                (COMMA d2=enumElement[$typeOf, count] 
-                    { $defs.Add($d2.Ast); count ++; } )*
-            )?
-            R_CURL
-            { $Ast = new EnumType($e.GetLine(), $e.GetCol(), $typeOf, $defs); }
-        )
-    |   (e=ENUM LESS_THAN t=type GREATER_THAN // TODO primitive or ID ?
-            L_CURL
-            (
-                d1=enumElement[$t.Ast, 0] { $defs.Add($d1.Ast); }
-                (COMMA d2=enumElement[$t.Ast, 0] { $defs.Add($d2.Ast); })*
-            )?
-            R_CURL
-            { $Ast = new EnumType($e.GetLine(), $e.GetCol(), $t.Ast, $defs); }
-        )
+        curl=L_CURL
+        (
+            d1=enumElement[$typeOf, 0] { $defs.Add($d1.Ast); }
+            (COMMA d2=enumElement[$typeOf, 0] { $defs.Add($d2.Ast); })*
+        )?
+        R_CURL
+        { $Ast = new EnumType($curl.GetLine(), $curl.GetCol(), $typeOf, $defs); }
     ;
 
 
@@ -190,6 +177,7 @@ definition returns [IDefinition Ast]:
 	|   variableDef     { $Ast = $variableDef.Ast; }
     |	fuctionDef      { $Ast = $fuctionDef.Ast; }
 	|   structDef       { $Ast = $structDef.Ast; }
+	|   enumDef         { $Ast = $enumDef.Ast; }
 	;
 
 
@@ -236,8 +224,14 @@ fuctionDef returns [FunctionDefinition Ast, IType funcType]:
     
     
 structDef returns [StructDefinition Ast]: 
-        n=ID COL t=structType 
-        { $Ast = new StructDefinition($n.GetLine(), $n.GetCol(), $n.GetText(), $t.Ast); }
+        s=STRUCT n=ID t=structType 
+        { $Ast = new StructDefinition($s.GetLine(), $s.GetCol(), $n.GetText(), $t.Ast); }
+    ;
+    
+enumDef returns [EnumDefinition Ast] locals[IType typeOf]: 
+        e=ENUM n=ID { $typeOf = new IntType($n.GetLine(), $n.GetCol()); }  // Default type is int
+            (COL t=type { $typeOf = $t.Ast; })? enumType[$typeOf]
+            { $Ast = new EnumDefinition($e.GetLine(), $e.GetCol(), $n.GetText(), $enumType.Ast); }
     ;
     
 

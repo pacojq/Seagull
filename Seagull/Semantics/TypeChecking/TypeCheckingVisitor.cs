@@ -73,6 +73,8 @@ namespace Seagull.Semantics
         public override Void Visit(Variable variable, IType p)
         {
 			base.Visit(variable, variable.Type);
+			if (variable.Definition == null)
+				throw new Exception(string.Format("Variable {0} has no definition", variable.Name));
 			variable.Type = variable.Definition.Type;
 			return null;
 		}

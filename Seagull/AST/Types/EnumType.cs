@@ -59,7 +59,7 @@ namespace Seagull.AST.Types
 
         public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)
         {
-            throw new NotImplementedException();
+            return visitor.Visit(this, p);
         }
     }
 }
