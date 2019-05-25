@@ -8,11 +8,9 @@ using Seagull.AST.Statements.Definitions;
 using Seagull.AST.Types;
 using Seagull.Errors;
 using Seagull.Semantics.Symbols;
-using Seagull.Visitor;
-
 using Void = Seagull.Visitor.Void;
 
-namespace Seagull.Semantics
+namespace Seagull.Semantics.TypeChecking
 {
     public class TypeCheckingVisitor : AbstractSemanticVisitor<Void, IType>
     {
@@ -52,13 +50,15 @@ namespace Seagull.Semantics
 	    
 	    public override Void Visit(FunctionDefinition funcDefinition, IType p)
 	    {
-		    SymbolManager.PushNamespace(funcDefinition);
+		    //SymbolManager.PushNamespace(funcDefinition);
+		    SymbolManager.Set();
 		    
 		    funcDefinition.Type.Accept(this, p);
 		    foreach (IStatement st in funcDefinition.Statements)
 			    st.Accept(this, funcDefinition.Type);
 		    
-		    SymbolManager.PopNamespace();
+		    //SymbolManager.PopNamespace();
+		    SymbolManager.Reset();
 			
 		    return null;
 	    }

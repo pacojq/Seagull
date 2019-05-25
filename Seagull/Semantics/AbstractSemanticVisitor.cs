@@ -1,4 +1,6 @@
 using Seagull.AST.Statements.Definitions;
+using Seagull.AST.Statements.Definitions.Namespaces;
+using Seagull.AST.Types;
 using Seagull.Semantics.Symbols;
 using Seagull.Visitor;
 
@@ -21,15 +23,18 @@ namespace Seagull.Semantics
 	        SymbolManager.PushNamespace(namespaceDefinition);
             base.Visit(namespaceDefinition, p);
             SymbolManager.PopNamespace();
+            
             return default(TR);
         }
 		
 		
         public override TR Visit(FunctionDefinition funcDefinition, TP p)
         {
-	        SymbolManager.PushNamespace(funcDefinition);
+	        //SymbolManager.PushNamespace(funcDefinition);
+	        SymbolManager.Set();
             base.Visit(funcDefinition, p);
-            SymbolManager.PopNamespace();
+            SymbolManager.Reset();
+            //SymbolManager.PopNamespace();
 			
             return default(TR);
         }
@@ -43,5 +48,6 @@ namespace Seagull.Semantics
 			
             return default(TR);
         }
+        
     }
 }

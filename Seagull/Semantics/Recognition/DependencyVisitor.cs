@@ -1,4 +1,3 @@
-using System;
 using Seagull.AST;
 using Seagull.AST.Expressions;
 using Seagull.AST.Statements.Definitions;
@@ -8,7 +7,7 @@ using Seagull.Logging;
 using Seagull.Semantics.Symbols;
 using Void = Seagull.Visitor.Void;
 
-namespace Seagull.Semantics
+namespace Seagull.Semantics.Recognition
 {
 	/// <summary>
 	/// TR: bool -> returns true if we've found a dependency.

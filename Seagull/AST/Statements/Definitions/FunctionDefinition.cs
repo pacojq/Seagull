@@ -5,7 +5,7 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Statements.Definitions
 {
-    public class FunctionDefinition : AbstractNamespaceDefinition
+    public class FunctionDefinition : AbstractDefinition
     {
         public int LocalBytesSum { get; set; }
         

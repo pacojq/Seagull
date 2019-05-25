@@ -17,7 +17,7 @@ namespace Seagull.AST.Types
         }
         
         
-        public bool IsEquivalent(IType other)
+        public virtual bool IsEquivalent(IType other)
         {
             return ToString().Equals(other.ToString());
         }

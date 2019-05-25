@@ -5,7 +5,9 @@ using Seagull.AST.Expressions.Binary;
 using Seagull.AST.Expressions.Literals;
 using Seagull.AST.Statements;
 using Seagull.AST.Statements.Definitions;
+using Seagull.AST.Statements.Definitions.Namespaces;
 using Seagull.AST.Types;
+using Seagull.AST.Types.Namespaces;
 using Seagull.Errors;
 
 namespace Seagull.Visitor
@@ -94,6 +96,8 @@ namespace Seagull.Visitor
 
 		public virtual TR Visit(NamespaceType namespaceType, TP p)
 		{
+			foreach (var def in namespaceType.Definitions)
+				def.Accept(this, p);
 			return default(TR);
 		}
 
@@ -105,7 +109,7 @@ namespace Seagull.Visitor
 
 		public virtual TR Visit(StructType structType, TP p)
 		{
-			foreach (VariableDefinition def in structType.Fields)
+			foreach (IDefinition def in structType.Definitions)
 				def.Accept(this, p);
 			return default(TR);
 		}
@@ -222,8 +226,7 @@ namespace Seagull.Visitor
 		
 		public virtual TR Visit(NamespaceDefinition namespaceDefinition, TP p)
 		{
-			foreach (var def in namespaceDefinition.Definitions)
-				def.Accept(this, p);
+			namespaceDefinition.Type.Accept(this, p);
 			return default(TR);
 		}
 

@@ -5,7 +5,6 @@ load "person.sgl"
 
 
 
-
 p : Person;
 
 sum: (a: int, b: int) -> int

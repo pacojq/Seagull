@@ -1,10 +1,11 @@
 using Seagull.AST.Statements.Definitions;
-using Seagull.AST.Types;
+using Seagull.AST.Statements.Definitions.Namespaces;
+using Seagull.AST.Types.Namespaces;
 using Seagull.Errors;
 using Seagull.Semantics.Symbols;
 using Seagull.Visitor;
 
-namespace Seagull.Semantics
+namespace Seagull.Semantics.Recognition
 {
 	public class DefinitionSeekVisitor : AbstractSemanticVisitor<Void, Void>
 	{
@@ -66,7 +67,7 @@ namespace Seagull.Semantics
 					structDefinition.Column,
 					"Trying to declare a struct which already exists.");
 			}
-			((StructType) structDefinition.Type).StructName = structDefinition.Name;
+			((StructType) structDefinition.Type).Name = structDefinition.Name;
 
 			base.Visit(structDefinition, p);
 			return null;

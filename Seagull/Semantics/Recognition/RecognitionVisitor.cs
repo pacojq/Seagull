@@ -1,18 +1,11 @@
-
-using System;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using Seagull.AST;
 using Seagull.AST.Expressions;
-using Seagull.AST.Statements.Definitions;
-using Seagull.AST.Types;
 using Seagull.Errors;
 using Seagull.Logging;
 using Seagull.Semantics.Symbols;
-using Seagull.Visitor;
 using Void = Seagull.Visitor.Void;
 
-namespace Seagull.Semantics
+namespace Seagull.Semantics.Recognition
 {
 	
 	/// <summary>

@@ -1,7 +1,9 @@
 using Seagull.AST;
 using Seagull.Semantics;
 using Seagull.Semantics.Loops;
+using Seagull.Semantics.Recognition;
 using Seagull.Semantics.Symbols;
+using Seagull.Semantics.TypeChecking;
 
 namespace Seagull.FrontEnd
 {
@@ -18,6 +20,8 @@ namespace Seagull.FrontEnd
         
         public void Analyze(Program ast)
         {
+            ast.Accept(new NamespaceVisitor(), null);
+            
             // Find declarations and variables, and bind them together
             ast.Accept(new DefinitionSeekVisitor(_sm), null);
             ast.Accept(new DependencyVisitor(_sm), null);
