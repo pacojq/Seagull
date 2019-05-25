@@ -15,18 +15,15 @@ sum: (a: int, b: int) -> int
 
 main: ()
 {
-    p = birth();
+    number : int = sum(5, 2);
+    print(number);
     
-    //number : int = sum(p.Age, 2);
-    //print(number);
-    
-    print(p.Nationality);
 }
-
+/*
 birth: () -> Person
 {
     print("a new person is born!\n");
     return new Person;
 }
-
+*/
 
