@@ -1,4 +1,5 @@
 using Seagull.AST.Statements.Definitions;
+using Seagull.AST.Statements.Definitions.Namespaces;
 
 namespace Seagull.AST
 {

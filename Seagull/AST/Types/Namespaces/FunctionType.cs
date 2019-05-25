@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Seagull.AST.Statements.Definitions;
+using Seagull.AST.Types.Namespaces;
 using Seagull.Errors;
 using Seagull.Visitor;
 
@@ -57,13 +59,31 @@ namespace Seagull.AST.Types
             
             return this.ReturnType;
         }
-        
-        
-        
-        
+
+
+        public override string ToString()
+        {
+            StringBuilder str = new StringBuilder();
+            
+            str.Append("(");
+
+            if (_params.Count > 0)
+                str.Append(_params[0].Type.ToString());
+            for (int i = 1; i < _params.Count; i ++)
+                str.Append(_params[i].Type.ToString());
+            
+            str.Append(") -> ");
+
+            str.Append(ReturnType.ToString());
+            
+            return str.ToString();
+        }
+
         public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)
         {
             return visitor.Visit(this, p);
         }
+
+        
     }
 }

@@ -35,7 +35,6 @@ namespace Seagull
 			    return;
 		    
 		    ErrorHandler.Instance.Clear();
-		    Semantics.SetUp();
 		    _loadedFilesManager = new LoadedFilesManager(this, filename);
 	    }
 	    
@@ -60,14 +59,18 @@ namespace Seagull
             
             
             // Load needed files //
+            
+            // Perform a grammatical analysis
             _loadedFilesManager.Load(filename, ast.Loads);
             while (!_loadedFilesManager.Ready) { /* Wait */ }
             
+            // ... and add to the Ast before the Semantic analysis
             ast.AddDefinitions(_loadedFilesManager.GetImports());
             _loadedFilesManager.Dispose();
             
             if (ErrorHandler.Instance.AnyError)
 				return null;
+            
             
             
             // Semantic Analysis //

@@ -6,25 +6,17 @@ using Seagull.AST.Expressions.Binary;
 using Seagull.AST.Statements;
 using Seagull.AST.Statements.Definitions;
 using Seagull.AST.Types;
+using Seagull.AST.Types.Namespaces;
 using Seagull.Errors;
+using Seagull.Logging;
 using Seagull.Semantics.Symbols;
 using Seagull.Visitor;
-
 using Void = Seagull.Visitor.Void;
 
-namespace Seagull.Semantics
+namespace Seagull.Semantics.TypeChecking
 {
-    public class TypeCheckingVisitor : AbstractSemanticVisitor<Void, IType>
+    public class TypeCheckingVisitor : AbstractVisitor<Void, IType>
     {
-	    
-	    private SymbolManager _manager;
-	    public TypeCheckingVisitor(SymbolManager manager) : base(manager)
-	    {
-		    _manager = manager;
-	    }
-	    
-	    
-	    
 	    
 	    public override Void Visit(VariableDefinition variableDefinition, IType p)
 	    {
@@ -50,22 +42,6 @@ namespace Seagull.Semantics
 		    return null;
 	    }
 	    
-	    public override Void Visit(FunctionDefinition funcDefinition, IType p)
-	    {
-		    SymbolManager.PushNamespace(funcDefinition);
-		    
-		    funcDefinition.Type.Accept(this, p);
-		    foreach (IStatement st in funcDefinition.Statements)
-			    st.Accept(this, funcDefinition.Type);
-		    
-		    SymbolManager.PopNamespace();
-			
-		    return null;
-	    }
-	    
-	    
-	    
-	    
 	    
 	    
 	    
@@ -74,7 +50,7 @@ namespace Seagull.Semantics
         {
 			base.Visit(variable, variable.Type);
 			if (variable.Definition == null)
-				throw new Exception(string.Format("Variable {0} has no definition", variable.Name));
+				throw new Exception($"Variable {variable.Name} has no definition");
 			variable.Type = variable.Definition.Type;
 			return null;
 		}
@@ -166,19 +142,7 @@ namespace Seagull.Semantics
 		public override Void Visit(New newExpr, IType p)
 		{
 			base.Visit(newExpr, p);
-			IDefinition def = SymbolManager.Instance.Find(newExpr.Id);
-			
-			if (def == null)
-			{
-				newExpr.Type = ErrorHandler.Instance.RaiseError(
-						newExpr.Line,
-						newExpr.Column,
-						$"Cannot create an instance of the undefined type {newExpr.Id}."
-					);
-				return null;
-			}
-			
-			newExpr.Type = def.Type.TypeCheckNew();
+			newExpr.Type = newExpr.Type.TypeCheckNew();
 			return null;
 		}
 		
@@ -245,7 +209,7 @@ namespace Seagull.Semantics
 		}
 		
 		
-		
+		/*
 	
 		public override Void Visit(Return returnStmnt, IType p)
 		{
@@ -270,7 +234,7 @@ namespace Seagull.Semantics
 			return null;
 		}
 		
-		
+		*/
 		
     }
 }

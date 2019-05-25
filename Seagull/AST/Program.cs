@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Seagull.AST.Statements;
 using Seagull.AST.Statements.Definitions;
 using Seagull.Visitor;
 

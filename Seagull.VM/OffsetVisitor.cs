@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Seagull.AST;
+using Seagull.AST.Statements;
 using Seagull.AST.Statements.Definitions;
 using Seagull.AST.Types;
+using Seagull.AST.Types.Namespaces;
 using Seagull.Visitor;
 using Void = Seagull.Visitor.Void;
 
@@ -25,11 +27,11 @@ namespace Seagull.VM
 			//base.Visit(structType, p);
 			int sum = 0;
 		
-			foreach (VariableDefinition vd in structType.Fields)
+			foreach (IDefinition def in structType.Definitions)
 			{
-				vd.Accept(this, p);
-				vd.Offset = sum;
-				sum += vd.Type.NumberOfBytes;
+				def.Accept(this, p);
+				def.Offset = sum;
+				sum += def.Type.NumberOfBytes;
 			}
 			return null;
 		}

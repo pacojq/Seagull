@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Seagull.AST.Statements.Definitions;
+using Seagull.AST.Statements.Definitions.Namespaces;
 using Seagull.AST.Types;
+using Seagull.AST.Types.Namespaces;
 using Seagull.Logging;
 
 namespace Seagull.Semantics.Symbols
@@ -35,24 +37,21 @@ namespace Seagull.Semantics.Symbols
 		/// We'll store them all in a dictionary, so we can get to them
 		/// as fast and easy as possible.
 		/// </summary>
-		private readonly IDictionary<string, NamespaceType> _namespaceTypes;
+		private readonly IDictionary<string, INamespaceType> _namespaceTypes;
 
 		
 		
-
-
 
 		private NamespaceManager()
 		{
-			_namespaceTypes = new Dictionary<string, NamespaceType>();
+			_namespaceTypes = new Dictionary<string, INamespaceType>();
 			
 			
 			// Default namespace
-			NamespaceType defType = new NamespaceType(0, 0);
+			NamespaceType defType = new NamespaceType(0, 0, "");
 			_namespaceTypes.Add("", defType);
 			_defaultNamespace = new NamespaceDefinition(0, 0, "", defType);
 		}
-
 
 
 		
@@ -69,13 +68,15 @@ namespace Seagull.Semantics.Symbols
 			Logger.Instance.LogDebug("New namespace defined: '{0}'", key);
 
 			if (!_namespaceTypes.ContainsKey(key))
-				_namespaceTypes.Add(key, new NamespaceType(line, column));
-			NamespaceType type = _namespaceTypes[key];
+				_namespaceTypes.Add(key, new NamespaceType(line, column, id));
+			INamespaceType type = _namespaceTypes[key];
 			
 			NamespaceDefinition result = new NamespaceDefinition(line, column, id, type);
 
 			// The parent MUST be a namespace
-			((NamespaceType) parent.Type).AddSubNamespace(id);
+			INamespaceType parentType = (INamespaceType) parent.Type;
+			parentType.AddDefinition(result);
+			type.ParentNamespace = parentType;
 			result.Namespace = parent;
 
 			return result;
