@@ -182,21 +182,23 @@ definition returns [IDefinition Ast]:
 
 
 namespaceDef returns[NamespaceDefinition Ast]
-             locals [List<IDefinition> Def = new List<IDefinition>(), NamespaceDefinition Parent = NamespaceManager.DefaultNamespace]:
+             locals [List<IDefinition> Def = new List<IDefinition>(), 
+                    NamespaceDefinition Parent = NamespaceManager.DefaultNamespace,
+                    NamespaceType ParentType]:
             
         n=NAMESPACE (p=ID DOT 
             { 
                 var ns = NamespaceManager.Instance.Define($n.GetLine(), $n.GetCol(), $p.GetText(), $Parent);
-                $Parent.AddDefinition(ns);
+                $ParentType = (NamespaceType) $Parent.Type;
                 $Parent = ns;
             })* 
         id=ID 
             { 
                 $Ast = NamespaceManager.Instance.Define($id.GetLine(), $id.GetCol(), $id.GetText(), $Parent);
-                $Parent.AddDefinition($Ast);
+                $ParentType = (NamespaceType) $Parent.Type;
             }
         L_CURL
-            (d=definition { $Ast.AddDefinition($d.Ast); })*
+            (d=definition { $ParentType.AddDefinition($d.Ast); })*
         R_CURL
     ;
 

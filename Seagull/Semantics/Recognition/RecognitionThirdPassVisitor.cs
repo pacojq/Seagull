@@ -1,35 +1,38 @@
-using System;
 using Seagull.AST;
 using Seagull.AST.Expressions;
 using Seagull.AST.Statements.Definitions;
+using Seagull.AST.Statements.Definitions.Namespaces;
 using Seagull.AST.Types;
 using Seagull.Errors;
 using Seagull.Logging;
 using Seagull.Semantics.Symbols;
+using Seagull.Visitor;
 using Void = Seagull.Visitor.Void;
 
-namespace Seagull.Semantics
+namespace Seagull.Semantics.Recognition
 {
 	/// <summary>
-	/// TR: bool -> returns true if we've found a dependency.
-	///
+	/// In this pass we're going to check for user-defined symbols.
+	/// 
 	/// We're gonna override any function in which we visit a IType child.
-	/// We'll check if that type has a dependency and we'll solve it.
+	/// We'll check if that type is user-defined and we'll find its declaration.
+	///
+	/// TR: bool -> returns true if we've found a user-defined symbol.
 	/// </summary>
-	public class DependencyVisitor : AbstractSemanticVisitor<bool, Void>
+	public class RecognitionThirdPassVisitor : AbstractRecognitionVisitor<bool>
 	{
-		
-		private readonly SymbolManager _manager;
 
-		public DependencyVisitor(SymbolManager manager) : base(manager)
+
+		public RecognitionThirdPassVisitor() : base("THIRD PASS", "Check for user-defined symbols")
 		{
-			_manager = manager;
+			
 		}
-
-
-		public override bool Visit(UnknownType unknown, Void p)
+		
+		
+		
+		public override bool Visit(UnknownType unknown, INamespaceDefinition p)
 		{
-			Logger.Instance.LogDebug("[{0} : {1}] DEPENDENCY FOUND: {2}",
+			Logger.Instance.LogDebug("[{0} : {1}] USER-DEFINED FOUND: {2}",
 				unknown.Line,
 				unknown.Column,
 				unknown.Name);
@@ -37,10 +40,10 @@ namespace Seagull.Semantics
 		}
 
 
-		private IType Solve(IType dependency)
+		private IType Solve(IType userDefined, INamespaceDefinition inNamespace)
 		{
-			UnknownType ut = (UnknownType) dependency;
-			IDefinition def = _manager.Find(ut.Name);
+			UnknownType ut = (UnknownType) userDefined;
+			IDefinition def = SymbolManager.Instance.Find(ut.Name, inNamespace);
 			
 			if (def == null)
 			{
@@ -51,7 +54,7 @@ namespace Seagull.Semantics
 				);
 			}
 			
-			Logger.Instance.LogDebug("[{0} : {1}] DEPENDENCY SOLVED: {2}",
+			Logger.Instance.LogDebug("[{0} : {1}] SYMBOL FOUND: {2}",
 				ut.Line,
 				ut.Column,
 				ut.Name);
@@ -78,21 +81,21 @@ namespace Seagull.Semantics
 		
 		
 		
-		public override bool Visit(ArrayType arrayType, Void p)
+		public override bool Visit(ArrayType arrayType, INamespaceDefinition p)
 		{
 			bool dependency = arrayType.TypeOf.Accept(this, p);
 			if (dependency)
-				arrayType.TypeOf = Solve(arrayType.TypeOf);
+				arrayType.TypeOf = Solve(arrayType.TypeOf, p);
 			
 			return false;
 		}
 		
 		
-		public override bool Visit(FunctionType functionType, Void p)
+		public override bool Visit(FunctionType functionType, INamespaceDefinition p)
 		{
 			bool dependency = functionType.ReturnType.Accept(this, p);
 			if (dependency)
-				functionType.ReturnType = Solve(functionType.ReturnType);
+				functionType.ReturnType = Solve(functionType.ReturnType, p);
 			
 			foreach (VariableDefinition def in functionType.Parameters)
 				def.Accept(this, p);
@@ -112,11 +115,11 @@ namespace Seagull.Semantics
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
 		
-		public override bool Visit(VariableDefinition variableDefinition, Void p)
+		public override bool Visit(VariableDefinition variableDefinition, INamespaceDefinition p)
 		{
 			bool dependency =  variableDefinition.Type.Accept(this, p);
 			if (dependency)
-				variableDefinition.Type = Solve(variableDefinition.Type);
+				variableDefinition.Type = Solve(variableDefinition.Type, p);
 			
 			if (variableDefinition.Initialization != null)
 				variableDefinition.Initialization.Accept(this, p);
@@ -138,16 +141,33 @@ namespace Seagull.Semantics
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
 		
-		public override bool Visit(Cast cast, Void p)
+		public override bool Visit(Cast cast, INamespaceDefinition p)
 		{
 			bool dependency = cast.TargetType.Accept(this, p);
 			if (dependency)
-				cast.TargetType = Solve(cast.TargetType);
+				cast.TargetType = Solve(cast.TargetType, p);
 			
 			cast.Operand.Accept(this, p);
 			return false;
 		}
 		
+		
+		public override bool Visit(New newExpr, INamespaceDefinition p)
+		{
+			base.Visit(newExpr, p);
+			IDefinition def = SymbolManager.Instance.Find(newExpr.Id, p);
+			
+			if (def == null)
+			{
+				newExpr.Type = ErrorHandler.Instance.RaiseError(
+					newExpr.Line,
+					newExpr.Column,
+					$"Unknown symbol {newExpr.Id}."
+				);
+				return false;
+			}
+			return false;
+		}
 		
 	}
 }

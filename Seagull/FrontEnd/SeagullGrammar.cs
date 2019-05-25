@@ -10,7 +10,7 @@ namespace Seagull.FrontEnd
 {
     internal class SeagullGrammar
     {
-        private ErrorListener _errorListener;
+        private readonly ErrorListener _errorListener;
 
 
         public SeagullGrammar()

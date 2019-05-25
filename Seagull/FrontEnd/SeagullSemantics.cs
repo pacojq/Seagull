@@ -1,27 +1,24 @@
 using Seagull.AST;
 using Seagull.Semantics;
 using Seagull.Semantics.Loops;
+using Seagull.Semantics.Recognition;
 using Seagull.Semantics.Symbols;
+using Seagull.Semantics.TypeChecking;
 
 namespace Seagull.FrontEnd
 {
     internal class SeagullSemantics
     {
-        private SymbolManager _sm;
-        
-        public void SetUp()
-        {
-            _sm = SymbolManager.Instance;
-        }
-        
         
         
         public void Analyze(Program ast)
         {
-            // Find declarations and variables, and bind them together
-            ast.Accept(new DefinitionSeekVisitor(_sm), null);
-            ast.Accept(new DependencyVisitor(_sm), null);
-            ast.Accept(new RecognitionVisitor(_sm), null);
+            // Sets up namespaces
+            SymbolManager.Instance.Init();
+            ast.Accept(new RecognitionFirstPassVisitor(), null);
+            ast.Accept(new RecognitionSecondPassVisitor(), null);
+            ast.Accept(new RecognitionThirdPassVisitor(), null);
+            ast.Accept(new RecognitionFourthPassVisitor(), null);
             
             // TODO return visitor: check all branches return
             
@@ -29,7 +26,7 @@ namespace Seagull.FrontEnd
             ast.Accept(new LoopVisitor(), null);
             
             // Check types
-            ast.Accept(new TypeCheckingVisitor(_sm), null);
+            ast.Accept(new TypeCheckingVisitor(), null);
             
             // TODO Find expressions that are L-Value
             //ast.Accept(new LValueVisitor(), null);

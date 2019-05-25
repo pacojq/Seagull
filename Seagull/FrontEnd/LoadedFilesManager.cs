@@ -63,6 +63,11 @@ namespace Seagull.FrontEnd
         }
         
         
+        /// <summary>
+        /// Perform a Lexical and Syntactical analysis 
+        /// </summary>
+        /// <param name="currentFile"></param>
+        /// <param name="newFile"></param>
         public void Load(string currentFile, string newFile)
         {
             Interlocked.Increment(ref _taskCount);

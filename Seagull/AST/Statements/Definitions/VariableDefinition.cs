@@ -17,7 +17,7 @@ namespace Seagull.AST.Statements.Definitions
 
         public override string ToString()
         {
-            return $"{Name} : {Type}";
+            return $"var {Name} : {Type}";
         }
         
         

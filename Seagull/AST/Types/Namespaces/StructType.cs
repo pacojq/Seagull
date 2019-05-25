@@ -5,53 +5,31 @@ using Seagull.AST.Statements.Definitions;
 using Seagull.Errors;
 using Seagull.Visitor;
 
-namespace Seagull.AST.Types
+namespace Seagull.AST.Types.Namespaces
 {
-    public class StructType : AbstractType
+    public class StructType : AbstractNamespaceType
     {
 
-        public override int NumberOfBytes => Fields
+        public override int NumberOfBytes => Definitions
             .Select(f => f.Type)
             .Sum(t => t.NumberOfBytes);
         
 
-        public string StructName { get; internal set; }
+
+        public sealed override string Name { get; set; }
         
-
-        public IEnumerable<VariableDefinition> Fields => _fields;
-
-        private readonly List<VariableDefinition> _fields;
         
         public StructType(int line, int column, IEnumerable<VariableDefinition> fields)
             : base(line, column)
         {
-            _fields = new List<VariableDefinition>(fields);
-            
-            
-            StructName = "struct ";
-            StructName += "{ ";
-            if (_fields.Count > 0)
-            {
-                StructName += _fields[0].ToString();
-                for (int i = 1; i < _fields.Count; i ++)
-                    StructName += ", " + _fields[i].ToString();
-            }
-            StructName += " }";
+            foreach (var f in fields)
+                AddDefinition(f);
+            Name = this.ToString();
         }
 
         
         
         
-        public VariableDefinition FindField(string name)
-        {
-            foreach (var def in _fields)
-                if (def.Name.Equals(name))
-                    return def;
-            return null;
-        }
-        
-
-
 
         public override IType TypeCheckNew()
         {
@@ -61,7 +39,7 @@ namespace Seagull.AST.Types
         
         public override IType TypeCheckAttributeAccess(string attribute)
         {
-            VariableDefinition def = FindField(attribute);
+            IDefinition def = FindDefinition(attribute);
             if (def == null)
             {
                 return ErrorHandler.Instance.RaiseError(
@@ -79,7 +57,18 @@ namespace Seagull.AST.Types
 
         public override string ToString()
         {
-            return StructName;
+            string str = Name;
+            str += " { ";
+
+            var defs = Definitions.ToList();
+            if (defs.Count > 0)
+            {
+                str += defs[0].ToString();
+                for (int i = 1; i < defs.Count; i ++)
+                    str += ", " + defs[i].ToString();
+            }
+            str += " }";
+            return str;
         }
         
         
@@ -88,5 +77,7 @@ namespace Seagull.AST.Types
         {
             return visitor.Visit(this, p);
         }
+
+
     }
 }

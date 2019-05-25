@@ -5,7 +5,6 @@ load "person.sgl"
 
 
 
-
 p : Person;
 
 sum: (a: int, b: int) -> int
@@ -23,7 +22,8 @@ main: ()
 birth: () -> Person
 {
     print("a new person is born!\n");
-    return new Person;
+    return 0; // TODO new Person;
 }
 */
+
 
