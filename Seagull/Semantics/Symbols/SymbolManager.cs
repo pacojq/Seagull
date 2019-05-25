@@ -26,9 +26,9 @@ namespace Seagull.Semantics.Symbols
 
 
         
-        private SymbolTable CurrentSymbolTable => _symbolTables[CurrentNamespace];
+        //private SymbolTable CurrentSymbolTable => _symbolTables[CurrentNamespace];
 
-        private string CurrentNamespace
+       /* private string CurrentNamespace
         {
             get
             {
@@ -37,7 +37,7 @@ namespace Seagull.Semantics.Symbols
                 return ((INamespaceType) _namespaces.Peek().Type).Fullname;
             }
         }
-
+*/
 
 
         
@@ -46,21 +46,21 @@ namespace Seagull.Semantics.Symbols
         /// <summary>
         /// Here we store the SymbolTable for each Namespace
         /// </summary>
-        private readonly Dictionary<string, SymbolTable> _symbolTables;
-
-        
-        private readonly Stack<INamespaceDefinition> _namespaces;
-
-
-        
+        private Dictionary<INamespaceType, SymbolTable> _symbolTables;
+        //private Stack<INamespaceDefinition> _namespaces;
 
 
         private SymbolManager()
         {
-            _symbolTables = new Dictionary<string, SymbolTable>();
-            _namespaces = new Stack<INamespaceDefinition>();
+        }
 
-            PushNamespace(NamespaceManager.DefaultNamespace);
+        public void Init()
+        {
+            _symbolTables = new Dictionary<INamespaceType, SymbolTable>();
+            //_namespaces = new Stack<INamespaceDefinition>();
+
+            AddNamespace(NamespaceManager.DefaultNamespace);
+            // PushNamespace(NamespaceManager.DefaultNamespace);
         }
         
         
@@ -69,22 +69,19 @@ namespace Seagull.Semantics.Symbols
         // ================== NAMESPACES STUFF ================== //
         
         
-        public void PushNamespace(INamespaceDefinition ns)
+        public void AddNamespace(INamespaceDefinition definition)
         {
-            _namespaces.Push(ns);
+            INamespaceType t = (INamespaceType) definition.Type;
+            if (!_symbolTables.ContainsKey(t))
+                _symbolTables.Add(t, new SymbolTable());
+        }
 
-            INamespaceType t = (INamespaceType) ns.Type;
-            if (!_symbolTables.ContainsKey(t.Fullname))
-                _symbolTables.Add(t.Fullname, new SymbolTable());
-        }
-        
-        public void PopNamespace()
+
+        private SymbolTable GetSymbolTable(INamespaceDefinition ns)
         {
-            if (_namespaces.Count == 1)
-                throw new InvalidOperationException("Cannot pop the Default Namespace.");
-            _namespaces.Pop();
+            INamespaceType t = (INamespaceType) ns.Type;
+            return _symbolTables[t];
         }
-        
         
         
         
@@ -92,28 +89,35 @@ namespace Seagull.Semantics.Symbols
         // ================== SYMBOL TABLE FACADE ================== //
 
 
-        public void Set()
+        public void Set(INamespaceDefinition inNamespace)
         {
-            CurrentSymbolTable.Set();
+            GetSymbolTable(inNamespace).Set();
         }
         
-        public void Reset()
+        public void Reset(INamespaceDefinition inNamespace)
         {
-            CurrentSymbolTable.Reset();
+            GetSymbolTable(inNamespace).Reset();
+        }
+
+        public int GetCurrentScope(INamespaceDefinition inNamespace)
+        {
+            return GetSymbolTable(inNamespace).Scope;
         }
         
         
         
         
         
-        public bool Insert(IDefinition definition)
+        public bool Insert(IDefinition definition, INamespaceDefinition inNamespace)
         {
-            INamespaceDefinition ns = _namespaces.Peek();
-            INamespaceType t = (INamespaceType) ns.Type;
+            INamespaceType t = (INamespaceType) inNamespace.Type;
+            SymbolTable st = _symbolTables[t];
             
-            
-            if (CurrentSymbolTable.Insert(definition))
+            if (st.Insert(definition))
             {
+                definition.Namespace = inNamespace;
+                t.AddDefinition(definition);
+                
                 Logger.Instance.LogDebug(
                     "Definition '{0}' inserted in namespace '{1}'. Scope = {2}", 
                     definition.Name, 
@@ -122,7 +126,6 @@ namespace Seagull.Semantics.Symbols
                 
                 return true;
             }
-            
             Logger.Instance.LogDebug(
                 "Could not insert definition '{0}' in namespace '{1}'", 
                 definition.Name, 
@@ -132,12 +135,12 @@ namespace Seagull.Semantics.Symbols
         }
         
         
-        public IDefinition Find(string id)
+        public IDefinition Find(string id, INamespaceDefinition inNamespace)
         {
-            IDefinition result;
+            IDefinition result = null;
             
             // Find in current namespace
-            INamespaceType t = (INamespaceType) _namespaces.Peek().Type;
+            INamespaceType t = (INamespaceType) inNamespace.Type;
             result = FindInNamespace(id, t);
             
             if (result != null)
@@ -165,14 +168,14 @@ namespace Seagull.Semantics.Symbols
             Logger.Instance.LogDebug("Looking for {0} in namespace '{1}'", id, ns.Fullname);
             
             // Find in current namespace
-            if (!_symbolTables.ContainsKey(ns.Fullname))
+            if (!_symbolTables.ContainsKey(ns))
             {
                 Logger.Instance.LogDebug("Key {0} not found.", ns.Fullname);
                 return FindInNamespace(id, ns.ParentNamespace);
             }
             
             
-            IDefinition result = _symbolTables[ns.Fullname].Find(id);
+            IDefinition result = _symbolTables[ns].Find(id);
             if (result != null)
             {
                 Logger.Instance.LogDebug("Result found =>\t{0}", result);
@@ -180,6 +183,7 @@ namespace Seagull.Semantics.Symbols
             }
 
             // ... and in parent namespaces
+            Logger.Instance.LogWarning("{0} was not in namespace '{1}'. Let's look in '{2}'", id, ns.Fullname, ns.ParentNamespace);
             return FindInNamespace(id, ns.ParentNamespace);
         }
 

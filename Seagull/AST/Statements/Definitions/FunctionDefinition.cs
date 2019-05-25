@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using Seagull.AST.Types;
-using Seagull.Semantics.Symbols;
 using Seagull.Visitor;
 
 namespace Seagull.AST.Statements.Definitions

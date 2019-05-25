@@ -84,7 +84,7 @@ namespace Seagull.Semantics.Symbols
 	
         private IDefinition FindInScope(int scope, string id)
         {
-            Logger.Instance.LogDebug("Finding for {0} in scope {1}", id, scope);
+            Logger.Instance.LogDebug("Finding {0} in scope {1}", id, scope);
             if (!_table[scope].ContainsKey(id))
                 return null;
             return _table[scope][id];
