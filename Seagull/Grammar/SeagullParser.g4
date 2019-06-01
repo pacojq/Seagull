@@ -17,8 +17,10 @@ options { tokenVocab = SeagullLexer; }
 	
 	using Seagull.AST.Statements;
 	using Seagull.AST.Statements.Definitions;
+	using Seagull.AST.Statements.Definitions.Namespaces;
 	
 	using Seagull.AST.Types;
+	using Seagull.AST.Types.Namespaces;
 }
 
 
@@ -57,18 +59,30 @@ type returns [IType Ast]:
         primitive       { $Ast = $primitive.Ast; }
 	|   functionType    { $Ast = $functionType.Ast; }
     |   structType      { $Ast = $structType.Ast; }
-
-	    // Array type
-	|   t=type L_BRACKET i=INT_CONSTANT R_BRACKET  
-				{ $Ast = ArrayType.BuildArray(int.Parse($i.text), $t.Ast); }
-				(L_BRACKET i2=INT_CONSTANT R_BRACKET 
-				    { $Ast = ArrayType.BuildArray( int.Parse($i2.text), $Ast); } 
-				)*
-		
-		// Custom type
-	|   userDefined=ID  { $Ast = new UnknownType($userDefined.GetLine(), $userDefined.GetCol(), $userDefined.GetText()); } 
+	|   userDefinedType  { $Ast = $userDefinedType.Ast; }
+	    // Arrays
+    |   t=type L_BRACKET i=INT_CONSTANT R_BRACKET  
+            { $Ast = ArrayType.BuildArray(int.Parse($i.text), $t.Ast); }
+            (L_BRACKET i2=INT_CONSTANT R_BRACKET 
+                { $Ast = ArrayType.BuildArray( int.Parse($i2.text), $Ast); } 
+            )*
 	;
-		
+
+
+	
+// Custom type, which might be in packages	
+userDefinedType returns [IType Ast]:
+        ID  { $Ast = new UnknownType($ID.GetLine(), $ID.GetCol(), $ID.GetText()); }
+    |   t=namespaceType DOT ID  { $Ast = new UnknownType($ID.GetLine(), $ID.GetCol(), $ID.GetText(), $t.Ast); }
+    ;
+    
+    
+namespaceType returns[INamespaceType Ast]:
+         ID  { $Ast = NamespaceManager.Instance.AddType($ID.GetLine(), $ID.GetCol(), $ID.GetText(), null); }    
+    |    t=namespaceType DOT ID { $Ast = NamespaceManager.Instance.AddType($ID.GetLine(), $ID.GetCol(), $ID.GetText(), $t.Ast); }
+    ;
+    
+    
 
 // (a: int, b: int) -> int
 functionType returns [FunctionType Ast]
@@ -101,7 +115,6 @@ structType  returns [StructType Ast]
         c=L_CURL (protectionLevel? f=variableDef { $Fields.Add($f.Ast); })* R_CURL 
         { $Ast = new StructType($c.GetLine(), $c.GetCol(), $Fields); }
     ;
-    
     
     
 
@@ -181,26 +194,12 @@ definition returns [IDefinition Ast]:
 	;
 
 
-namespaceDef returns[NamespaceDefinition Ast]
-             locals [List<IDefinition> Def = new List<IDefinition>(), 
-                    NamespaceDefinition Parent = NamespaceManager.DefaultNamespace,
-                    NamespaceType ParentType]:
-            
-        n=NAMESPACE (p=ID DOT 
-            { 
-                var ns = NamespaceManager.Instance.Define($n.GetLine(), $n.GetCol(), $p.GetText(), $Parent);
-                $ParentType = (NamespaceType) $Parent.Type;
-                $Parent = ns;
-            })* 
-        id=ID 
-            { 
-                $Ast = NamespaceManager.Instance.Define($id.GetLine(), $id.GetCol(), $id.GetText(), $Parent);
-                $ParentType = (NamespaceType) $Parent.Type;
-            }
-        L_CURL
-            (d=definition { $ParentType.AddDefinition($d.Ast); })*
-        R_CURL
+
+namespaceDef returns[NamespaceDefinition Ast]:
+        n=NAMESPACE t=namespaceType L_CURL (d=definition { $t.Ast.AddDefinition($d.Ast); })* R_CURL
+        { $Ast = NamespaceManager.Instance.Define($n.GetLine(), $n.GetCol(), $t.Ast); }
     ;
+    
 
 
 /*
