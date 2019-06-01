@@ -15,9 +15,10 @@ namespace Seagull.AST.Types.Namespaces
 		
 		
 		
-		public NamespaceType(int line, int col, string name) : base(line, col)
+		public NamespaceType(int line, int col, string name, NamespaceType parent) : base(line, col)
 		{
 			Name = name;
+			ParentNamespace = parent;
 		}
 		
 		

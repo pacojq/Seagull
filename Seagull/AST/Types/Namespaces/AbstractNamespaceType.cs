@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Seagull.Semantics.Symbols;
 
 namespace Seagull.AST.Types.Namespaces
 {
@@ -13,6 +14,8 @@ namespace Seagull.AST.Types.Namespaces
             get
             {
                 if (ParentNamespace == null)
+                    return Name;
+                if (ParentNamespace.Fullname.Length == 0)
                     return Name;
                 return ParentNamespace.Fullname + "." + Name;
             }

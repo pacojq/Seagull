@@ -48,36 +48,48 @@ namespace Seagull.Semantics.Symbols
 			
 			
 			// Default namespace
-			NamespaceType defType = new NamespaceType(0, 0, "");
+			NamespaceType defType = new NamespaceType(0, 0, "", null);
 			_namespaceTypes.Add("", defType);
 			_defaultNamespace = new NamespaceDefinition(0, 0, "", defType);
 		}
 
-
 		
-		public NamespaceDefinition Define(int line, int column, string id, NamespaceDefinition parent)
+		
+		
+		public INamespaceType AddType(int line, int column, string id, INamespaceType parent)
 		{
 			if (parent == null)
-				throw new ArgumentException("A namespace cannot have a null parent.");
-			
-			string key = "";
-			if (parent != DefaultNamespace)
-				key += parent.Name + ".";
-			key += id;
+				parent = (NamespaceType) DefaultNamespace.Type;
 
-			Logger.Instance.LogDebug("New namespace defined: '{0}'", key);
+			NamespaceType candidate = new NamespaceType(line, column, id, (NamespaceType) parent);
+			string key = candidate.Fullname;
+			
+			Logger.Instance.LogDebug("Namespace type found: [{0}:{1}] '{2}'", line, column, key);
+
+			// We already have it
+			if (_namespaceTypes.ContainsKey(key))
+				return _namespaceTypes[key];
+				
+			// Otherwise, we add it
+			_namespaceTypes.Add(key, candidate);
+			return candidate;
+		}
+		
+		
+		
+		
+		public NamespaceDefinition Define(int line, int column, INamespaceType type)
+		{
+			string key = type.Fullname;
+			Logger.Instance.LogDebug("Defining namespace: [{0}:{1}] '{2}'", line, column, key);
 
 			if (!_namespaceTypes.ContainsKey(key))
-				_namespaceTypes.Add(key, new NamespaceType(line, column, id));
-			INamespaceType type = _namespaceTypes[key];
-			
-			NamespaceDefinition result = new NamespaceDefinition(line, column, id, type);
+				throw new InvalidOperationException("Cannot define a type that's not been added to the NamespaceManager.");
 
-			// The parent MUST be a namespace
-			INamespaceType parentType = (INamespaceType) parent.Type;
+			NamespaceDefinition result = new NamespaceDefinition(line, column, type.Fullname, type);
+
+			INamespaceType parentType = type.ParentNamespace;
 			parentType.AddDefinition(result);
-			type.ParentNamespace = parentType;
-			result.Namespace = parent;
 
 			return result;
 		}

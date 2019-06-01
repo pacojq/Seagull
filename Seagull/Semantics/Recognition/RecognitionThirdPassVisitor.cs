@@ -3,6 +3,7 @@ using Seagull.AST.Expressions;
 using Seagull.AST.Statements.Definitions;
 using Seagull.AST.Statements.Definitions.Namespaces;
 using Seagull.AST.Types;
+using Seagull.AST.Types.Namespaces;
 using Seagull.Errors;
 using Seagull.Logging;
 using Seagull.Semantics.Symbols;
@@ -43,17 +44,35 @@ namespace Seagull.Semantics.Recognition
 		private IType Solve(IType userDefined, INamespaceDefinition inNamespace)
 		{
 			UnknownType ut = (UnknownType) userDefined;
-			IDefinition def = SymbolManager.Instance.Find(ut.Name, inNamespace);
+			IDefinition def;
 			
-			if (def == null)
+			// Find it in its namespace, if we're told so
+			if (ut.Namespace != null)
 			{
-				return ErrorHandler.Instance.RaiseError(
-					ut.Line,
-					ut.Column,
-					"Symbol not found: " + ut.Name
-				);
+				def = SymbolManager.Instance.Find(ut.Name, ut.Namespace);
+				if (def == null)
+				{
+					return ErrorHandler.Instance.RaiseError(
+						ut.Line,
+						ut.Column,
+						"Symbol not found: " + ut.Namespace.Name + "." + ut.Name
+					);
+				}
 			}
-			
+			// Otherwise, find it in the current namespace
+			else
+			{
+				def = SymbolManager.Instance.Find(ut.Name, inNamespace);
+				if (def == null)
+				{
+					return ErrorHandler.Instance.RaiseError(
+						ut.Line,
+						ut.Column,
+						"Symbol not found: " + ut.Name
+					);
+				}
+			}
+
 			Logger.Instance.LogDebug("[{0} : {1}] SYMBOL FOUND: {2}",
 				ut.Line,
 				ut.Column,

@@ -1,6 +1,6 @@
 
 
-//namespace People {
+namespace People {
 
     struct Person {
         Name : string;
@@ -26,4 +26,4 @@
         TENNIS
     }
     */
-//}
+}
