@@ -7,7 +7,7 @@ namespace Seagull.Errors
     public class ErrorType : AbstractType
     {
 
-        public override int NumberOfBytes => 0;
+        public override int CgNumberOfBytes => 0;
         
         public string Description { get; private set; }
         

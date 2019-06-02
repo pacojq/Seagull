@@ -12,7 +12,7 @@ namespace Seagull.AST.Types
     public class FunctionType : AbstractType
     {
         
-        public override int NumberOfBytes => ReturnType.NumberOfBytes;
+        public override int CgNumberOfBytes => ReturnType.CgNumberOfBytes;
         
         
         public IType ReturnType { get; internal set; }

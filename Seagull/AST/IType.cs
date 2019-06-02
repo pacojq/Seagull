@@ -5,7 +5,9 @@ namespace Seagull.AST
     public interface IType : IAstNode
     {
         
-	    int NumberOfBytes { get; }
+	    // Code Generation
+	    int CgNumberOfBytes { get; }
+	    string CgSuffix { get; set; }
 	    
         
         bool IsLogical { get; }

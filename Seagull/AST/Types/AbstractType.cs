@@ -7,7 +7,12 @@ namespace Seagull.AST.Types
 {
     public abstract class AbstractType : AbstractAstNode, IType
     {
-        public abstract int NumberOfBytes { get; }
+        // Code Generation
+        public abstract int CgNumberOfBytes { get; }
+        public virtual string CgSuffix { get; set; }
+        
+        
+        
         public virtual bool IsLogical => false;
         public virtual bool IsEnumerable => false;
 

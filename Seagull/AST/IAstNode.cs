@@ -9,5 +9,7 @@ namespace Seagull.AST
         
         
         TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p);
+        
+        //ICodeGenerationData CgData { get; set; }
     }
 }

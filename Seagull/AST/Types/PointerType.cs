@@ -5,7 +5,7 @@ namespace Seagull.AST.Types
     public class PointerType : AbstractType
     {
         
-        public override int NumberOfBytes => 1;
+        public override int CgNumberOfBytes => 1;
         
         
         public PointerType(int line, int column) : base(line, column)

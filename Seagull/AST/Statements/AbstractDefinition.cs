@@ -13,7 +13,7 @@ namespace Seagull.AST.Statements
 
         public int Scope { get; set; }
         
-        public int Offset { get; set; }
+        public int CgOffset { get; set; }
         
         public virtual INamespaceDefinition Namespace { get; set; }
 

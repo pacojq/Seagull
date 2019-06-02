@@ -39,6 +39,12 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="ICodeGenerator.cs" />
+        <Compile Include="Mapl\CgMapl.cs" />
+        <Compile Include="Mapl\CgVisitor.cs" />
+        <Compile Include="Mapl\ExecuteVisitor.cs" />
+        <Compile Include="Mapl\MaplCodeGenerator.cs" />
+        <Compile Include="Mapl\MaplTypesVisitor.cs" />
+        <Compile Include="Mapl\OffsetVisitor.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="SeagullCodeGeneration.cs" />
     </ItemGroup>
@@ -46,6 +52,10 @@
       <ProjectReference Include="..\..\Seagull\Seagull.csproj">
         <Project>{79d5c142-87e3-4b09-b516-c0da43eb1c1d}</Project>
         <Name>Seagull</Name>
+      </ProjectReference>
+      <ProjectReference Include="..\Seagull.Logging\Seagull.Logging.csproj">
+        <Project>{cb3d907f-cc80-4303-9f26-bfade1a0119f}</Project>
+        <Name>Seagull.Logging</Name>
       </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

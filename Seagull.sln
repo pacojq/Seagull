@@ -11,13 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seagull.VM", "Seagull.VM\Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seagull.Compiler", "Seagull.Compiler\Seagull.Compiler.csproj", "{CACC35BF-9410-401F-B3C6-146C72855093}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGeneration", "CodeGeneration", "{A4A6FFA0-26CA-4481-814D-A1B40B411F1C}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Seagull.CodeGeneration.Java", "Seagull.CodeGeneration\Seagull.CodeGeneration.Java\Seagull.CodeGeneration.Java.shproj", "{5E22FB58-F246-47DC-AFF9-E510DF809DC3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seagull.CodeGeneration", "Seagull.CodeGeneration\Seagull.CodeGeneration\Seagull.CodeGeneration.csproj", "{D41C6352-61B5-4EEE-877E-D2E997F5203A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seagull.Logging", "Seagull.Logging\Seagull.Logging.csproj", "{CB3D907F-CC80-4303-9F26-BFADE1A0119F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seagull.CodeGeneration", "Seagull.CodeGeneration\Seagull.CodeGeneration.csproj", "{D41C6352-61B5-4EEE-877E-D2E997F5203A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,14 +37,14 @@ Global
 		{CACC35BF-9410-401F-B3C6-146C72855093}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CACC35BF-9410-401F-B3C6-146C72855093}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CACC35BF-9410-401F-B3C6-146C72855093}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D41C6352-61B5-4EEE-877E-D2E997F5203A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D41C6352-61B5-4EEE-877E-D2E997F5203A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D41C6352-61B5-4EEE-877E-D2E997F5203A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D41C6352-61B5-4EEE-877E-D2E997F5203A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CB3D907F-CC80-4303-9F26-BFADE1A0119F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CB3D907F-CC80-4303-9F26-BFADE1A0119F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB3D907F-CC80-4303-9F26-BFADE1A0119F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB3D907F-CC80-4303-9F26-BFADE1A0119F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D41C6352-61B5-4EEE-877E-D2E997F5203A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D41C6352-61B5-4EEE-877E-D2E997F5203A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D41C6352-61B5-4EEE-877E-D2E997F5203A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D41C6352-61B5-4EEE-877E-D2E997F5203A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,7 +53,5 @@ Global
 		SolutionGuid = {34580613-19D0-4428-9494-F05C93400A52}
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{5E22FB58-F246-47DC-AFF9-E510DF809DC3} = {A4A6FFA0-26CA-4481-814D-A1B40B411F1C}
-		{D41C6352-61B5-4EEE-877E-D2E997F5203A} = {A4A6FFA0-26CA-4481-814D-A1B40B411F1C}
 	EndGlobalSection
 EndGlobal

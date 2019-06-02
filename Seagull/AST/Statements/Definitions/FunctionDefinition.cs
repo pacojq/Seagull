@@ -5,7 +5,10 @@ namespace Seagull.AST.Statements.Definitions
 {
     public class FunctionDefinition : AbstractDefinition
     {
-        public int LocalBytesSum { get; set; }
+        // Code generation
+        public int CgLocalBytesSum { get; set; }
+        
+        
         
         private readonly List<IStatement> _statements;
         

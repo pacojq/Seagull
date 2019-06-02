@@ -9,7 +9,7 @@ namespace Seagull.AST.Types
 {
     public class EnumType : AbstractType
     {
-        public override int NumberOfBytes => _elements.Count * TypeOf.NumberOfBytes;
+        public override int CgNumberOfBytes => _elements.Count * TypeOf.CgNumberOfBytes;
         
         public IType TypeOf { get; }
         public IEnumerable<EnumElementDefinition> Elements => _elements;

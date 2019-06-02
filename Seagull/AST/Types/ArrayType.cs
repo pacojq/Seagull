@@ -5,7 +5,7 @@ namespace Seagull.AST.Types
     public class ArrayType : AbstractType
     {
         
-        public override int NumberOfBytes => Size * TypeOf.NumberOfBytes;
+        public override int CgNumberOfBytes => Size * TypeOf.CgNumberOfBytes;
         
         
         public int Size { get; }

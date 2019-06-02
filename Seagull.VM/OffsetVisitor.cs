@@ -30,8 +30,8 @@ namespace Seagull.VM
 			foreach (IDefinition def in structType.Definitions)
 			{
 				def.Accept(this, p);
-				def.Offset = sum;
-				sum += def.Type.NumberOfBytes;
+				def.CgOffset = sum;
+				sum += def.Type.CgNumberOfBytes;
 			}
 			return null;
 		}
@@ -45,8 +45,8 @@ namespace Seagull.VM
 			// Global variable
 			if (variableDefinition.Scope == 0)
 			{
-				variableDefinition.Offset = _globalOffset;
-				_globalOffset += variableDefinition.Type.NumberOfBytes;
+				variableDefinition.CgOffset = _globalOffset;
+				_globalOffset += variableDefinition.Type.CgNumberOfBytes;
 			}
 		
 			return null;
@@ -69,9 +69,9 @@ namespace Seagull.VM
 				if (st is VariableDefinition)
 				{
 					VariableDefinition vd = (VariableDefinition) st;
-					localBytesSum += vd.Type.NumberOfBytes;
-					vd.Offset = -localBytesSum;
-					functionDefinition.LocalBytesSum = localBytesSum;
+					localBytesSum += vd.Type.CgNumberOfBytes;
+					vd.CgOffset = -localBytesSum;
+					functionDefinition.CgLocalBytesSum = localBytesSum;
 				}
 			}
 		
@@ -90,8 +90,8 @@ namespace Seagull.VM
 			{
 				VariableDefinition vd = parameters[i];
 				vd.Accept(this, p);
-				vd.Offset = localParamsSum;
-				localParamsSum += vd.Type.NumberOfBytes;
+				vd.CgOffset = localParamsSum;
+				localParamsSum += vd.Type.CgNumberOfBytes;
 			}
 		
 			return null;

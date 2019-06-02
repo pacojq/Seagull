@@ -16,8 +16,9 @@ namespace Seagull.Compiler
                 return;
 		    
             Console.WriteLine("The file is correct! Generating code...");
+            
             // TODO let the user switch target
-            string output = SeagullCodeGeneration.ForJava.Generate(program, args[1]);
+            string output = SeagullCodeGeneration.ForMapl.Generate(program, args[1]);
             Console.WriteLine("Output file: {0}", output);
         }
     }

@@ -5,7 +5,7 @@ namespace Seagull.AST.Types
     public class BooleanType : AbstractType
     {
         
-        public override int NumberOfBytes => 1;
+        public override int CgNumberOfBytes => 1;
 
 
         public override bool IsLogical => true;

@@ -10,9 +10,14 @@ namespace Seagull.AST
         IType Type { get; }
         
         int Scope { get; set; }
-        int Offset { get; set; }
         
         
         INamespaceDefinition Namespace { get; set; }
+        
+        
+        
+        
+        // Code Generation
+        int CgOffset { get; set; }
     }
 }

@@ -20,6 +20,6 @@ namespace Seagull.AST.Types
             return visitor.Visit(this, p);
         }
 
-        public override int NumberOfBytes => 0;
+        public override int CgNumberOfBytes => 0;
     }
 }
