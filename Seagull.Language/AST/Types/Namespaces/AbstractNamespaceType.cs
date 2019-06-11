@@ -53,6 +53,9 @@ namespace Seagull.Language.AST.Types.Namespaces
         
         public bool AddDefinition(IDefinition definition)
         {
+            if (definition == null)
+                throw new ArgumentNullException(nameof(definition));
+                
             if (_definitions.ContainsKey(definition.Name))
                 return false;
             _definitions.Add(definition.Name, definition);

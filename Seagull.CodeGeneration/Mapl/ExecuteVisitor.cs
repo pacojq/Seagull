@@ -31,7 +31,8 @@ namespace Seagull.CodeGeneration.Mapl
 		{
 			
 			foreach (IDefinition def in program.Definitions)
-				def.Accept(this, p);
+				if (def is VariableDefinition || def is FunctionDefinition)
+					def.Accept(this, p);
 			
 			
 			StringBuilder code = new StringBuilder();
@@ -185,6 +186,8 @@ namespace Seagull.CodeGeneration.Mapl
 			expr.Accept(_addressVisitor, null);
 			read.CgExecute += expr.CgAddress;
 			read.CgExecute += _cg.In(expr.Type);
+			read.CgExecute += _cg.Store(expr.Type);
+			
 			
 			return null;
 		}

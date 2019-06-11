@@ -1,11 +1,71 @@
+
+struct Date {
+    day : int;
+    month, year : int;
+}
+
+
+v : double[10];
+
 main: ()
 {
-    a : int[5][10];
-    b : int;
-    c : double;
+    value: double;
+    i, j : int;
+    w: int[4][5];
     
-    b = 3;
-    c = 2.5;
+    date : Date;
     
-    print(((double) b) + c);
+    read(date.day);
+    
+    date.year = (int)'a'; 
+    date.month = date.day*date.year%12+1;
+    
+    print(date.day);
+    print('\n');
+    print(date.month);
+    print('\n');
+    print((double) (date.year));
+    print('\n');
+    
+    read(value);
+    
+    i=0;
+    
+    while (i<10) {
+        v[i]=value; // * lvalue
+        print(i);
+        print(':');
+        print(v[i]);
+        print(' ');
+        
+        if (i%2) {
+            print('o');
+            print('d');
+            print('d');
+            print('\n');
+        }
+        else {
+            print('e');
+            print('v');
+            print('e');
+            print('n');
+            print('\n');
+        }
+        i=i+1;
+    }
+    print('\n');
+    
+    i=0;
+    while (i<4) {
+        j=0;
+        while (j<5) {
+            w[i][j]=i+j;
+            print(w[i][j]);
+            print(' ');
+            j=j+1;
+        }
+        print('\n');
+        i=i+1;
+    }
 }
+

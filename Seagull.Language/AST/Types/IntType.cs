@@ -7,6 +7,9 @@ namespace Seagull.Language.AST.Types
     {
         
         public override int CgNumberOfBytes => 2;
+
+
+        public override bool IsLogical => true;
         
         
         public IntType(int line, int column) : base(line, column)

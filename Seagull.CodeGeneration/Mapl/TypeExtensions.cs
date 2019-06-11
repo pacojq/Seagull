@@ -29,6 +29,7 @@ namespace Seagull.CodeGeneration.Mapl
 			switch (other.ToString())
 			{
 				case "int":
+				case "bool":
 					return MaplCodeGenerator.Instance.B2I();
 				case "double":
 					return MaplCodeGenerator.Instance.B2I()
@@ -46,7 +47,9 @@ namespace Seagull.CodeGeneration.Mapl
 					return MaplCodeGenerator.Instance.I2B();
 				case "double":
 					return MaplCodeGenerator.Instance.I2F();
-				case "int": return "";
+				case "int":
+				case "bool":
+					return "";
 			}
 			throw new InvalidOperationException($"Cannot convert int to {other}");
 		}
@@ -56,6 +59,7 @@ namespace Seagull.CodeGeneration.Mapl
 			switch (other.ToString())
 			{
 				case "int":
+				case "bool":
 					return MaplCodeGenerator.Instance.F2I();
 				case "char":
 					return MaplCodeGenerator.Instance.F2I()

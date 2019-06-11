@@ -3,6 +3,12 @@ using Seagull.Language.Visitor;
 
 namespace Seagull.Language.AST.Types
 {
+    
+    /// <summary>
+    /// The UnknownType represents a named type which has not been declared.
+    /// After the recognition phase has been executed, there should be no Unknown
+    /// Type in the AST.
+    /// </summary>
     public class UnknownType : AbstractType
     {
         

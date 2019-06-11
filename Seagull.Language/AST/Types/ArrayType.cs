@@ -28,6 +28,20 @@ namespace Seagull.Language.AST.Types
             TypeOf = typeOf;
         }
 
+        
+        
+        public override IType TypeCheckIndexing(IType other)
+        {
+            if (other is IntType || other is CharType)
+            {
+                return this.TypeOf;
+            }
+            return base.TypeCheckIndexing(other);
+        }
+
+        
+        
+        
 
         public override string ToString()
         {
