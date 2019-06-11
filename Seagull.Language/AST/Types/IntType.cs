@@ -45,6 +45,18 @@ namespace Seagull.Language.AST.Types
         }
         
         
+        public override IType TypeCheckCast(IType other)
+        {
+            switch (other.ToString())
+            {
+                case "char":    return other;
+                case "int":     return this;
+                case "double":  return other;
+            }
+            return base.TypeCheckArithmetic(other);
+        }
+        
+        
         
 
 

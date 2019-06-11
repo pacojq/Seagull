@@ -1,0 +1,8 @@
+main: ()
+{
+    a: int[5][10];
+    b : int;
+    c : double;
+    
+    print(((double) b) + c);
+}

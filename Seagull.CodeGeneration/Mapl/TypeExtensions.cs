@@ -26,7 +26,8 @@ namespace Seagull.CodeGeneration.Mapl
 		
 		private static string CgConvertImpl(CharType t, IType other)
 		{
-			switch (other.ToString()) {
+			switch (other.ToString())
+			{
 				case "int":
 					return MaplCodeGenerator.Instance.B2I();
 				case "double":
@@ -38,7 +39,8 @@ namespace Seagull.CodeGeneration.Mapl
 		
 		private static string CgConvertImpl(IntType t, IType other)
 		{
-			switch (other.ToString()) {
+			switch (other.ToString())
+			{
 				case "char":
 					return MaplCodeGenerator.Instance.I2B();
 				case "double":
@@ -49,7 +51,8 @@ namespace Seagull.CodeGeneration.Mapl
 		
 		private static string CgConvertImpl(DoubleType t, IType other)
 		{
-			switch (other.ToString()) {
+			switch (other.ToString())
+			{
 				case "int":
 					return MaplCodeGenerator.Instance.F2I();
 				case "char":
