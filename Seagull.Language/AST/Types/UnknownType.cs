@@ -26,6 +26,5 @@ namespace Seagull.Language.AST.Types
             return visitor.Visit(this, p);
         }
 
-        public override int CgNumberOfBytes => 0;
     }
 }

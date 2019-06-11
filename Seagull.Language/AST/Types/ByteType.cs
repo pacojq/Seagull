@@ -5,8 +5,6 @@ namespace Seagull.Language.AST.Types
     public class ByteType : AbstractType
     {
         
-        public override int CgNumberOfBytes => 1;
-        
         public override bool IsLogical => true;
         
         

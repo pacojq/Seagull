@@ -5,9 +5,6 @@ namespace Seagull.Language.AST.Types
     public class StringType : AbstractType
     {
         
-        public override int CgNumberOfBytes => 2; // A word
-        
-        
         public StringType(int line, int column) : base(line, column)
         {
         }

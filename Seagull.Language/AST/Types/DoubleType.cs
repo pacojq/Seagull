@@ -5,8 +5,6 @@ namespace Seagull.Language.AST.Types
     public class DoubleType : AbstractType
     {
         
-        public override int CgNumberOfBytes => 4;
-        
         
         public DoubleType(int line, int column) : base(line, column)
         {

@@ -6,7 +6,7 @@ namespace Seagull.Language.AST.Types
     public abstract class AbstractType : AbstractAstNode, IType
     {
         // Code Generation
-        public abstract int CgNumberOfBytes { get; }
+        public int CgNumberOfBytes { get; set; }
         
         public string CgSuffix { get; set; }
         

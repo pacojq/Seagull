@@ -9,10 +9,6 @@ namespace Seagull.Language.AST.Types
 {
     public class FunctionType : AbstractType
     {
-        
-        public override int CgNumberOfBytes => ReturnType.CgNumberOfBytes;
-        
-        
         public IType ReturnType { get; internal set; }
 
         private readonly List<VariableDefinition> _params;

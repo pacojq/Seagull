@@ -1,24 +1,29 @@
 using Seagull.Language.AST;
+using Seagull.VM.Visitors;
 
 namespace Seagull.VM
 {
     public class SVM
     {
 
-        private readonly Interpreter _interpreter;
+        private readonly Memory _memory;
 
         public SVM()
         {
-            _interpreter = new Interpreter();
+            // TODO variable memory?
+            _memory = new Memory(1024);
         }
         
         
         
         public void Run(Program program)
         {
-            _interpreter.SetUp();
+            program.Accept(new NumberOfBytesVisitor(), null);
             program.Accept(new OffsetVisitor(), null);
-            program.Accept(_interpreter, null);
+
+            SeagullVMAction execute = program.Accept(new ExecuteVisitor(_memory), null);
+
+            execute();
         }
         
     }

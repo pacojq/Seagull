@@ -7,9 +7,6 @@ namespace Seagull.Language.AST.Types.Namespaces
 {
 	public class NamespaceType : AbstractNamespaceType
 	{
-		public override int CgNumberOfBytes => 2; // A word
-
-		
 		
 		public sealed override string Name { get; set; }
 		

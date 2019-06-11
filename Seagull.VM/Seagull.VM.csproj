@@ -41,10 +41,13 @@
     <ItemGroup>
         <Compile Include="Instance.cs" />
         <Compile Include="Interpreter.cs" />
-        <Compile Include="OffsetVisitor.cs" />
         <Compile Include="MainProgram.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="SVM.cs" />
+        <Compile Include="Visitors\ExecuteVisitor.cs" />
+        <Compile Include="Visitors\NumberOfBytesVisitor.cs" />
+        <Compile Include="Visitors\OffsetVisitor.cs" />
+        <Compile Include="VMMemory\Memory.cs" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Seagull.Language\Seagull.Language.csproj">

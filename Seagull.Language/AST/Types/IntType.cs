@@ -6,9 +6,6 @@ namespace Seagull.Language.AST.Types
     public class IntType : AbstractType
     {
         
-        public override int CgNumberOfBytes => 2;
-
-
         public override bool IsLogical => true;
         
         

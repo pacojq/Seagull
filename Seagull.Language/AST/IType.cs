@@ -6,7 +6,7 @@ namespace Seagull.Language.AST
     {
         
 	    // Code Generation
-	    int CgNumberOfBytes { get; }
+	    int CgNumberOfBytes { get; set; }
 	    string CgSuffix { get; set; }
 	    
         

@@ -10,12 +10,6 @@ namespace Seagull.Language.AST.Types.Namespaces
     public class StructType : AbstractNamespaceType
     {
 
-        public override int CgNumberOfBytes => Definitions
-            .Select(f => f.Type)
-            .Sum(t => t.CgNumberOfBytes);
-        
-
-
         public sealed override string Name { get; set; }
         
         

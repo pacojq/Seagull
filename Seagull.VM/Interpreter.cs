@@ -11,29 +11,20 @@ using Void = Seagull.Language.Visitor.Void;
 
 namespace Seagull.VM
 {
-    internal class Interpreter : AbstractVisitor<dynamic, Void>
+    internal class Interpreter : AbstractVisitor<Void, Void>
     {
-        // The int is the offset
-        //private Dictionary<int, dynamic> _values;
+        private readonly Memory _memory;
         
-        private Dictionary<string, dynamic> _values;
-
-        public Interpreter()
+        public Interpreter(Memory memory)
         {
-            _values = new Dictionary<string, dynamic>();
+            _memory = memory;
         }
 
-        public void SetUp()
-        {
-            _values.Clear();
-        }
         
         
         
         
-        
-        
-        public override dynamic Visit(Program program, Void p)
+        public override Void Visit(Program program, Void p)
         {
             FunctionDefinition main = (FunctionDefinition) program.MainFunction;
 
