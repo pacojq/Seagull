@@ -21,211 +21,211 @@
 
 using System;
 using System.IO;
+using System.Text;
+using System.Diagnostics;
+using System.Collections.Generic;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Atn;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using DFA = Antlr4.Runtime.Dfa.DFA;
 
-namespace Seagull.Grammar
-{
-	[System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.7.2")]
-	[System.CLSCompliant(false)]
-	public partial class SeagullPreprocessorParser : Parser {
-		protected static DFA[] decisionToDFA;
-		protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
-		public const int
-			SHARP=1, VOID=2, INT=3, CHAR=4, DOUBLE=5, STRING=6, STRUCT=7, LONG=8, 
-			BYTE=9, ENUM=10, DELEGATE=11, NULL=12, PTR=13, TRUE=14, FALSE=15, IF=16, 
-			ELSE=17, WHILE=18, FOR=19, IN=20, SWITCH=21, CASE=22, BREAK=23, CONTINUE=24, 
-			NEW=25, DELETE=26, RETURN=27, PRINT=28, READ=29, ASSERT=30, DELAY=31, 
-			PUBLIC=32, PRIVATE=33, LOAD=34, IMPORT=35, NAMESPACE=36, OWNED=37, IS=38, 
-			DEFAULT=39, DOT=40, COMMA=41, COL=42, SEMI_COL=43, ASSIGN=44, STAR=45, 
-			SLASH=46, PERCENT=47, ARROW=48, QUESTION=49, PLUS=50, MINUS=51, PLUS_PLUS=52, 
-			MINUS_MINUS=53, ASSIGN_MUL=54, ASSIGN_DIV=55, ASSIGN_MOD=56, ASSIGN_SUM=57, 
-			ASSIGN_SUB=58, NOT=59, AND=60, OR=61, L_BRACKET=62, R_BRACKET=63, L_PAR=64, 
-			R_PAR=65, L_CURL=66, R_CURL=67, BIT_AND=68, BIT_OR=69, BIT_XOR=70, BIT_NOT=71, 
-			BIT_RIGHT=72, BIT_LEFT=73, EQUAL=74, NOT_EQUAL=75, LESS_THAN=76, GREATER_THAN=77, 
-			LESS_EQ_THAN=78, GREATER_EQ_THAN=79, ID=80, INT_CONSTANT=81, REAL_CONSTANT=82, 
-			CHAR_CONSTANT=83, STRING_CONSTANT=84, BOOLEAN_CONSTANT=85, SL_COMMENT=86, 
-			ML_COMMENT=87, BLANKS=88, DIR_DEFINE=89, DIR_IF=90, DIR_ELIF=91, DIR_ELSE=92, 
-			DIR_WHITESPACE=93, DIR_ML_COMMENT=94, DIR_NEWLINE=95;
-		public const int
-			RULE_preprocessorDirective = 0, RULE_preprocessorExpression = 1;
-		public static readonly string[] ruleNames = {
-			"preprocessorDirective", "preprocessorExpression"
-		};
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.7.2")]
+[System.CLSCompliant(false)]
+public partial class SeagullPreprocessorParser : Parser {
+	protected static DFA[] decisionToDFA;
+	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
+	public const int
+		SHARP=1, VOID=2, INT=3, CHAR=4, DOUBLE=5, STRING=6, STRUCT=7, LONG=8, 
+		BYTE=9, ENUM=10, DELEGATE=11, NULL=12, PTR=13, TRUE=14, FALSE=15, IF=16, 
+		ELSE=17, WHILE=18, FOR=19, IN=20, SWITCH=21, CASE=22, BREAK=23, CONTINUE=24, 
+		NEW=25, DELETE=26, RETURN=27, PRINT=28, READ=29, ASSERT=30, DELAY=31, 
+		PUBLIC=32, PRIVATE=33, LOAD=34, IMPORT=35, NAMESPACE=36, OWNED=37, IS=38, 
+		DEFAULT=39, DOT=40, COMMA=41, COL=42, SEMI_COL=43, ASSIGN=44, STAR=45, 
+		SLASH=46, PERCENT=47, ARROW=48, QUESTION=49, PLUS=50, MINUS=51, PLUS_PLUS=52, 
+		MINUS_MINUS=53, ASSIGN_MUL=54, ASSIGN_DIV=55, ASSIGN_MOD=56, ASSIGN_SUM=57, 
+		ASSIGN_SUB=58, NOT=59, AND=60, OR=61, L_BRACKET=62, R_BRACKET=63, L_PAR=64, 
+		R_PAR=65, L_CURL=66, R_CURL=67, BIT_AND=68, BIT_OR=69, BIT_XOR=70, BIT_NOT=71, 
+		BIT_RIGHT=72, BIT_LEFT=73, EQUAL=74, NOT_EQUAL=75, LESS_THAN=76, GREATER_THAN=77, 
+		LESS_EQ_THAN=78, GREATER_EQ_THAN=79, ID=80, INT_CONSTANT=81, REAL_CONSTANT=82, 
+		CHAR_CONSTANT=83, STRING_CONSTANT=84, BOOLEAN_CONSTANT=85, SL_COMMENT=86, 
+		ML_COMMENT=87, BLANKS=88, DIR_DEFINE=89, DIR_IF=90, DIR_ELIF=91, DIR_ELSE=92, 
+		DIR_WHITESPACE=93, DIR_ML_COMMENT=94, DIR_NEWLINE=95;
+	public const int
+		RULE_preprocessorDirective = 0, RULE_preprocessorExpression = 1;
+	public static readonly string[] ruleNames = {
+		"preprocessorDirective", "preprocessorExpression"
+	};
 
-		private static readonly string[] _LiteralNames = {
-			null, "'#'", "'void'", "'int'", "'char'", "'double'", "'string'", "'struct'", 
-			"'long'", "'byte'", "'enum'", "'delegate'", "'null'", "'ptr'", "'true'", 
-			"'false'", null, null, "'while'", "'for'", "'in'", "'switch'", "'case'", 
-			"'break'", "'continue'", "'new'", "'delete'", "'return'", "'print'", "'read'", 
-			"'assert'", "'delay'", "'public'", "'private'", "'load'", "'import'", 
-			"'namespace'", "'owned'", "'is'", "'default'", "'.'", "','", "':'", "';'", 
-			"'='", "'*'", "'/'", "'%'", "'->'", "'?'", "'+'", "'-'", "'++'", "'--'", 
-			"'*='", "'/='", "'%='", "'+='", "'-='", "'!'", "'&&'", "'||'", "'['", 
-			"']'", "'('", "')'", "'{'", "'}'", "'&'", "'|'", "'^'", "'~'", "'>>'", 
-			"'<<'", "'=='", "'!='", "'<'", "'>'", "'<='", "'>='", null, null, null, 
-			null, null, null, null, null, null, "'define'", null, "'elif'"
-		};
-		private static readonly string[] _SymbolicNames = {
-			null, "SHARP", "VOID", "INT", "CHAR", "DOUBLE", "STRING", "STRUCT", "LONG", 
-			"BYTE", "ENUM", "DELEGATE", "NULL", "PTR", "TRUE", "FALSE", "IF", "ELSE", 
-			"WHILE", "FOR", "IN", "SWITCH", "CASE", "BREAK", "CONTINUE", "NEW", "DELETE", 
-			"RETURN", "PRINT", "READ", "ASSERT", "DELAY", "PUBLIC", "PRIVATE", "LOAD", 
-			"IMPORT", "NAMESPACE", "OWNED", "IS", "DEFAULT", "DOT", "COMMA", "COL", 
-			"SEMI_COL", "ASSIGN", "STAR", "SLASH", "PERCENT", "ARROW", "QUESTION", 
-			"PLUS", "MINUS", "PLUS_PLUS", "MINUS_MINUS", "ASSIGN_MUL", "ASSIGN_DIV", 
-			"ASSIGN_MOD", "ASSIGN_SUM", "ASSIGN_SUB", "NOT", "AND", "OR", "L_BRACKET", 
-			"R_BRACKET", "L_PAR", "R_PAR", "L_CURL", "R_CURL", "BIT_AND", "BIT_OR", 
-			"BIT_XOR", "BIT_NOT", "BIT_RIGHT", "BIT_LEFT", "EQUAL", "NOT_EQUAL", "LESS_THAN", 
-			"GREATER_THAN", "LESS_EQ_THAN", "GREATER_EQ_THAN", "ID", "INT_CONSTANT", 
-			"REAL_CONSTANT", "CHAR_CONSTANT", "STRING_CONSTANT", "BOOLEAN_CONSTANT", 
-			"SL_COMMENT", "ML_COMMENT", "BLANKS", "DIR_DEFINE", "DIR_IF", "DIR_ELIF", 
-			"DIR_ELSE", "DIR_WHITESPACE", "DIR_ML_COMMENT", "DIR_NEWLINE"
-		};
-		public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
+	private static readonly string[] _LiteralNames = {
+		null, "'#'", "'void'", "'int'", "'char'", "'double'", "'string'", "'struct'", 
+		"'long'", "'byte'", "'enum'", "'delegate'", "'null'", "'ptr'", "'true'", 
+		"'false'", null, null, "'while'", "'for'", "'in'", "'switch'", "'case'", 
+		"'break'", "'continue'", "'new'", "'delete'", "'return'", "'print'", "'read'", 
+		"'assert'", "'delay'", "'public'", "'private'", "'load'", "'import'", 
+		"'namespace'", "'owned'", "'is'", "'default'", "'.'", "','", "':'", "';'", 
+		"'='", "'*'", "'/'", "'%'", "'->'", "'?'", "'+'", "'-'", "'++'", "'--'", 
+		"'*='", "'/='", "'%='", "'+='", "'-='", "'!'", "'&&'", "'||'", "'['", 
+		"']'", "'('", "')'", "'{'", "'}'", "'&'", "'|'", "'^'", "'~'", "'>>'", 
+		"'<<'", "'=='", "'!='", "'<'", "'>'", "'<='", "'>='", null, null, null, 
+		null, null, null, null, null, null, "'define'", null, "'elif'"
+	};
+	private static readonly string[] _SymbolicNames = {
+		null, "SHARP", "VOID", "INT", "CHAR", "DOUBLE", "STRING", "STRUCT", "LONG", 
+		"BYTE", "ENUM", "DELEGATE", "NULL", "PTR", "TRUE", "FALSE", "IF", "ELSE", 
+		"WHILE", "FOR", "IN", "SWITCH", "CASE", "BREAK", "CONTINUE", "NEW", "DELETE", 
+		"RETURN", "PRINT", "READ", "ASSERT", "DELAY", "PUBLIC", "PRIVATE", "LOAD", 
+		"IMPORT", "NAMESPACE", "OWNED", "IS", "DEFAULT", "DOT", "COMMA", "COL", 
+		"SEMI_COL", "ASSIGN", "STAR", "SLASH", "PERCENT", "ARROW", "QUESTION", 
+		"PLUS", "MINUS", "PLUS_PLUS", "MINUS_MINUS", "ASSIGN_MUL", "ASSIGN_DIV", 
+		"ASSIGN_MOD", "ASSIGN_SUM", "ASSIGN_SUB", "NOT", "AND", "OR", "L_BRACKET", 
+		"R_BRACKET", "L_PAR", "R_PAR", "L_CURL", "R_CURL", "BIT_AND", "BIT_OR", 
+		"BIT_XOR", "BIT_NOT", "BIT_RIGHT", "BIT_LEFT", "EQUAL", "NOT_EQUAL", "LESS_THAN", 
+		"GREATER_THAN", "LESS_EQ_THAN", "GREATER_EQ_THAN", "ID", "INT_CONSTANT", 
+		"REAL_CONSTANT", "CHAR_CONSTANT", "STRING_CONSTANT", "BOOLEAN_CONSTANT", 
+		"SL_COMMENT", "ML_COMMENT", "BLANKS", "DIR_DEFINE", "DIR_IF", "DIR_ELIF", 
+		"DIR_ELSE", "DIR_WHITESPACE", "DIR_ML_COMMENT", "DIR_NEWLINE"
+	};
+	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
-		[NotNull]
-		public override IVocabulary Vocabulary
+	[NotNull]
+	public override IVocabulary Vocabulary
+	{
+		get
 		{
-			get
-			{
-				return DefaultVocabulary;
-			}
+			return DefaultVocabulary;
 		}
+	}
 
-		public override string GrammarFileName { get { return "SeagullPreprocessorParser.g4"; } }
+	public override string GrammarFileName { get { return "SeagullPreprocessorParser.g4"; } }
 
-		public override string[] RuleNames { get { return ruleNames; } }
+	public override string[] RuleNames { get { return ruleNames; } }
 
-		public override string SerializedAtn { get { return new string(_serializedATN); } }
+	public override string SerializedAtn { get { return new string(_serializedATN); } }
 
-		static SeagullPreprocessorParser() {
-			decisionToDFA = new DFA[_ATN.NumberOfDecisions];
-			for (int i = 0; i < _ATN.NumberOfDecisions; i++) {
-				decisionToDFA[i] = new DFA(_ATN.GetDecisionState(i), i);
-			}
+	static SeagullPreprocessorParser() {
+		decisionToDFA = new DFA[_ATN.NumberOfDecisions];
+		for (int i = 0; i < _ATN.NumberOfDecisions; i++) {
+			decisionToDFA[i] = new DFA(_ATN.GetDecisionState(i), i);
 		}
+	}
 
 		public SeagullPreprocessorParser(ITokenStream input) : this(input, Console.Out, Console.Error) { }
 
 		public SeagullPreprocessorParser(ITokenStream input, TextWriter output, TextWriter errorOutput)
-			: base(input, output, errorOutput)
-		{
-			Interpreter = new ParserATNSimulator(this, _ATN, decisionToDFA, sharedContextCache);
-		}
+		: base(input, output, errorOutput)
+	{
+		Interpreter = new ParserATNSimulator(this, _ATN, decisionToDFA, sharedContextCache);
+	}
 
-		public partial class PreprocessorDirectiveContext : ParserRuleContext {
-			public ITerminalNode DIR_DEFINE() { return GetToken(SeagullPreprocessorParser.DIR_DEFINE, 0); }
-			public ITerminalNode ID() { return GetToken(SeagullPreprocessorParser.ID, 0); }
-			public ITerminalNode DIR_IF() { return GetToken(SeagullPreprocessorParser.DIR_IF, 0); }
-			public PreprocessorExpressionContext preprocessorExpression() {
-				return GetRuleContext<PreprocessorExpressionContext>(0);
-			}
-			public PreprocessorDirectiveContext(ParserRuleContext parent, int invokingState)
-				: base(parent, invokingState)
-			{
-			}
-			public override int RuleIndex { get { return RULE_preprocessorDirective; } }
-		}
-
-		[RuleVersion(0)]
-		public PreprocessorDirectiveContext preprocessorDirective() {
-			PreprocessorDirectiveContext _localctx = new PreprocessorDirectiveContext(Context, State);
-			EnterRule(_localctx, 0, RULE_preprocessorDirective);
-			try {
-				State = 8;
-				ErrorHandler.Sync(this);
-				switch (TokenStream.LA(1)) {
-					case DIR_DEFINE:
-						EnterOuterAlt(_localctx, 1);
-					{
-						State = 4; Match(DIR_DEFINE);
-						State = 5; Match(ID);
-					}
-						break;
-					case DIR_IF:
-						EnterOuterAlt(_localctx, 2);
-					{
-						State = 6; Match(DIR_IF);
-						State = 7; preprocessorExpression();
-					}
-						break;
-					default:
-						throw new NoViableAltException(this);
-				}
-			}
-			catch (RecognitionException re) {
-				_localctx.exception = re;
-				ErrorHandler.ReportError(this, re);
-				ErrorHandler.Recover(this, re);
-			}
-			finally {
-				ExitRule();
-			}
-			return _localctx;
-		}
-
-		public partial class PreprocessorExpressionContext : ParserRuleContext {
-			public ITerminalNode TRUE() { return GetToken(SeagullPreprocessorParser.TRUE, 0); }
-			public ITerminalNode FALSE() { return GetToken(SeagullPreprocessorParser.FALSE, 0); }
-			public PreprocessorExpressionContext(ParserRuleContext parent, int invokingState)
-				: base(parent, invokingState)
-			{
-			}
-			public override int RuleIndex { get { return RULE_preprocessorExpression; } }
-		}
-
-		[RuleVersion(0)]
+	public partial class PreprocessorDirectiveContext : ParserRuleContext {
+		public ITerminalNode DIR_DEFINE() { return GetToken(SeagullPreprocessorParser.DIR_DEFINE, 0); }
+		public ITerminalNode ID() { return GetToken(SeagullPreprocessorParser.ID, 0); }
+		public ITerminalNode DIR_IF() { return GetToken(SeagullPreprocessorParser.DIR_IF, 0); }
 		public PreprocessorExpressionContext preprocessorExpression() {
-			PreprocessorExpressionContext _localctx = new PreprocessorExpressionContext(Context, State);
-			EnterRule(_localctx, 2, RULE_preprocessorExpression);
-			int _la;
-			try {
+			return GetRuleContext<PreprocessorExpressionContext>(0);
+		}
+		public PreprocessorDirectiveContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_preprocessorDirective; } }
+	}
+
+	[RuleVersion(0)]
+	public PreprocessorDirectiveContext preprocessorDirective() {
+		PreprocessorDirectiveContext _localctx = new PreprocessorDirectiveContext(Context, State);
+		EnterRule(_localctx, 0, RULE_preprocessorDirective);
+		try {
+			State = 8;
+			ErrorHandler.Sync(this);
+			switch (TokenStream.LA(1)) {
+			case DIR_DEFINE:
 				EnterOuterAlt(_localctx, 1);
 				{
-					State = 10;
-					_la = TokenStream.LA(1);
-					if ( !(_la==TRUE || _la==FALSE) ) {
-						ErrorHandler.RecoverInline(this);
-					}
-					else {
-						ErrorHandler.ReportMatch(this);
-						Consume();
-					}
+				State = 4; Match(DIR_DEFINE);
+				State = 5; Match(ID);
 				}
+				break;
+			case DIR_IF:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 6; Match(DIR_IF);
+				State = 7; preprocessorExpression();
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
-			catch (RecognitionException re) {
-				_localctx.exception = re;
-				ErrorHandler.ReportError(this, re);
-				ErrorHandler.Recover(this, re);
-			}
-			finally {
-				ExitRule();
-			}
-			return _localctx;
 		}
-
-		private static char[] _serializedATN = {
-			'\x3', '\x608B', '\xA72A', '\x8133', '\xB9ED', '\x417C', '\x3BE7', '\x7786', 
-			'\x5964', '\x3', '\x61', '\xF', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
-			'\t', '\x3', '\x3', '\x2', '\x3', '\x2', '\x3', '\x2', '\x3', '\x2', '\x5', 
-			'\x2', '\v', '\n', '\x2', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x2', 
-			'\x2', '\x4', '\x2', '\x4', '\x2', '\x3', '\x3', '\x2', '\x10', '\x11', 
-			'\x2', '\r', '\x2', '\n', '\x3', '\x2', '\x2', '\x2', '\x4', '\f', '\x3', 
-			'\x2', '\x2', '\x2', '\x6', '\a', '\a', '[', '\x2', '\x2', '\a', '\v', 
-			'\a', 'R', '\x2', '\x2', '\b', '\t', '\a', '\\', '\x2', '\x2', '\t', '\v', 
-			'\x5', '\x4', '\x3', '\x2', '\n', '\x6', '\x3', '\x2', '\x2', '\x2', '\n', 
-			'\b', '\x3', '\x2', '\x2', '\x2', '\v', '\x3', '\x3', '\x2', '\x2', '\x2', 
-			'\f', '\r', '\t', '\x2', '\x2', '\x2', '\r', '\x5', '\x3', '\x2', '\x2', 
-			'\x2', '\x3', '\n',
-		};
-
-		public static readonly ATN _ATN =
-			new ATNDeserializer().Deserialize(_serializedATN);
-
-
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
 	}
+
+	public partial class PreprocessorExpressionContext : ParserRuleContext {
+		public ITerminalNode TRUE() { return GetToken(SeagullPreprocessorParser.TRUE, 0); }
+		public ITerminalNode FALSE() { return GetToken(SeagullPreprocessorParser.FALSE, 0); }
+		public PreprocessorExpressionContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_preprocessorExpression; } }
+	}
+
+	[RuleVersion(0)]
+	public PreprocessorExpressionContext preprocessorExpression() {
+		PreprocessorExpressionContext _localctx = new PreprocessorExpressionContext(Context, State);
+		EnterRule(_localctx, 2, RULE_preprocessorExpression);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 10;
+			_la = TokenStream.LA(1);
+			if ( !(_la==TRUE || _la==FALSE) ) {
+			ErrorHandler.RecoverInline(this);
+			}
+			else {
+				ErrorHandler.ReportMatch(this);
+			    Consume();
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	private static char[] _serializedATN = {
+		'\x3', '\x608B', '\xA72A', '\x8133', '\xB9ED', '\x417C', '\x3BE7', '\x7786', 
+		'\x5964', '\x3', '\x61', '\xF', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
+		'\t', '\x3', '\x3', '\x2', '\x3', '\x2', '\x3', '\x2', '\x3', '\x2', '\x5', 
+		'\x2', '\v', '\n', '\x2', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x2', 
+		'\x2', '\x4', '\x2', '\x4', '\x2', '\x3', '\x3', '\x2', '\x10', '\x11', 
+		'\x2', '\r', '\x2', '\n', '\x3', '\x2', '\x2', '\x2', '\x4', '\f', '\x3', 
+		'\x2', '\x2', '\x2', '\x6', '\a', '\a', '[', '\x2', '\x2', '\a', '\v', 
+		'\a', 'R', '\x2', '\x2', '\b', '\t', '\a', '\\', '\x2', '\x2', '\t', '\v', 
+		'\x5', '\x4', '\x3', '\x2', '\n', '\x6', '\x3', '\x2', '\x2', '\x2', '\n', 
+		'\b', '\x3', '\x2', '\x2', '\x2', '\v', '\x3', '\x3', '\x2', '\x2', '\x2', 
+		'\f', '\r', '\t', '\x2', '\x2', '\x2', '\r', '\x5', '\x3', '\x2', '\x2', 
+		'\x2', '\x3', '\n',
+	};
+
+	public static readonly ATN _ATN =
+		new ATNDeserializer().Deserialize(_serializedATN);
+
+
 }

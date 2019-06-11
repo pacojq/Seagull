@@ -137,20 +137,38 @@ namespace Seagull.Semantics.Symbols
         
         public IDefinition Find(string id, INamespaceDefinition inNamespace)
         {
+            return Find(id, (INamespaceType) inNamespace.Type);
+        }
+        
+        public IDefinition Find(string id, INamespaceType inNamespace)
+        {
             IDefinition result = null;
             
             // Find in current namespace
-            INamespaceType t = (INamespaceType) inNamespace.Type;
-            result = FindInNamespace(id, t);
+            result = FindInNamespace(id, inNamespace);
             
             if (result != null)
                 return result;
             
             // TODO find in imported namespaces
             
+            // TODO check if the namespace is partial
+            // F.E.:
+            //
+            //    namespace People.Jumping {
+            //        struct Jumper { }
+            //    }
+            //    ...
+            //
+            //    import People;
+            //    a : Jumping.Jumper;
+            
             
             return null;
         }
+        
+        
+        
         
         
         /// <summary>
