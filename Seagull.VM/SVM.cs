@@ -1,3 +1,5 @@
+using Seagull.Language.AST;
+
 namespace Seagull.VM
 {
     public class SVM
@@ -12,7 +14,7 @@ namespace Seagull.VM
         
         
         
-        public void Run(AST.Program program)
+        public void Run(Program program)
         {
             _interpreter.SetUp();
             program.Accept(new OffsetVisitor(), null);

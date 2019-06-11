@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using Seagull.AST.Statements.Definitions;
-using Seagull.Semantics;
-using Seagull.Semantics.Symbols;
+using Seagull.Language.AST.Statements.Definitions;
+using Seagull.Language.Semantics;
+using Seagull.Language.Semantics.Symbols;
 
 namespace Seagull.Tests.Semantics
 {

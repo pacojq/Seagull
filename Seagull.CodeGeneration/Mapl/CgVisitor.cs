@@ -1,15 +1,15 @@
 using System;
-using Seagull.AST;
-using Seagull.AST.Expressions;
-using Seagull.AST.Expressions.Binary;
-using Seagull.AST.Expressions.Literals;
-using Seagull.AST.Statements;
-using Seagull.AST.Statements.Definitions;
-using Seagull.AST.Statements.Definitions.Namespaces;
-using Seagull.AST.Types;
-using Seagull.AST.Types.Namespaces;
-using Seagull.Errors;
-using Seagull.Visitor;
+using Seagull.Language.AST;
+using Seagull.Language.AST.Expressions;
+using Seagull.Language.AST.Expressions.Binary;
+using Seagull.Language.AST.Expressions.Literals;
+using Seagull.Language.AST.Statements;
+using Seagull.Language.AST.Statements.Definitions;
+using Seagull.Language.AST.Statements.Definitions.Namespaces;
+using Seagull.Language.AST.Types;
+using Seagull.Language.AST.Types.Namespaces;
+using Seagull.Language.Errors;
+using Seagull.Language.Visitor;
 
 namespace Seagull.CodeGeneration.Mapl
 {

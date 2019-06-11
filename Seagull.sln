@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.539
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seagull", "Seagull\Seagull.csproj", "{79D5C142-87E3-4B09-B516-C0DA43EB1C1D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seagull.Language", "Seagull.Language\Seagull.Language.csproj", "{79D5C142-87E3-4B09-B516-C0DA43EB1C1D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seagull.Tests", "Seagull.Tests\Seagull.Tests.csproj", "{D02D63A9-9507-4A42-A492-93300A988ED5}"
 EndProject

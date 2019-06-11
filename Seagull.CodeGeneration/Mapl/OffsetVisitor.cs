@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using Seagull.AST;
-using Seagull.AST.Statements.Definitions;
-using Seagull.AST.Types;
-using Seagull.AST.Types.Namespaces;
+using Seagull.Language.AST;
+using Seagull.Language.AST.Statements.Definitions;
+using Seagull.Language.AST.Types;
+using Seagull.Language.AST.Types.Namespaces;
 using Seagull.Logging;
-using Seagull.Visitor;
-using Void = Seagull.Visitor.Void;
+using Seagull.Language.Visitor;
+using Void = Seagull.Language.Visitor.Void;
 
 namespace Seagull.CodeGeneration.Mapl
 {

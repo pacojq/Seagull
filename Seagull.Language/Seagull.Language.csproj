@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{79D5C142-87E3-4B09-B516-C0DA43EB1C1D}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>Seagull.Language</RootNamespace>
+        <AssemblyName>Seagull.Language</AssemblyName>
+        <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="Antlr4.Runtime.Standard, Version=4.7.2.0, Culture=neutral, PublicKeyToken=e78b2c5abd1fcb3f">
+          <HintPath>..\packages\Antlr4.Runtime.Standard.4.7.2\lib\net35\Antlr4.Runtime.Standard.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="AST\AbstractAstNode.cs" />
+        <Compile Include="AST\Expressions\AbstractExpression.cs" />
+        <Compile Include="AST\Expressions\AttributeAccess.cs" />
+        <Compile Include="AST\Expressions\BinaryOperation.cs" />
+        <Compile Include="AST\Expressions\Binary\Arithmetic.cs" />
+        <Compile Include="AST\Expressions\Binary\Comparison.cs" />
+        <Compile Include="AST\Expressions\Binary\LogicalOperation.cs" />
+        <Compile Include="AST\Expressions\Cast.cs" />
+        <Compile Include="AST\Expressions\Default.cs" />
+        <Compile Include="AST\Expressions\FunctionInvocation.cs" />
+        <Compile Include="AST\Expressions\Indexing.cs" />
+        <Compile Include="AST\Expressions\Literal.cs" />
+        <Compile Include="AST\Expressions\Literals\BooleanLiteral.cs" />
+        <Compile Include="AST\Expressions\Literals\CharLiteral.cs" />
+        <Compile Include="AST\Expressions\Literals\DoubleLiteral.cs" />
+        <Compile Include="AST\Expressions\Literals\IntLiteral.cs" />
+        <Compile Include="AST\Expressions\Literals\StringLiteral.cs" />
+        <Compile Include="AST\Expressions\Negation.cs" />
+        <Compile Include="AST\Expressions\New.cs" />
+        <Compile Include="AST\Expressions\TernaryOperator.cs" />
+        <Compile Include="AST\Expressions\UnaryMinus.cs" />
+        <Compile Include="AST\Expressions\Variable.cs" />
+        <Compile Include="AST\IAstNode.cs" />
+        <Compile Include="AST\IDefinition.cs" />
+        <Compile Include="AST\IExpression.cs" />
+        <Compile Include="AST\IStatement.cs" />
+        <Compile Include="AST\IType.cs" />
+        <Compile Include="AST\Program.cs" />
+        <Compile Include="AST\Statements\AbstractStatement.cs" />
+        <Compile Include="AST\Statements\Assignment.cs" />
+        <Compile Include="AST\Statements\AbstractDefinition.cs" />
+        <Compile Include="AST\Statements\Break.cs" />
+        <Compile Include="AST\Statements\Continue.cs" />
+        <Compile Include="AST\Statements\Definitions\DelegateDefinition.cs" />
+        <Compile Include="AST\Statements\Definitions\EnumDefinition.cs" />
+        <Compile Include="AST\Statements\Definitions\EnumElementDefinition.cs" />
+        <Compile Include="AST\Statements\Definitions\FunctionDefinition.cs" />
+        <Compile Include="AST\Statements\Definitions\Namespaces\INamespaceDefinition.cs" />
+        <Compile Include="AST\Statements\Definitions\Namespaces\NamespaceDefinition.cs" />
+        <Compile Include="AST\Statements\Definitions\Namespaces\StructDefinition.cs" />
+        <Compile Include="AST\Statements\Definitions\VariableDefinition.cs" />
+        <Compile Include="AST\Statements\ForeachLoop.cs" />
+        <Compile Include="AST\Statements\ForLoop.cs" />
+        <Compile Include="AST\Statements\IfStatement.cs" />
+        <Compile Include="AST\Statements\Print.cs" />
+        <Compile Include="AST\Statements\Read.cs" />
+        <Compile Include="AST\Statements\Return.cs" />
+        <Compile Include="AST\Statements\WhileLoop.cs" />
+        <Compile Include="AST\Types\AbstractType.cs" />
+        <Compile Include="AST\Types\ArrayType.cs" />
+        <Compile Include="AST\Types\BooleanType.cs" />
+        <Compile Include="AST\Types\ByteType.cs" />
+        <Compile Include="AST\Types\CharType.cs" />
+        <Compile Include="AST\Types\DoubleType.cs" />
+        <Compile Include="AST\Types\EnumType.cs" />
+        <Compile Include="AST\Types\IntType.cs" />
+        <Compile Include="AST\Types\LongType.cs" />
+        <Compile Include="AST\Types\Namespaces\AbstractNamespaceType.cs" />
+        <Compile Include="AST\Types\Namespaces\FunctionType.cs" />
+        <Compile Include="AST\Types\Namespaces\INamespaceType.cs" />
+        <Compile Include="AST\Types\Namespaces\NamespaceType.cs" />
+        <Compile Include="AST\Types\Namespaces\StructType.cs" />
+        <Compile Include="AST\Types\PointerType.cs" />
+        <Compile Include="AST\Types\StringType.cs" />
+        <Compile Include="AST\Types\UnknownType.cs" />
+        <Compile Include="AST\Types\VoidType.cs" />
+        <Compile Include="Errors\ErrorHandler.cs" />
+        <Compile Include="Errors\ErrorListener.cs" />
+        <Compile Include="Errors\ErrorType.cs" />
+        <Compile Include="Errors\Warning.cs" />
+        <Compile Include="FrontEnd\LoadedFilesManager.cs" />
+        <Compile Include="FrontEnd\SeagullGrammar.cs" />
+        <Compile Include="FrontEnd\SeagullSemantics.cs" />
+        <Compile Include="Grammar\ExtensionMethods.cs" />
+        <Compile Include="Grammar\LexerHelper.cs" />
+        <Compile Include="Grammar\SeagullLexer.cs" />
+        <Compile Include="Grammar\SeagullParser.cs" />
+        <Compile Include="FrontEndCompiler.cs" />
+        <Compile Include="Grammar\SeagullPreprocessorParser.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Semantics\Loops\LoopVisitor.cs" />
+        <Compile Include="Semantics\Recognition\AbstractRecognitionVisitor.cs" />
+        <Compile Include="Semantics\Recognition\RecognitionThirdPassVisitor.cs" />
+        <Compile Include="Semantics\Recognition\RecognitionFirstPassVisitor.cs" />
+        <Compile Include="Semantics\Recognition\RecognitionSecondPassVisitor.cs" />
+        <Compile Include="Semantics\Recognition\RecognitionFourthPassVisitor.cs" />
+        <Compile Include="Semantics\Symbols\NamespaceManager.cs" />
+        <Compile Include="Semantics\Symbols\SymbolManager.cs" />
+        <Compile Include="Semantics\Symbols\SymbolTable.cs" />
+        <Compile Include="Semantics\TypeChecking\TypeCheckingVisitor.cs" />
+        <Compile Include="Visitor\AbstractVisitor.cs" />
+        <Compile Include="Visitor\IVisitor.cs" />
+        <Compile Include="Visitor\Void.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="packages.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="antlr-4.7.2-complete.jar" />
+      <Content Include="compile.cmd" />
+      <Content Include="Grammar\SeagullParser.g4" />
+      <Content Include="Grammar\SeagullLexer.g4" />
+      <Content Include="Grammar\SeagullPreprocessorParser.g4" />
+      <Content Include="README.txt" />
+      <Content Include="TODO.txt" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Seagull.Logging\Seagull.Logging.csproj">
+        <Project>{cb3d907f-cc80-4303-9f26-bfade1a0119f}</Project>
+        <Name>Seagull.Logging</Name>
+      </ProjectReference>
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+
+</Project>

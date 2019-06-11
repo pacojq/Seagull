@@ -1,6 +1,6 @@
-using Seagull.AST.Types;
-using Seagull.Visitor;
-using Void = Seagull.Visitor.Void;
+using Seagull.Language.AST.Types;
+using Seagull.Language.Visitor;
+using Void = Seagull.Language.Visitor.Void;
 
 namespace Seagull.CodeGeneration.Mapl
 {

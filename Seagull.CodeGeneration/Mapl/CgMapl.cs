@@ -1,5 +1,5 @@
 using System.IO;
-using Seagull.AST;
+using Seagull.Language.AST;
 
 namespace Seagull.CodeGeneration.Mapl
 {
