@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using Seagull.AST;
-using Seagull.AST.Expressions;
-using Seagull.AST.Expressions.Binary;
-using Seagull.AST.Expressions.Literals;
-using Seagull.AST.Statements;
-using Seagull.AST.Statements.Definitions;
-using Seagull.Visitor;
-using Void = Seagull.Visitor.Void;
+using Seagull.Language.AST;
+using Seagull.Language.AST.Expressions;
+using Seagull.Language.AST.Expressions.Binary;
+using Seagull.Language.AST.Expressions.Literals;
+using Seagull.Language.AST.Statements;
+using Seagull.Language.AST.Statements.Definitions;
+using Seagull.Language.Visitor;
+using Void = Seagull.Language.Visitor.Void;
 
 namespace Seagull.VM
 {
@@ -33,7 +33,7 @@ namespace Seagull.VM
         
         
         
-        public override dynamic Visit(AST.Program program, Void p)
+        public override dynamic Visit(Program program, Void p)
         {
             FunctionDefinition main = (FunctionDefinition) program.MainFunction;
 

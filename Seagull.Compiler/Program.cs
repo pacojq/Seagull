@@ -1,5 +1,6 @@
 ﻿using System;
 using Seagull.CodeGeneration;
+using Seagull.Language;
 
 namespace Seagull.Compiler
 {
@@ -9,15 +10,17 @@ namespace Seagull.Compiler
         {
             string filename = args[0];
 		    
+            
             FrontEndCompiler compiler = new FrontEndCompiler();
 		    
-            Seagull.AST.Program program = compiler.Compile(filename);
+            Language.AST.Program program = compiler.Compile(filename);
             if (program == null)
                 return;
 		    
             Console.WriteLine("The file is correct! Generating code...");
+            
             // TODO let the user switch target
-            string output = SeagullCodeGeneration.ForJava.Generate(program, args[1]);
+            string output = SeagullCodeGeneration.ForMapl.Generate(program, args[1]);
             Console.WriteLine("Output file: {0}", output);
         }
     }

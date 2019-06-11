@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Seagull.AST;
-using Seagull.AST.Statements;
-using Seagull.AST.Statements.Definitions;
-using Seagull.AST.Types;
-using Seagull.AST.Types.Namespaces;
-using Seagull.Visitor;
-using Void = Seagull.Visitor.Void;
+using Seagull.Language.AST;
+using Seagull.Language.AST.Statements;
+using Seagull.Language.AST.Statements.Definitions;
+using Seagull.Language.AST.Types;
+using Seagull.Language.AST.Types.Namespaces;
+using Seagull.Language.Visitor;
+using Void = Seagull.Language.Visitor.Void;
 
 namespace Seagull.VM
 {
@@ -30,8 +30,8 @@ namespace Seagull.VM
 			foreach (IDefinition def in structType.Definitions)
 			{
 				def.Accept(this, p);
-				def.Offset = sum;
-				sum += def.Type.NumberOfBytes;
+				def.CgOffset = sum;
+				sum += def.Type.CgNumberOfBytes;
 			}
 			return null;
 		}
@@ -45,8 +45,8 @@ namespace Seagull.VM
 			// Global variable
 			if (variableDefinition.Scope == 0)
 			{
-				variableDefinition.Offset = _globalOffset;
-				_globalOffset += variableDefinition.Type.NumberOfBytes;
+				variableDefinition.CgOffset = _globalOffset;
+				_globalOffset += variableDefinition.Type.CgNumberOfBytes;
 			}
 		
 			return null;
@@ -69,9 +69,9 @@ namespace Seagull.VM
 				if (st is VariableDefinition)
 				{
 					VariableDefinition vd = (VariableDefinition) st;
-					localBytesSum += vd.Type.NumberOfBytes;
-					vd.Offset = -localBytesSum;
-					functionDefinition.LocalBytesSum = localBytesSum;
+					localBytesSum += vd.Type.CgNumberOfBytes;
+					vd.CgOffset = -localBytesSum;
+					functionDefinition.CgLocalBytesSum = localBytesSum;
 				}
 			}
 		
@@ -90,8 +90,8 @@ namespace Seagull.VM
 			{
 				VariableDefinition vd = parameters[i];
 				vd.Accept(this, p);
-				vd.Offset = localParamsSum;
-				localParamsSum += vd.Type.NumberOfBytes;
+				vd.CgOffset = localParamsSum;
+				localParamsSum += vd.Type.CgNumberOfBytes;
 			}
 		
 			return null;

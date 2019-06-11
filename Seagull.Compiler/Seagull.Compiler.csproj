@@ -42,13 +42,13 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\Seagull.CodeGeneration\Seagull.CodeGeneration\Seagull.CodeGeneration.csproj">
+      <ProjectReference Include="..\Seagull.CodeGeneration\Seagull.CodeGeneration.csproj">
         <Project>{d41c6352-61b5-4eee-877e-d2e997f5203a}</Project>
         <Name>Seagull.CodeGeneration</Name>
       </ProjectReference>
-      <ProjectReference Include="..\Seagull\Seagull.csproj">
+      <ProjectReference Include="..\Seagull.Language\Seagull.Language.csproj">
         <Project>{79d5c142-87e3-4b09-b516-c0da43eb1c1d}</Project>
-        <Name>Seagull</Name>
+        <Name>Seagull.Language</Name>
       </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
