@@ -33,6 +33,7 @@ namespace Seagull.CodeGeneration.Mapl
 				case "double":
 					return MaplCodeGenerator.Instance.B2I()
 					       + MaplCodeGenerator.Instance.I2F();
+				case "char": return "";
 			}
 			throw new InvalidOperationException($"Cannot convert char to {other}");
 		}
@@ -45,6 +46,7 @@ namespace Seagull.CodeGeneration.Mapl
 					return MaplCodeGenerator.Instance.I2B();
 				case "double":
 					return MaplCodeGenerator.Instance.I2F();
+				case "int": return "";
 			}
 			throw new InvalidOperationException($"Cannot convert int to {other}");
 		}
@@ -58,6 +60,7 @@ namespace Seagull.CodeGeneration.Mapl
 				case "char":
 					return MaplCodeGenerator.Instance.F2I()
 					       + MaplCodeGenerator.Instance.I2B();
+				case "double": return "";
 			}
 			throw new InvalidOperationException($"Cannot convert double to {other}");
 		}

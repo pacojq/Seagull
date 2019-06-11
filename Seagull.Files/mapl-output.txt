@@ -1,0 +1,48 @@
+#source "mapl-input.sgl"
+
+' Invocation to the main function
+call main
+halt
+
+
+#line	1
+
+ main:
+
+	' *Parameters
+
+	' *Local variables
+
+	' *var a : int[10][5]
+	' *var b : int
+	' *var c : double
+	enter	106
+
+#line	7
+	push	bp
+	pushi	-102
+	addi
+	pushi	3
+	storei
+
+#line	8
+	push	bp
+	pushi	-106
+	addi
+	pushf	2.50
+	storef
+
+#line	10
+	' *Write
+	push	bp
+	pushi	-102
+	addi
+	loadi
+	i2f
+	push	bp
+	pushi	-106
+	addi
+	loadf
+	addf
+	outf
+	ret	0, 106, 0

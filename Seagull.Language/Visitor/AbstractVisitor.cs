@@ -60,8 +60,7 @@ namespace Seagull.Language.Visitor
 		{
 			return default(TR);
 		}
-	
-		
+
 		public virtual TR Visit(DoubleType doubleType, TP p)
 		{
 			return default(TR);
@@ -351,12 +350,14 @@ namespace Seagull.Language.Visitor
 
 		public virtual TR Visit(CharLiteral charLiteral, TP p)
 		{
+			charLiteral.Type.Accept(this, p);
 			return default(TR);
 		}
 	
 		
 		public virtual TR Visit(DoubleLiteral doubleLiteral, TP p)
 		{
+			doubleLiteral.Type.Accept(this, p);
 			return default(TR);
 		}
 	
@@ -372,6 +373,7 @@ namespace Seagull.Language.Visitor
 		
 		public virtual TR Visit(IntLiteral intLiteral, TP p)
 		{
+			intLiteral.Type.Accept(this, p);
 			return default(TR);
 		}
 	
@@ -398,11 +400,13 @@ namespace Seagull.Language.Visitor
 
 		public virtual TR Visit(StringLiteral stringLiteral, TP p)
 		{
+			stringLiteral.Type.Accept(this, p);
 			return default(TR);
 		}
 
 		public virtual TR Visit(BooleanLiteral booleanLiteral, TP p)
 		{
+			booleanLiteral.Type.Accept(this, p);
 			return default(TR);
 		}
 		

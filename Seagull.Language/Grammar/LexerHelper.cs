@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 namespace Seagull.Language.Grammar
 {
@@ -62,15 +63,23 @@ namespace Seagull.Language.Grammar
 	
 	
         
-        public static double LexemeToReal(String str) {
+        public static double LexemeToReal(String str)
+        {
+            
+            Console.WriteLine("LexemeToReal: " + str);
+            
             try
             {			
                 // Exponential
                 String[] split = str.ToLower().Split('e');
 			
-                double numb = double.Parse(split[0]);
+                double numb = double.Parse(split[0], CultureInfo.InvariantCulture);
                 if (split.Length == 1)
+                {
+                    Console.WriteLine($"LexemeToReal: {str} = {numb}");
                     return numb;
+                }
+                    
 			
                 return numb * Math.Pow(10, double.Parse(split[1]));
             }
