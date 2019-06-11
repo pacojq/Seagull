@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using Seagull.Language.Errors;
-using Seagull.Logging;
 
 namespace Seagull.Language.AST.Types
 {
@@ -9,7 +7,8 @@ namespace Seagull.Language.AST.Types
     {
         // Code Generation
         public abstract int CgNumberOfBytes { get; }
-        public virtual string CgSuffix { get; set; }
+        
+        public string CgSuffix { get; set; }
         
         
         
@@ -19,6 +18,7 @@ namespace Seagull.Language.AST.Types
 
         protected AbstractType(int line, int column) : base(line, column)
         {
+            CgSuffix = "CG-TYPE-SUFFIX-PLACEHOLDER-" + this.GetType().Name;
         }
         
         

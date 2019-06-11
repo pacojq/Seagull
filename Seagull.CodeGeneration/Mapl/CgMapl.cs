@@ -1,19 +1,24 @@
 using System.IO;
+using System.Text;
 using Seagull.Language.AST;
 
 namespace Seagull.CodeGeneration.Mapl
 {
     public class CgMapl : ICodeGenerationModule
     {
-        public string Generate(Program program, string outputPath)
+        public string Generate(Program program, string inputPath, string outputPath)
         {
-            program.Accept(new MaplTypesVisitor(), null);
             program.Accept(new OffsetVisitor(), null);
+            program.Accept(new MaplTypesVisitor(), null);
             program.Accept(new ExecuteVisitor(), null);
 
-            // TODO input path
+            string filename = Path.GetFileName(inputPath);
+            StringBuilder str = new StringBuilder();
             
-            return program.CgCode;
+            str.Append($"#source \"{filename}\"\n");
+            str.Append(program.CgCode);
+            
+            return str.ToString();
         }
     }
 }

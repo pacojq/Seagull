@@ -1,4 +1,3 @@
-using System;
 using Seagull.Language.AST;
 using Seagull.Language.AST.Expressions;
 using Seagull.Language.AST.Expressions.Binary;

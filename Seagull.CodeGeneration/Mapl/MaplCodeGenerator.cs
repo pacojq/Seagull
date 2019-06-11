@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text;
 using Seagull.Language.AST;
 using Seagull.Language.AST.Expressions;
@@ -50,19 +51,19 @@ namespace Seagull.CodeGeneration.Mapl
 
 		public string Comment(string comment)
 		{
-			return "\t' * " + comment;
+			return $"\t' *{comment}\n";
 		}
 
 
 
 		public string Line(IStatement st)
 		{
-			return $"\n#line\t{st.Line}";
+			return $"\n#line\t{st.Line}\n";
 		}
 
 		public string Line(IDefinition def)
 		{
-			return $"\n#line\t{def.Line}";
+			return $"\n#line\t{def.Line}\n";
 		}
 
 
@@ -72,17 +73,17 @@ namespace Seagull.CodeGeneration.Mapl
 
 		public string Label(int label)
 		{
-			return $"label{label}:";
+			return $"label{label}:\n";
 		}
 
 		public string Jump(int toLabel)
 		{
-			return $"\tjmp\tlabel{toLabel}";
+			return $"\tjmp\tlabel{toLabel}\n";
 		}
 
 		public string JumpZero(int toLabel)
 		{
-			return $"\tjz\tlabel{toLabel}";
+			return $"\tjz\tlabel{toLabel}\n";
 		}
 
 
@@ -95,12 +96,12 @@ namespace Seagull.CodeGeneration.Mapl
 
 		public string Out(IType type)
 		{
-			return $"\tout{type.CgSuffix}";
+			return $"\tout{type.CgSuffix}\n";
 		}
 
 		public string In(IType type)
 		{
-			return $"\tin{type.CgSuffix}";
+			return $"\tin{type.CgSuffix}\n";
 		}
 
 
@@ -108,12 +109,12 @@ namespace Seagull.CodeGeneration.Mapl
 
 		public string Store(IType type)
 		{
-			return $"\tstore{type.CgSuffix}";
+			return $"\tstore{type.CgSuffix}\n";
 		}
 
 		public string Load(IType type)
 		{
-			return $"\tload{type.CgSuffix}";
+			return $"\tload{type.CgSuffix}\n";
 		}
 
 
@@ -127,7 +128,7 @@ namespace Seagull.CodeGeneration.Mapl
 
 		public string Pop(IType type)
 		{
-			return $"\tpop{type.CgSuffix}";
+			return $"\tpop{type.CgSuffix}\n";
 		}
 
 
@@ -136,22 +137,23 @@ namespace Seagull.CodeGeneration.Mapl
 
 		public string PushBp()
 		{
-			return "\tpush\tbp";
+			return "\tpush\tbp\n";
 		}
 
 		public string Push(string type, int value)
 		{
-			return $"\tpush{type}\t{value}";
+			return $"\tpush{type}\t{value}\n";
 		}
 
 		public string Push(IType type, int value)
 		{
-			return $"\tpush{type.CgSuffix}\t{value}";
+			return $"\tpush{type.CgSuffix}\t{value}\n";
 		}
 
 		public string Push(IType type, double value)
 		{
-			return $"\tpush{type.CgSuffix}\t{value}";
+			string str = value.ToString("0.00", CultureInfo.InvariantCulture);
+			return $"\tpush{type.CgSuffix}\t{str}\n";
 		}
 
 
@@ -196,12 +198,12 @@ namespace Seagull.CodeGeneration.Mapl
 
 		public string Add(IType type)
 		{
-			return $"\tadd{type.CgSuffix}";
+			return $"\tadd{type.CgSuffix}\n";
 		}
 
 		public string Add(string type)
 		{
-			return $"\tadd{type}";
+			return $"\tadd{type}\n";
 		}
 
 		public string Sub(IType type)
@@ -211,17 +213,17 @@ namespace Seagull.CodeGeneration.Mapl
 
 		public string Mul(IType type)
 		{
-			return $"\tmul{type.CgSuffix}";
+			return $"\tmul{type.CgSuffix}\n";
 		}
 
 		public string Mul(string type)
 		{
-			return $"\tmul{type}";
+			return $"\tmul{type}\n";
 		}
 
 		public string Div(IType type)
 		{
-			return $"\tdiv{type.CgSuffix}";
+			return $"\tdiv{type.CgSuffix}\n";
 		}
 
 
@@ -272,37 +274,37 @@ namespace Seagull.CodeGeneration.Mapl
 		// Greater than
 		public string Gt(IType type)
 		{
-			return $"\tgt{type.CgSuffix}";
+			return $"\tgt{type.CgSuffix}\n";
 		}
 
 		// Less than
 		public string Lt(IType type)
 		{
-			return $"\tlt{type.CgSuffix}";
+			return $"\tlt{type.CgSuffix}\n";
 		}
 
 		// Greater or equal than
 		public string Ge(IType type)
 		{
-			return $"\tge{type.CgSuffix}";
+			return $"\tge{type.CgSuffix}\n";
 		}
 
 		// Less or equal than
 		public string Le(IType type)
 		{
-			return $"\tle{type.CgSuffix}";
+			return $"\tle{type.CgSuffix}\n";
 		}
 
 		// Equal to
 		public string Eq(IType type)
 		{
-			return $"\teq{type.CgSuffix}";
+			return $"\teq{type.CgSuffix}\n";
 		}
 
 		// Not equal to
 		public string Ne(IType type)
 		{
-			return $"\tne{type.CgSuffix}";
+			return $"\tne{type.CgSuffix}\n";
 		}
 
 
@@ -330,15 +332,15 @@ namespace Seagull.CodeGeneration.Mapl
 		}
 
 		public string And() {
-			return string.Format("\tand");
+			return string.Format("\tand\n");
 		}
 	
 		public string Or() {
-			return string.Format("\tor");
+			return string.Format("\tor\n");
 		}
 	
 		public string Not() {
-			return string.Format("\tnot");
+			return string.Format("\tnot\n");
 		}
 
 	
@@ -354,17 +356,17 @@ namespace Seagull.CodeGeneration.Mapl
 		}
 
 		public string Enter(int localBytesSum) {
-			return $"\tenter\t{localBytesSum}";
+			return $"\tenter\t{localBytesSum}\n";
 		}
 
 
 		public string Ret(int bytesReturn, int bytesLocals, int bytesArgs) {
-			return $"\tret\t{bytesReturn}, {bytesLocals}, {bytesArgs}";
+			return $"\tret\t{bytesReturn}, {bytesLocals}, {bytesArgs}\n";
 		}
 
 	
 		public string Call(FunctionInvocation functionInvocation) {
-			return $"\tcall\t{functionInvocation.Function.Definition.Name}";
+			return $"\tcall\t{functionInvocation.Function.Definition.Name}\n";
 		}
 	
 	

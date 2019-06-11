@@ -40,7 +40,6 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="ICodeGenerationModule.cs" />
-        <Compile Include="ICodeGenerator.cs" />
         <Compile Include="Mapl\AddressVisitor.cs" />
         <Compile Include="Mapl\CgMapl.cs" />
         <Compile Include="Mapl\CgVisitor.cs" />

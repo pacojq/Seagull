@@ -4,5 +4,8 @@ main: ()
     b : int;
     c : double;
     
+    b = 3;
+    c = 2.5;
+    
     print(((double) b) + c);
 }
