@@ -15,14 +15,18 @@ main: ()
 
 namespace Test {
 
-    struct TestStruct {
+    struct TestStruct
+    {
+
     }
 
 }
 
 namespace Test.Inner {
 
-    struct TestInnerStruct {
+    struct TestInnerStruct
+    {
+        
     }
     
 }
