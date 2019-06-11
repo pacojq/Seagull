@@ -13,6 +13,47 @@ namespace Seagull.Language.AST.Types
         }
 
 
+        
+        
+        public override IType TypeCheckArithmetic(IType other)
+        {
+            switch (other.ToString())
+            {
+                case "char":    return this;
+                case "int":     return other;
+                case "double":  return other;
+            }
+            return base.TypeCheckArithmetic(other);
+        }
+        
+        
+        public override IType TypeCheckComparison(IType other)
+        {
+            switch (other.ToString())
+            {
+                case "char":
+                case "int":
+                case "double":
+                    return new BooleanType(Line, Column);
+            }
+            return base.TypeCheckArithmetic(other);
+        }
+        
+        
+        public override IType TypeCheckCast(IType other)
+        {
+            switch (other.ToString())
+            {
+                case "char":    return this;
+                case "int":     return other;
+                case "double":  return other;
+            }
+            return base.TypeCheckCast(other);
+        }
+        
+        
+        
+        
         public override string ToString()
         {
             return "char";

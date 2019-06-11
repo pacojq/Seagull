@@ -1,6 +1,6 @@
 main: ()
 {
-    a: int[5][10];
+    a : int[5][10];
     b : int;
     c : double;
     

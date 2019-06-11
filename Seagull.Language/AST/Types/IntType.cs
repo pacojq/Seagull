@@ -53,7 +53,7 @@ namespace Seagull.Language.AST.Types
                 case "int":     return this;
                 case "double":  return other;
             }
-            return base.TypeCheckArithmetic(other);
+            return base.TypeCheckCast(other);
         }
         
         
