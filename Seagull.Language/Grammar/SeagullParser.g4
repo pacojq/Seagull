@@ -6,21 +6,21 @@ options { tokenVocab = SeagullLexer; }
 
     using System.Collections.Generic;
     
-	using Seagull.AST;
-	using Seagull.Grammar;
+	using Seagull.Language.AST;
+	using Seagull.Language.Grammar;
 	
-	using Seagull.Semantics.Symbols;
+	using Seagull.Language.Semantics.Symbols;
 	
-	using Seagull.AST.Expressions;
-	using Seagull.AST.Expressions.Binary;
-	using Seagull.AST.Expressions.Literals;
+	using Seagull.Language.AST.Expressions;
+	using Seagull.Language.AST.Expressions.Binary;
+	using Seagull.Language.AST.Expressions.Literals;
 	
-	using Seagull.AST.Statements;
-	using Seagull.AST.Statements.Definitions;
-	using Seagull.AST.Statements.Definitions.Namespaces;
+	using Seagull.Language.AST.Statements;
+	using Seagull.Language.AST.Statements.Definitions;
+	using Seagull.Language.AST.Statements.Definitions.Namespaces;
 	
-	using Seagull.AST.Types;
-	using Seagull.AST.Types.Namespaces;
+	using Seagull.Language.AST.Types;
+	using Seagull.Language.AST.Types.Namespaces;
 }
 
 
@@ -32,7 +32,8 @@ program returns [Program Ast,
                 
 		(l=load { $Loads.Add($l.File); })*
 		(i=imp { $Imports.Add($i.Namespace); })*
-		(protectionLevel? d=definition { $Def.Add($d.Ast); })*
+		// TODO protection level
+		(protectionLevel? d=definition { $Def.AddRange($d.Ast); })*
 		EOF
 		{ $Ast = new Program(0, 0, $Loads, $Imports, $Def); }
 	;
@@ -59,7 +60,7 @@ type returns [IType Ast]:
         primitive       { $Ast = $primitive.Ast; }
 	|   functionType    { $Ast = $functionType.Ast; }
     |   structType      { $Ast = $structType.Ast; }
-	|   userDefinedType  { $Ast = $userDefinedType.Ast; }
+	|   userDefinedType { $Ast = $userDefinedType.Ast; }
 	    // Arrays
     |   t=type L_BRACKET i=INT_CONSTANT R_BRACKET  
             { $Ast = ArrayType.BuildArray(int.Parse($i.text), $t.Ast); }
@@ -112,7 +113,8 @@ parameters returns [List<VariableDefinition> Ast = new List<VariableDefinition>(
 structType  returns [StructType Ast]
             locals [List<VariableDefinition> Fields = new List<VariableDefinition>()]:
 
-        c=L_CURL (protectionLevel? f=variableDef { $Fields.Add($f.Ast); })* R_CURL 
+        // TODO protection level
+        c=L_CURL (protectionLevel? f=variableDef { $Fields.AddRange($f.Ast); })* R_CURL 
         { $Ast = new StructType($c.GetLine(), $c.GetCol(), $Fields); }
     ;
     
@@ -185,31 +187,49 @@ voidType returns [IType Ast]:
 
 protectionLevel : (PUBLIC | PRIVATE) ;
 
-definition returns [IDefinition Ast]:
-        namespaceDef    { $Ast = $namespaceDef.Ast; }
-	|   variableDef     { $Ast = $variableDef.Ast; }
-    |	fuctionDef      { $Ast = $fuctionDef.Ast; }
-	|   structDef       { $Ast = $structDef.Ast; }
-	|   enumDef         { $Ast = $enumDef.Ast; }
+// TODO protection level
+definition returns [List<IDefinition> Ast = new List<IDefinition>()]:
+        namespaceDef    { $Ast.Add($namespaceDef.Ast); }
+	|   variableDef     { $Ast.AddRange($variableDef.Ast); }
+    |	fuctionDef      { $Ast.Add($fuctionDef.Ast); }
+	|   structDef       { $Ast.Add($structDef.Ast); }
+	|   enumDef         { $Ast.Add($enumDef.Ast); }
 	;
 
 
 
 namespaceDef returns[NamespaceDefinition Ast]:
-        n=NAMESPACE t=namespaceType L_CURL (d=definition { $t.Ast.AddDefinition($d.Ast); })* R_CURL
+        // We Add d.Ast[0] because we know the length of the definitions will be 1 (just one namespace definition)
+        n=NAMESPACE t=namespaceType L_CURL (d=definition { $t.Ast.AddDefinition($d.Ast[0]); })* R_CURL
         { $Ast = NamespaceManager.Instance.Define($n.GetLine(), $n.GetCol(), $t.Ast); }
     ;
     
 
 
 /*
-    a : int;
+    a, a1 : int;
     b : double = 3.0;
     c := 1f;
 */
-variableDef returns [VariableDefinition Ast]: 
-        n=ID COL t=type SEMI_COL { $Ast = new VariableDefinition($t.Ast.Line, $t.Ast.Column, $n.GetText(), $t.Ast, null); }
-    |   n=ID COL t=type ASSIGN e=expression SEMI_COL { $Ast = new VariableDefinition($t.Ast.Line, $t.Ast.Column, $n.GetText(), $t.Ast, $e.Ast); }
+variableDef returns [List<VariableDefinition> Ast = new List<VariableDefinition>()]
+            locals [List<string> ids = new List<string>()]: 
+            
+    // a, a1 : int;
+        n1=ID { $ids.Add($n1.GetText()); } (COMMA n2=ID { $ids.Add($n2.GetText()); })* 
+            COL t=type SEMI_COL 
+        {
+            foreach (string id in $ids)
+                $Ast.Add(new VariableDefinition($t.Ast.Line, $t.Ast.Column, id, $t.Ast, null)); 
+        }
+        
+    // b : double = 3.0;
+    |   n1=ID { $ids.Add($n1.GetText()); } (COMMA n2=ID { $ids.Add($n2.GetText()); })* 
+            COL t=type ASSIGN e=expression SEMI_COL 
+        {
+            foreach (string id in $ids)
+                $Ast.Add(new VariableDefinition($t.Ast.Line, $t.Ast.Column, id, $t.Ast, $e.Ast));
+        }
+        
 		// TODO ID ':=' expression
 	;
 
@@ -268,7 +288,7 @@ fnBlock returns [List<IStatement> Ast = new List<IStatement>()]:
 	;
 	
 fnBlockContent returns [List<IStatement> Ast = new List<IStatement>()]: 
-        variableDef { $Ast.Add($variableDef.Ast); } 
+        variableDef { $Ast.AddRange($variableDef.Ast); } 
     |   block=statement { $Ast.AddRange($block.Ast); }
     ;
 	

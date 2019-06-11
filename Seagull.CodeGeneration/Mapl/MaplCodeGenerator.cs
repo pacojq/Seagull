@@ -51,7 +51,7 @@ namespace Seagull.CodeGeneration.Mapl
 
 		public string Comment(string comment)
 		{
-			return $"\t' *{comment}\n";
+			return $"\t' * {comment}\n";
 		}
 
 
@@ -189,6 +189,9 @@ namespace Seagull.CodeGeneration.Mapl
 				case "/":
 					str.Append(this.Div(t));
 					break;
+				case "%":
+					str.Append(this.Mod(t));
+					break;
 
 				default: return "INVALID ARITHMETIC OPERATOR " + arithmetic.Operator;
 			}
@@ -226,6 +229,10 @@ namespace Seagull.CodeGeneration.Mapl
 			return $"\tdiv{type.CgSuffix}\n";
 		}
 
+		public string Mod(IType type)
+		{
+			return $"\tmod{type.CgSuffix}\n";
+		}
 
 
 
