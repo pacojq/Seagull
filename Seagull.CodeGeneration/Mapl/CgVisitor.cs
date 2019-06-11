@@ -16,14 +16,9 @@ namespace Seagull.CodeGeneration.Mapl
     public class CgVisitor<TR, TP> : IVisitor<TR, TP>
     {
         
-        private string GetMsg(IAstNode node) {
-            string str = string.Format("[{0} : {1}] - {2} should not visit {3}", 
-                node.Line,
-                node.Column,
-                this.GetType().Name,
-                node.ToString());
-            
-            return str;
+        private string GetMsg(IAstNode node)
+        {
+            return $"[{node.Line} : {node.Column}] - {this.GetType().Name} should not visit {node.ToString()}";
         }
         
         
@@ -182,6 +177,11 @@ namespace Seagull.CodeGeneration.Mapl
         public virtual TR Visit(FunctionDefinition functionDefinition, TP p)
         {
             throw new InvalidOperationException(GetMsg(functionDefinition));
+        }
+
+        public TR Visit(MainFunctionDefinition mainFunctionDefinition, TP p)
+        {
+            return this.Visit((FunctionDefinition) mainFunctionDefinition, p);
         }
 
         public virtual TR Visit(NamespaceDefinition namespaceDefinition, TP p)

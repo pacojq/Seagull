@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Seagull.Language.AST.Types.Namespaces;
 using Seagull.Language.AST.Statements.Definitions;
 using Seagull.Language.Errors;
 using Seagull.Language.Visitor;

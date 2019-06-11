@@ -221,8 +221,13 @@ namespace Seagull.Language.Visitor
 			print.Expression.Accept(this, p);
 			return default(TR);
 		}
-		
-		
+
+
+		public TR Visit(MainFunctionDefinition mainFunctionDefinition, TP p)
+		{
+			return this.Visit((FunctionDefinition) mainFunctionDefinition, p);
+		}
+
 		public virtual TR Visit(NamespaceDefinition namespaceDefinition, TP p)
 		{
 			namespaceDefinition.Type.Accept(this, p);

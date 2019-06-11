@@ -75,6 +75,7 @@ namespace Seagull.Language.Visitor
 		TR Visit(EnumDefinition enumDefinition, TP p);
 		TR Visit(EnumElementDefinition enumElementDefinition, TP p);
 		TR Visit(FunctionDefinition functionDefinition, TP p);
+		TR Visit(MainFunctionDefinition mainFunctionDefinition, TP p);
 		TR Visit(NamespaceDefinition namespaceDefinition, TP p);
 		TR Visit(StructDefinition structDefinition, TP p);
 		TR Visit(VariableDefinition variableDefinition, TP p);

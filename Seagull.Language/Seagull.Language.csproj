@@ -79,6 +79,7 @@
         <Compile Include="AST\Statements\Definitions\EnumDefinition.cs" />
         <Compile Include="AST\Statements\Definitions\EnumElementDefinition.cs" />
         <Compile Include="AST\Statements\Definitions\FunctionDefinition.cs" />
+        <Compile Include="AST\Statements\Definitions\MainFunctionDefinition.cs" />
         <Compile Include="AST\Statements\Definitions\Namespaces\INamespaceDefinition.cs" />
         <Compile Include="AST\Statements\Definitions\Namespaces\NamespaceDefinition.cs" />
         <Compile Include="AST\Statements\Definitions\Namespaces\StructDefinition.cs" />
@@ -97,10 +98,10 @@
         <Compile Include="AST\Types\CharType.cs" />
         <Compile Include="AST\Types\DoubleType.cs" />
         <Compile Include="AST\Types\EnumType.cs" />
+        <Compile Include="AST\Types\FunctionType.cs" />
         <Compile Include="AST\Types\IntType.cs" />
         <Compile Include="AST\Types\LongType.cs" />
         <Compile Include="AST\Types\Namespaces\AbstractNamespaceType.cs" />
-        <Compile Include="AST\Types\Namespaces\FunctionType.cs" />
         <Compile Include="AST\Types\Namespaces\INamespaceType.cs" />
         <Compile Include="AST\Types\Namespaces\NamespaceType.cs" />
         <Compile Include="AST\Types\Namespaces\StructType.cs" />

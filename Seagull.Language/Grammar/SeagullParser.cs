@@ -1524,7 +1524,13 @@ public partial class SeagullParser : Parser {
 			State = 338; Match(COL);
 			State = 339; _localctx.t = functionType();
 			State = 340; _localctx._fnBlock = fnBlock();
-			 _localctx.Ast =  new FunctionDefinition(_localctx.n.GetLine(), _localctx.n.GetCol(), _localctx.n.GetText(), _localctx.t.Ast, _localctx._fnBlock.Ast); 
+
+			            string name = _localctx.n.GetText();
+			            IType type = _localctx.t.Ast;
+			            if (name.Equals("main") && type is VoidType)
+			                _localctx.Ast =  new MainFunctionDefinition(_localctx.n.GetLine(), _localctx.n.GetCol(), _localctx.t.Ast, _localctx._fnBlock.Ast); 
+			            else _localctx.Ast =  new FunctionDefinition(_localctx.n.GetLine(), _localctx.n.GetCol(), name, _localctx.t.Ast, _localctx._fnBlock.Ast); 
+			        
 			}
 		}
 		catch (RecognitionException re) {

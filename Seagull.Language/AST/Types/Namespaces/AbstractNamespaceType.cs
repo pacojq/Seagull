@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Seagull.Language.Semantics.Symbols;
 
 namespace Seagull.Language.AST.Types.Namespaces
 {

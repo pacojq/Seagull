@@ -240,7 +240,13 @@ variableDef returns [List<VariableDefinition> Ast = new List<VariableDefinition>
 */
 fuctionDef returns [FunctionDefinition Ast, IType funcType]: 
         n=ID COL t=functionType fnBlock 
-        { $Ast = new FunctionDefinition($n.GetLine(), $n.GetCol(), $n.GetText(), $t.Ast, $fnBlock.Ast); }
+        {
+            string name = $n.GetText();
+            IType type = $t.Ast;
+            if (name.Equals("main") && type is VoidType)
+                $Ast = new MainFunctionDefinition($n.GetLine(), $n.GetCol(), $t.Ast, $fnBlock.Ast); 
+            else $Ast = new FunctionDefinition($n.GetLine(), $n.GetCol(), name, $t.Ast, $fnBlock.Ast); 
+        }
     ;
     
     
