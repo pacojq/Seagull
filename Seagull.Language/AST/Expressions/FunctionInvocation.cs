@@ -5,6 +5,11 @@ namespace Seagull.Language.AST.Expressions
 {
 	public class FunctionInvocation : AbstractExpression, IStatement
 	{
+		// Code generation
+		public string CgExecute { get; set; }
+		
+		
+		
 		public Variable Function { get; }
 		public IEnumerable<IExpression> Arguments { get; }
 		
@@ -13,6 +18,8 @@ namespace Seagull.Language.AST.Expressions
 		{
 			Function = function;
 			Arguments = args;
+
+			CgExecute = "CG-EXECUTE-PLACEHOLDER";
 		}
 		
 		
@@ -20,5 +27,7 @@ namespace Seagull.Language.AST.Expressions
 		{
 			return visitor.Visit(this, p);
 		}
+
+		
 	}
 }

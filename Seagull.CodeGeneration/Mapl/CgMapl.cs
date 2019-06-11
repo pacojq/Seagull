@@ -3,7 +3,7 @@ using Seagull.Language.AST;
 
 namespace Seagull.CodeGeneration.Mapl
 {
-    public class CgMapl : ICodeGenerator
+    public class CgMapl : ICodeGenerationModule
     {
         public string Generate(Program program, string outputPath)
         {

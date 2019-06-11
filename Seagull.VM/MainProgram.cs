@@ -1,4 +1,6 @@
 ﻿using System;
+using Seagull.Language;
+using Seagull.Language.AST;
 
 namespace Seagull.VM
 {
@@ -10,7 +12,7 @@ namespace Seagull.VM
 		    
             FrontEndCompiler compiler = new FrontEndCompiler();
 		    
-            Language.AST.Program program = compiler.Compile(filename);
+            Program program = compiler.Compile(filename);
             if (program == null)
             {
                 Console.WriteLine("Please, solve compile errors to execute the file.");

@@ -33,7 +33,7 @@ namespace Seagull.VM
         
         
         
-        public override dynamic Visit(AST.Program program, Void p)
+        public override dynamic Visit(Program program, Void p)
         {
             FunctionDefinition main = (FunctionDefinition) program.MainFunction;
 

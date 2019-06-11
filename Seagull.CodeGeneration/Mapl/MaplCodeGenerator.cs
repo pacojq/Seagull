@@ -134,7 +134,7 @@ namespace Seagull.CodeGeneration.Mapl
 
 
 
-		public string Pushbp()
+		public string PushBp()
 		{
 			return "\tpush\tbp";
 		}
@@ -372,20 +372,25 @@ namespace Seagull.CodeGeneration.Mapl
 	
 		// ======================= Type Conversion ======================= //
 
-		public string F2I() {
+		
+		public string F2I()
+		{
 			return "\tf2i\n";
 		}
 	
-		public string I2F() {
+		public string I2F()
+		{
 			return "\ti2f\n";
 		}
 	
 	
-		public string B2I() {
+		public string B2I()
+		{
 			return "\tb2i\n";
 		}
 	
-		public string I2B() {
+		public string I2B()
+		{
 			return "\ti2b\n";
 		}
 

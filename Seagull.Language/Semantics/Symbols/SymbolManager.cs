@@ -6,7 +6,7 @@ using Seagull.Language.Errors;
 using Seagull.Language.AST;
 using Seagull.Language.AST.Statements.Definitions.Namespaces;
 using Seagull.Language.AST.Types.Namespaces;
-using Seagull.Language.Logging;
+using Seagull.Logging;
 
 namespace Seagull.Language.Semantics.Symbols
 {
