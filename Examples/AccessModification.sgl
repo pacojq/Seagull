@@ -1,6 +1,6 @@
 
 // Load files to compile them
-load "person.sgl"
+//load "person.sgl"
 
 // Import existing namespaces
 //import Other.Namespace;
@@ -65,7 +65,7 @@ namespace My.Namespace
     }
     
     
-    public struct Doggo is Pet, AnimeCharacter
+    public struct Doggo : Pet, AnimeCharacter
     {
         public string Name = "Ein"; // Interfaces can share field names
         public Person Owner;

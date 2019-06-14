@@ -75,6 +75,9 @@ namespace Seagull.Language.FrontEnd
             string relative = newFile.Trim('"'); // Clean up load path
             string path = Path.Combine(_baseDir, relative);
 
+            // TODO check if file exists and warn
+            if (!File.Exists(path))
+                return;
             
             // Check if we have loaded it already
             lock (_setLock)

@@ -12,6 +12,9 @@ namespace Math
         return i*i;
     }
     
+    square(i: int) : int {
+    
+    }
     
 /*    
     mult: (int a, int b) -> int = 

@@ -91,7 +91,15 @@ namespaceType returns[INamespaceType Ast]:
     
     
 
-// (a: int, b: int) -> int
+// TODO define it better
+// (int a, int b) -> int
+// 
+//  Maybe:  (int, int | int)
+//          (int, int : int)
+//          [int, int -> int]  <- this one may fit
+//          |int, int : int|
+//          <int, int : int>   <- this one may fit
+//
 functionType returns [FunctionType Ast]
              locals [List<VariableDefinition> Params = new List<VariableDefinition>(), IType Rt]:
             
@@ -101,20 +109,20 @@ functionType returns [FunctionType Ast]
     ;
     
 parameters returns [List<VariableDefinition> Ast = new List<VariableDefinition>()]: 
-		id1=ID COL t1=type  { $Ast.Add(new VariableDefinition($id1.GetLine(), $id1.GetCol(), $id1.GetText(), $t1.Ast, null)); }
-		(COMMA id2=ID COL t2=type
+		t1=type id1=ID { $Ast.Add(new VariableDefinition($id1.GetLine(), $id1.GetCol(), $id1.GetText(), $t1.Ast, null)); }
+		(COMMA t2=type id2=ID
 			{ $Ast.Add(new VariableDefinition($id2.GetLine(), $id2.GetCol(), $id2.GetText(), $t2.Ast, null)); }
 		)*
-		(COMMA id2=ID COL t2=type ASSIGN l=literal
+		(COMMA t2=type id2=ID ASSIGN l=literal
             { $Ast.Add(new VariableDefinition($id2.GetLine(), $id2.GetCol(), $id2.GetText(), $t2.Ast, $l.Ast)); }
         )*
     ;
 
 
 
-//  [struct Person] {
-//      Name : string;
-//      Age : int;
+//  *struct Person* {
+//      string Name;
+//      int Age;
 //  }
 structType  returns [StructType Ast]
             locals [List<VariableDefinition> fields = new List<VariableDefinition>(),
@@ -212,7 +220,7 @@ accessModifier returns [IAccessModifier Ast] :
 
 definition returns [List<IDefinition> Ast = new List<IDefinition>()]:
 	    variableDef     { $Ast.AddRange($variableDef.Ast); }
-    |	fuctionDef      { $Ast.Add($fuctionDef.Ast); }
+    |	functionDef      { $Ast.Add($functionDef.Ast); }
 	|   structDef       { $Ast.Add($structDef.Ast); }
 	|   enumDef         { $Ast.Add($enumDef.Ast); }
 	;
@@ -248,21 +256,21 @@ namespaceDef returns[NamespaceDefinition Ast]
 */
 variableDef returns [List<VariableDefinition> Ast = new List<VariableDefinition>()]:
             
-    // a, a1 : int;
-        ids=variableDefIds COL t=type SEMI_COL 
+    // int a, a1;
+        t=type ids=variableDefIds SEMI_COL 
         {
             foreach (string id in $ids.Ids)
                 $Ast.Add(new VariableDefinition($t.Ast.Line, $t.Ast.Column, id, $t.Ast, null)); 
         }
         
-    // b : double = 3.0;
-    |   ids=variableDefIds COL t=type ASSIGN e=expression SEMI_COL 
+    // double b = 3.0;
+    |   t=type ids=variableDefIds ASSIGN e=expression SEMI_COL 
         {
             foreach (string id in $ids.Ids)
                 $Ast.Add(new VariableDefinition($t.Ast.Line, $t.Ast.Column, id, $t.Ast, $e.Ast));
         }
         
-		// TODO ID ':=' expression
+		// TODO let ID '=' expression
 	;
 	
 // Util function, to get variable definition ids
@@ -276,17 +284,20 @@ variableDefIds returns [List<string> Ids = new List<string>()]:
 
 
 /*
-    method: () -> void { ... }
-    public sum: (a: int, b: int) -> int { ... }
+    void method() { ... }
+    public int sum (int a, int b) { ... }
 */
-fuctionDef returns [FunctionDefinition Ast, IType funcType]: 
-        n=ID COL t=functionType fnBlock 
+functionDef returns [FunctionDefinition Ast]
+            locals [List<VariableDefinition> _params = new List<VariableDefinition>()]:
+        
+        rt=type n=ID L_PAR (p=parameters { $_params = $p.Ast; })? R_PAR fnBlock 
         {
             string name = $n.GetText();
-            IType type = $t.Ast;
-            if (name.Equals("main") && type is VoidType)
-                $Ast = new MainFunctionDefinition($n.GetLine(), $n.GetCol(), $t.Ast, $fnBlock.Ast); 
-            else $Ast = new FunctionDefinition($n.GetLine(), $n.GetCol(), name, $t.Ast, $fnBlock.Ast); 
+            IType fType = new FunctionType($rt.Ast, $_params);
+            
+            if (name.Equals("main") && $rt.Ast is VoidType)
+                $Ast = new MainFunctionDefinition($n.GetLine(), $n.GetCol(), fType, $fnBlock.Ast); 
+            else $Ast = new FunctionDefinition($n.GetLine(), $n.GetCol(), name, fType, $fnBlock.Ast); 
         }
     ;
     

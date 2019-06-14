@@ -2,9 +2,11 @@
 
 void main()
 {
-    delay print("end of the function");    
+    delay print("end of the main function");    
     
+    print("Start of the block\n");
     {
+        // Delays here will be executed at the end of the block
         // May print 13524
         print("1");
         delay print("2");
@@ -12,6 +14,17 @@ void main()
         delay print("4");
         print("5");
     }
-    print("\n");
+    print("End of the block\n");
+}
+
+void BeCareful()
+{
+    int a;
+    a = 3;
+    delay print(a);
+    a = 5;
+    
+    print("Delay doesn't save the value of the expressions inside the statement!");
+    print("We won't print 3. We'll print 5.");
 }
 
