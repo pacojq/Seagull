@@ -1,4 +1,4 @@
-using Seagull.Language.AST.Statements.Definitions;
+using Seagull.Language.AST.AccessModifiers;
 using Seagull.Language.AST.Statements.Definitions.Namespaces;
 
 namespace Seagull.Language.AST
@@ -10,6 +10,8 @@ namespace Seagull.Language.AST
         IType Type { get; }
         
         int Scope { get; set; }
+        
+        IAccessModifier AccessModifier { get; set; }
         
         
         INamespaceDefinition Namespace { get; set; }

@@ -1,3 +1,4 @@
+using Seagull.Language.AST.AccessModifiers;
 using Seagull.Language.AST.Statements.Definitions;
 using Seagull.Language.AST.Types;
 using Seagull.Language.AST.Statements.Definitions.Namespaces;
@@ -15,12 +16,15 @@ namespace Seagull.Language.AST.Statements
         
         public int CgOffset { get; set; }
         
+        public IAccessModifier AccessModifier { get; set; }
+        
         public virtual INamespaceDefinition Namespace { get; set; }
 
         public AbstractDefinition(int line, int column, string name, IType type) : base(line, column)
         {
             Name = name;
             Type = type;
+            AccessModifier = new DefaultAccessModifier(line, column);
         }
     }
 }
