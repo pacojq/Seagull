@@ -61,8 +61,13 @@ READ:       'read' ;
 ASSERT:     'assert' ; // TODO
 DELAY:      'delay' ;
 
+// Access modifiers
 PUBLIC:     'public' ; // TODO
+PROTECTED:  'protected' ; // TODO
 PRIVATE:    'private' ; // TODO
+// TODO friend namespaces ?
+FRIEND:     'friend' ; // friend namespace 'name' { 'available access nodifiers' }
+
 
 LOAD:       'load' ;
 IMPORT:     'import' ;

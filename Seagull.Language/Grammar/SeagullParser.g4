@@ -5,7 +5,8 @@ options { tokenVocab = SeagullLexer; }
 @header {
 
     using System.Collections.Generic;
-    
+    using System.Linq;
+        
 	using Seagull.Language.AST;
 	using Seagull.Language.Grammar;
 	
@@ -21,6 +22,8 @@ options { tokenVocab = SeagullLexer; }
 	
 	using Seagull.Language.AST.Types;
 	using Seagull.Language.AST.Types.Namespaces;
+	
+	using Seagull.Language.AST.AccessModifiers;
 }
 
 
@@ -33,7 +36,10 @@ program returns [Program Ast,
 		(l=load { $Loads.Add($l.File); })*
 		(i=imp { $Imports.Add($i.Namespace); })*
 		// TODO protection level
-		(protectionLevel? d=definition { $Def.AddRange($d.Ast); })*
+		(
+		      (n=namespaceDef   { $Def.Add($namespaceDef.Ast); })
+		    | (d=definition     { $Def.AddRange($d.Ast); })
+		)*
 		EOF
 		{ $Ast = new Program(0, 0, $Loads, $Imports, $Def); }
 	;
@@ -111,11 +117,23 @@ parameters returns [List<VariableDefinition> Ast = new List<VariableDefinition>(
 //      Age : int;
 //  }
 structType  returns [StructType Ast]
-            locals [List<VariableDefinition> Fields = new List<VariableDefinition>()]:
+            locals [List<VariableDefinition> fields = new List<VariableDefinition>(),
+                    IAccessModifier access]:
 
-        // TODO protection level
-        c=L_CURL (protectionLevel? f=variableDef { $Fields.AddRange($f.Ast); })* R_CURL 
-        { $Ast = new StructType($c.GetLine(), $c.GetCol(), $Fields); }
+        c=L_CURL (
+            (am=accessModifier { $access = $am.Ast; })?
+            f=variableDef
+            { 
+                foreach (var def in $f.Ast)
+                {
+                    if ($access != null)
+                        def.AccessModifier = $access;
+                    $fields.Add(def);
+                }
+                $access = null;
+            }
+        )* R_CURL 
+        { $Ast = new StructType($c.GetLine(), $c.GetCol(), $fields); }
     ;
     
     
@@ -174,8 +192,16 @@ voidType returns [IType Ast]:
 
 
 
+// * * * * * * * * *   MEMBER ACCESS   * * * * * * * * * * //
 
+accessModifier returns [IAccessModifier Ast] : 
+    
+        PUBLIC      { $Ast = new PublicAccessModifier($PUBLIC.GetLine(), $PUBLIC.GetCol()); }
+    |   PROTECTED   { $Ast = new ProtectedAccessModifier($PROTECTED.GetLine(), $PROTECTED.GetCol()); }
+    |   PRIVATE     { $Ast = new PrivateAccessModifier($PRIVATE.GetLine(), $PRIVATE.GetCol()); }
+    ;
 
+// TODO friend namespaces
 
 
 
@@ -184,13 +210,8 @@ voidType returns [IType Ast]:
 // * * * * * * * * *   DEFINITIONS   * * * * * * * * * * //
 
 
-
-protectionLevel : (PUBLIC | PRIVATE) ;
-
-// TODO protection level
 definition returns [List<IDefinition> Ast = new List<IDefinition>()]:
-        namespaceDef    { $Ast.Add($namespaceDef.Ast); }
-	|   variableDef     { $Ast.AddRange($variableDef.Ast); }
+	    variableDef     { $Ast.AddRange($variableDef.Ast); }
     |	fuctionDef      { $Ast.Add($fuctionDef.Ast); }
 	|   structDef       { $Ast.Add($structDef.Ast); }
 	|   enumDef         { $Ast.Add($enumDef.Ast); }
@@ -198,9 +219,23 @@ definition returns [List<IDefinition> Ast = new List<IDefinition>()]:
 
 
 
-namespaceDef returns[NamespaceDefinition Ast]:
-        // We Add d.Ast[0] because we know the length of the definitions will be 1 (just one namespace definition)
-        n=NAMESPACE t=namespaceType L_CURL (d=definition { $t.Ast.AddDefinition($d.Ast[0]); })* R_CURL
+namespaceDef returns[NamespaceDefinition Ast]
+             locals [IAccessModifier access]:
+        
+        n=NAMESPACE t=namespaceType L_CURL (
+            (am = accessModifier { $access = $am.Ast; })?
+            d=definition
+            {   
+                IDefinition[] defs = $d.Ast.ToArray();
+                foreach (var definition in defs)
+                {
+                    if ($access != null)
+                        definition.AccessModifier = $access;
+                    $t.Ast.AddDefinition(definition);
+                }
+                $access = null;
+            }
+        )* R_CURL
         { $Ast = NamespaceManager.Instance.Define($n.GetLine(), $n.GetCol(), $t.Ast); }
     ;
     
@@ -211,27 +246,33 @@ namespaceDef returns[NamespaceDefinition Ast]:
     b : double = 3.0;
     c := 1f;
 */
-variableDef returns [List<VariableDefinition> Ast = new List<VariableDefinition>()]
-            locals [List<string> ids = new List<string>()]: 
+variableDef returns [List<VariableDefinition> Ast = new List<VariableDefinition>()]:
             
     // a, a1 : int;
-        n1=ID { $ids.Add($n1.GetText()); } (COMMA n2=ID { $ids.Add($n2.GetText()); })* 
-            COL t=type SEMI_COL 
+        ids=variableDefIds COL t=type SEMI_COL 
         {
-            foreach (string id in $ids)
+            foreach (string id in $ids.Ids)
                 $Ast.Add(new VariableDefinition($t.Ast.Line, $t.Ast.Column, id, $t.Ast, null)); 
         }
         
     // b : double = 3.0;
-    |   n1=ID { $ids.Add($n1.GetText()); } (COMMA n2=ID { $ids.Add($n2.GetText()); })* 
-            COL t=type ASSIGN e=expression SEMI_COL 
+    |   ids=variableDefIds COL t=type ASSIGN e=expression SEMI_COL 
         {
-            foreach (string id in $ids)
+            foreach (string id in $ids.Ids)
                 $Ast.Add(new VariableDefinition($t.Ast.Line, $t.Ast.Column, id, $t.Ast, $e.Ast));
         }
         
 		// TODO ID ':=' expression
 	;
+	
+// Util function, to get variable definition ids
+//  public a, a1, ...
+variableDefIds returns [List<string> Ids = new List<string>()]:
+        n1=ID { $Ids.Add($n1.GetText()); } (COMMA n2=ID { $Ids.Add($n2.GetText()); })* 
+    ;
+	
+	
+	
 
 
 /*

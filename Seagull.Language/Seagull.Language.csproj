@@ -43,6 +43,11 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="AST\AbstractAstNode.cs" />
+        <Compile Include="AST\AccessModifiers\IAccessModifier.cs" />
+        <Compile Include="AST\AccessModifiers\DefaultAccessModifier.cs" />
+        <Compile Include="AST\AccessModifiers\PrivateAccessModifier.cs" />
+        <Compile Include="AST\AccessModifiers\ProtectedAccessModifier.cs" />
+        <Compile Include="AST\AccessModifiers\PublicAccessModifier.cs" />
         <Compile Include="AST\Expressions\AbstractExpression.cs" />
         <Compile Include="AST\Expressions\AttributeAccess.cs" />
         <Compile Include="AST\Expressions\BinaryOperation.cs" />

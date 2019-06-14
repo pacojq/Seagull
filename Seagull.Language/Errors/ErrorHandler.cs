@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Text;
 using Seagull.Logging;
 
 namespace Seagull.Language.Errors
