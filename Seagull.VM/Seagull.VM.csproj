@@ -39,15 +39,20 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="CommandGenerator.cs" />
+        <Compile Include="Commands\Arithmetics\CmdAdd.cs" />
+        <Compile Include="Commands\CmdBinaryOperationDouble.cs" />
+        <Compile Include="Commands\CmdBinaryOperationInt.cs" />
+        <Compile Include="ICommand.cs" />
         <Compile Include="Instance.cs" />
-        <Compile Include="Interpreter.cs" />
         <Compile Include="MainProgram.cs" />
+        <Compile Include="Parser\SeagullVMProgram.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="SVM.cs" />
-        <Compile Include="Visitors\ExecuteVisitor.cs" />
-        <Compile Include="Visitors\NumberOfBytesVisitor.cs" />
-        <Compile Include="Visitors\OffsetVisitor.cs" />
+        <Compile Include="Util.cs" />
         <Compile Include="VMMemory\Memory.cs" />
+        <Compile Include="VMMemory\Stack.cs" />
+        <Compile Include="VMMemory\StackException.cs" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Seagull.Language\Seagull.Language.csproj">
@@ -56,6 +61,7 @@
       </ProjectReference>
     </ItemGroup>
     <ItemGroup>
+      <Content Include="Parser\SVML.g4" />
       <Content Include="README.txt" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

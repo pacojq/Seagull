@@ -112,7 +112,7 @@ namespace Seagull.VM
 		public int GetInt(int address)
 		{
 			byte[] bytes = Get(address, BYTES_INT);
-			return BitConverter.ToInt32(bytes, 0);
+			return Util.ToInt(bytes);
 		}
 		
 		public bool SetInt(int address, int value)
@@ -125,7 +125,7 @@ namespace Seagull.VM
 		public double GetDouble(int address)
 		{
 			byte[] bytes = Get(address, BYTES_DOUBLE);
-			return BitConverter.ToDouble(bytes, 0);
+			return Util.ToDouble(bytes);
 		}
 		
 		public bool SetDouble(int address, double value)

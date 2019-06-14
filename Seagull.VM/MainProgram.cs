@@ -20,7 +20,8 @@ namespace Seagull.VM
             }
 
             SVM svm = new SVM();
-            svm.Run(program);
+            // TODO
+            //svm.Run(program);
         }
     }
 }
