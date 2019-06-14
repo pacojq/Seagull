@@ -1,6 +1,6 @@
 
 
-main: ()
+void main()
 {
     delay print("end of the function");    
     

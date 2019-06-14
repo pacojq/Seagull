@@ -1,0 +1,77 @@
+
+// Load files to compile them
+load "person.sgl"
+
+// Import existing namespaces
+//import Other.Namespace;
+//import Other.Namespace.Yet as ONY;
+//import Other.Namespace.*;
+
+
+// Package declaration
+namespace My.Namespace
+{
+    // Friend structs and namespaces will be able to access 
+    // hidden members of this namespace.
+    // Other.Namespace will have access to 'namespace level'
+    // members, while Person will see just the private ones.
+    
+    //TODO friend namespace Other.Namespace; // 'namespace level' access
+    //TODO friend struct Person { private; } 
+
+
+    // Struct declaration
+    /* namespace level */ struct MyData
+    {    
+        // Structs can also have friend namespaces, and give 
+        // 'protected' access.
+        // TODO friend struct Person { protected; }  
+    
+        private string MyString;
+        public int MyInteger;
+        // TODO private _myCharacter := 'a'; // Implicit type declaration
+        protected double myDouble = .5;
+    }
+    
+    /* TODO
+    // Final structs don't allow inheritance
+    public final struct MyProtectedData
+    {
+        // We can also have constant fields
+        public const MyConstant := "Constants must be initialized here";
+        
+        public readonly
+    }
+    */
+    
+    
+    
+    // We can declare interfaces, whose members
+    // cannot be initialized, since every inheritor
+    // will provide implementation.
+    
+    // TODO
+    /*
+    public interface Pet
+    {
+        string Name;
+        Person Owner;
+    }
+    
+    /* namespace level */ interface AnimeCharacter
+    {
+        string Name;
+        string Anime;
+    }
+    
+    
+    public struct Doggo is Pet, AnimeCharacter
+    {
+        public string Name = "Ein"; // Interfaces can share field names
+        public Person Owner;
+        /* namespace level */ string Anime = "Cowboy Bebop";
+    }    
+    */
+
+
+}

@@ -1,0 +1,34 @@
+
+
+void main()
+{
+    int i = 1;
+    
+    while (i <= 100)
+    {
+        if (i % 3 == 0 || i % 5 == 0)
+        {
+            if (i % 3 == 0) fizz();
+            if (i % 5 == 0) buzz();
+        }
+        else print(i);
+        print("\n");
+        i = i + 1;
+    }
+    
+}
+
+void fizz()
+{
+    print("Fizz");
+}
+
+void buzz()
+{
+    print("Buzz");
+}
+
+void number(int n)
+{
+    print(i);
+}
