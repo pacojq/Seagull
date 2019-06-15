@@ -15,6 +15,7 @@ options { tokenVocab = SeagullLexer; }
 	using Seagull.Language.AST.Expressions;
 	using Seagull.Language.AST.Expressions.Binary;
 	using Seagull.Language.AST.Expressions.Literals;
+	using Seagull.Language.AST.Expressions.Increments;
 	
 	using Seagull.Language.AST.Statements;
 	using Seagull.Language.AST.Statements.Definitions;
@@ -256,14 +257,14 @@ namespaceDef returns[NamespaceDefinition Ast]
 */
 variableDef returns [List<VariableDefinition> Ast = new List<VariableDefinition>()]:
             
-    // int a, a1;
+        // int a, a1;
         t=type ids=variableDefIds SEMI_COL 
         {
             foreach (string id in $ids.Ids)
                 $Ast.Add(new VariableDefinition($t.Ast.Line, $t.Ast.Column, id, $t.Ast, null)); 
         }
         
-    // double b = 3.0;
+        // double b = 3.0;
     |   t=type ids=variableDefIds ASSIGN e=expression SEMI_COL 
         {
             foreach (string id in $ids.Ids)
@@ -326,34 +327,6 @@ delegate returns [IType Ast]:
 // * * * * * * * * *   STATEMENTS   * * * * * * * * * * //
 
 
-funcInvocation returns [FunctionInvocation Ast, List<IExpression> arguments = new List<IExpression>()]:
-		func=variable L_PAR ( e1=expression { $arguments.Add($e1.Ast); } (COMMA e2=expression { $arguments.Add($e2.Ast); })* )? R_PAR
- 			{ $Ast = new FunctionInvocation($func.Ast, $arguments); }
- 	;
- 
-
-// A function block is different than a simple statement block, since it might contain variable definitions.
-fnBlock returns [List<IStatement> Ast = new List<IStatement>()]: 
-		
-		L_CURL
-		    { List<IStatement> delayed = new List<IStatement>(); } // Statements might be delayed
-        (
-            (c1=fnBlockContent { $Ast.AddRange($c1.Ast); })
-          | (DELAY c2=fnBlockContent { delayed.AddRange($c2.Ast); })
-        )*
-			{ $Ast.AddRange(delayed); }
-		R_CURL
-	;
-	
-fnBlockContent returns [List<IStatement> Ast = new List<IStatement>()]: 
-        variableDef { $Ast.AddRange($variableDef.Ast); } 
-    |   block=statement { $Ast.AddRange($block.Ast); }
-    ;
-	
-	
-	
-	
-	
 		 
 statement returns [List<IStatement> Ast = new List<IStatement>()]:
 		
@@ -396,8 +369,20 @@ statement returns [List<IStatement> Ast = new List<IStatement>()]:
   	    // Read / Print
   	|   readPrint { $Ast.Add($readPrint.Ast); }
   	
-  	    // Function invocation
-  	|   funcInvocation SEMI_COL { $Ast.Add($funcInvocation.Ast); }
+  	    // Accepted expressions
+  	|   e1=expression SEMI_COL
+  	    { 
+  	        IExpression expr = $e1.Ast;
+  	        if (expr is IStatement)
+                $Ast.Add((IStatement) expr);
+            else {
+                Seagull.Language.Errors.ErrorHandler
+                    .Instance
+                    .RaiseError(expr.Line, expr.Column, string.Format(
+                        "The expression {0} cannot be used as a statement", expr.ToString())
+                    );
+            }
+        }
   	;
   		
 
@@ -410,7 +395,30 @@ readPrint returns [IStatement Ast]:
 
 
 
+funcInvocation returns [FunctionInvocation Ast, List<IExpression> arguments = new List<IExpression>()]:
+		func=variable L_PAR ( e1=expression { $arguments.Add($e1.Ast); } (COMMA e2=expression { $arguments.Add($e2.Ast); })* )? R_PAR
+ 			{ $Ast = new FunctionInvocation($func.Ast, $arguments); }
+ 	;
+ 
 
+// A function block is different than a simple statement block, since it might contain variable definitions.
+fnBlock returns [List<IStatement> Ast = new List<IStatement>()]: 
+		
+		L_CURL
+		    { List<IStatement> delayed = new List<IStatement>(); } // Statements might be delayed
+        (
+            (c1=fnBlockContent { $Ast.AddRange($c1.Ast); })
+          | (DELAY c2=fnBlockContent { delayed.AddRange($c2.Ast); })
+        )*
+			{ $Ast.AddRange(delayed); }
+		R_CURL
+	;
+	
+fnBlockContent returns [List<IStatement> Ast = new List<IStatement>()]: 
+        variableDef { $Ast.AddRange($variableDef.Ast); } 
+    |   block=statement { $Ast.AddRange($block.Ast); }
+    ;
+	
 
 
 
@@ -423,16 +431,17 @@ readPrint returns [IStatement Ast]:
 expression returns [IExpression Ast]:
 
         variable { $Ast = $variable.Ast; }
-	|   literal { $Ast = $literal.Ast; }
-		
-		// Function invocation
-	|   funcInvocation { $Ast = $funcInvocation.Ast; }
-		
-		// Parentheses
-	|   L_PAR e=expression R_PAR { $Ast = $e.Ast; }
-		
-		// Indexing
-	|   e1=expression L_BRACKET e2=expression R_BRACKET { $Ast = new Indexing($e1.Ast, $e2.Ast); }
+            
+    |   literal { $Ast = $literal.Ast; }
+    
+        // Function invocation
+    |   funcInvocation { $Ast = $funcInvocation.Ast; }
+        
+        // Parentheses
+    |   L_PAR e=expression R_PAR { $Ast = $e.Ast; }	
+    
+        // Indexing
+    |   e1=expression L_BRACKET e2=expression R_BRACKET { $Ast = new Indexing($e1.Ast, $e2.Ast); }	
 		
 		// Attribute access
 	|   e=expression DOT att=ID { $Ast = new AttributeAccess($e.Ast, $att.text); }
@@ -446,6 +455,12 @@ expression returns [IExpression Ast]:
 		// Unary operations
 	|   um=MINUS expression { $Ast = new UnaryMinus($um.GetLine(), $um.GetCol(), $expression.Ast); }
 	|   not=NOT expression { $Ast = new Negation($not.GetLine(), $not.GetCol(), $expression.Ast); }
+	
+	    // Increment and decrement
+	|   e=expression PLUS_PLUS     { $Ast = new Increment($e.Ast.Line, $e.Ast.Column, false, $e.Ast); }
+    |   e=expression MINUS_MINUS   { $Ast = new Decrement($e.Ast.Line, $e.Ast.Column, false, $e.Ast); }
+    |   p=PLUS_PLUS e=expression   { $Ast = new Increment($p.GetLine(), $p.GetCol(), true, $e.Ast); }
+    |   m=MINUS_MINUS e=expression { $Ast = new Decrement($m.GetLine(), $m.GetCol(), true, $e.Ast); }
 		
 		// Arithmetics
 	|   e1=expression op=(STAR|SLASH|PERCENT) e2=expression { $Ast = new Arithmetic($op.text, $e1.Ast, $e2.Ast); }
@@ -463,6 +478,11 @@ expression returns [IExpression Ast]:
 	    // Ternary operator
 	|   e1=expression QUESTION e2=expression COL e3=expression { $Ast = new TernaryOperator($e1.Ast, $e2.Ast, $e3.Ast); }
 	;
+	
+
+	
+
+	
 
 
 

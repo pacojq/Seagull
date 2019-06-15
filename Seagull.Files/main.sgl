@@ -43,13 +43,15 @@ struct Student : Person { // Inheritance?
 }
 */
 
-enum TYPES : int {
+int enum INTS
+{
     TYPE_A = 0,
     TYPE_B = 1,
     TYPE_C = 2
 }
 
-enum TYPES : string {
+string enum STRINGS
+{
     TYPE_A = "0",
     TYPE_B = "1",
     TYPE_C = "2"
@@ -57,16 +59,14 @@ enum TYPES : string {
 
 
 
-square : (int i) -> int {
-	return i*i;
-}
+[int -> int] square; 
 
+void main() {
 
+    square = (int i) -> { return i*i; }
 
-main() : void {
-
-    p1 : Person;
-    p2 := new Person;
+    Person p1;
+    Person p2 = new Person;
     p1 = new Person {
         name = "Mike";
         age = 20;
@@ -82,30 +82,30 @@ main() : void {
 
     
 
-	mult : (int a, int b) -> int = (int a, int b) -> {
+	[int, int -> int] mult = (int a, int b) -> {
 		return a * b;
 	}
 
-	div : arithmetic = (int a, int b) -> {
+	arithmetic div = (int a, int b) ->{
 		return a / b;
 	}
 
-	sub:= (int a, int b) -> {
+	let sub = (int a, int b) -> {
 		return a - b;
 	}
 
-	sum := (int a, int b) -> a + b;
+	let sum = (int a, int b) -> a + b;
 
-	sum2 : arithmetic = (a, b) -> a + b;
+	arithmetic sum2 = (a, b) -> a + b;
 	
 	
 	
 	
 	
-	i := 0;
+	int i = 0;
 	while (1) {
 	
-	    defer print(i);
+	    delay print(i);
 	
 	    if (i == 0) {
 	        i ++;
@@ -121,14 +121,14 @@ main() : void {
             if (i > 300)
                 break;
 	    }
-	    // defer print(i) will be called here
+	    // delay print(i) will be called here
 	}
 	
 	
-	numbers := int[10];
+	int[10] numbers;
 	
 	// Dynamic arrays?
-	//results: int[];
+	// int[] results: int[];
 	
 	for (n in 0..count-1) {
 	    print(numbers[n]);

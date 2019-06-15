@@ -1,4 +1,4 @@
-namespace Seagull.Language.AST.Expressions
+namespace Seagull.Language.AST.Expressions.Binary
 {
 	public abstract class BinaryOperation : AbstractExpression
 	{

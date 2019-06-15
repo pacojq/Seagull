@@ -2,6 +2,7 @@ using System.IO;
 using Antlr4.Runtime;
 using Seagull.Language.AST;
 using Seagull.Language.Errors;
+using Seagull.Language.Grammar;
 using Seagull.Logging;
 
 namespace Seagull.Language.FrontEnd

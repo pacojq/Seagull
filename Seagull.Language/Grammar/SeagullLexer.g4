@@ -117,7 +117,7 @@ MINUS:      '-' ;
 PLUS_PLUS:      '++' ;
 MINUS_MINUS:    '--' ;
 
-//TODO
+//TODO compound assignments
 ASSIGN_MUL:     '*=' ;
 ASSIGN_DIV:     '/=' ;
 ASSIGN_MOD:     '%=' ;
