@@ -34,6 +34,7 @@ BYTE:       'byte' ;
 ENUM:       'enum' ; // TODO
 DELEGATE:   'delegate' ; // TODO
 
+CLASS:      'class' ; // TODO ?
 
 // Keywords
 NULL:       'null' ; // TODO
@@ -67,6 +68,10 @@ PROTECTED:  'protected' ; // TODO
 PRIVATE:    'private' ; // TODO
 // TODO friend namespaces ?
 FRIEND:     'friend' ; // friend namespace 'name' { 'available access nodifiers' }
+
+OVERRIDE:   'override' ; // TODO ?
+LOCKED:     'locked' ;   // TODO ? - prevents overrides
+ABSTRACT:   'abstract' ; // TODO ?
 
 
 LOAD:       'load' ;

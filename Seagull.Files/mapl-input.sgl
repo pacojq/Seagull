@@ -7,7 +7,7 @@ struct Date {
 
 v : double[10];
 
-main: ()
+main () : void
 {
     value: double;
     i, j : int;
