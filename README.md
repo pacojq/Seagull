@@ -1,5 +1,17 @@
 # Seagull
 
+![License](https://img.shields.io/github/license/pacojq/Seagull.svg?color=blue)
+![Version](https://img.shields.io/badge/version-0.0.1-9cf.svg)
+
+> As I watched the seagulls, I thought: That's the road to take;
+> find the absolute rhythm and follow it with absolute trust.
+>
+> ~ Nikos Kazantzakis
+
+<br/>
+
+## Description
+
 Seagull is a toy programming language, based in a project from the Programming 
 Languages Design course at Universidad de Oviedo. The Seagull compiler is built
 in C#, with the help of ANTLR for lexical and syntax analysis.
