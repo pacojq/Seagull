@@ -1,15 +1,17 @@
 <h1 align="center" >Seagull</h1>
-<p align="center">
-  <img src="https://img.shields.io/github/license/pacojq/Seagull.svg?color=blue2" />
-  <img src="https://img.shields.io/badge/version-0.0.1-9cf.svg" />
-</p>
 
 > As I watched the seagulls, I thought: That's the road to take;
 > find the absolute rhythm and follow it with absolute trust.
 >
 > ~ Nikos Kazantzakis
-
 <br/>
+
+<p align="center">
+  <img src="https://img.shields.io/github/license/pacojq/Seagull.svg?color=blue2" />
+  <img src="https://img.shields.io/badge/version-0.0.1-9cf.svg" />
+</p>
+
+
 
 ## Description
 
