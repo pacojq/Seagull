@@ -30,14 +30,14 @@ which can directly output a C language program after compilation.
 
   - Basic types: built-in types; arrays; and named structs.
   - ```if```/```else``` statements and ```while``` loops.
+  - Target MAPL Virtual Machine as target platform (academic virtual machine, 
+  only available for Universidad de Oviedo students).
+  - Using basic namespace functionality.
 
 ## Short term goals
 
-  - Use the MAPL Virtual Machine as target platform (academic virtual machine, 
-  only available for Universidad de Oviedo students).
   - ```switch``` statements
   - ```for``` loops, ```break``` and ```continue``` keywords.
-  - Allow the use of namespaces in the language.
   - Add lambda expressions.
   - Allow value assignment on declaration.
   - Add ```Enum``` types to the language.
