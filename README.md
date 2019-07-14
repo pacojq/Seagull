@@ -29,18 +29,18 @@ which can directly output a C language program after compilation.
 ## Features
 
   - Basic types: built-in types; arrays; and named structs.
-  - If/Else statements and while loops.
+  - ```if```/```else``` statements and ```while``` loops.
 
 ## Short term goals
 
   - Use the MAPL Virtual Machine as target platform (academic virtual machine, 
   only available for Universidad de Oviedo students).
-  - "switch" statements
-  - "for" loops, "break" and "continue" keywords.
+  - ```switch``` statements
+  - ```for``` loops, ```break``` and ```continue``` keywords.
   - Allow the use of namespaces in the language.
   - Add lambda expressions.
   - Allow value assignment on declaration.
-  - Add Enum types to the language.
+  - Add ```Enum``` types to the language.
   - Basic polymorphism: interfaces and struct inheritance.
 
 ## Long term goals
