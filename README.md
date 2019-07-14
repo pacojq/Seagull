@@ -50,6 +50,7 @@ which can directly output a C language program after compilation.
   - Add generics to the language.
   - Use the C language as the target compilation language.
   - Allow the use of a graphics library, such as OpenGL.
+  - Language server protocol (https://langserver.org) implementation.
   
 ## Wishlist
 
