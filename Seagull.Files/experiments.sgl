@@ -23,7 +23,7 @@
 
 
 
-delegate arithmetic : (a : int, b : int) -> int;
+lambda arithmetic : (a : int, b : int) -> int;
 
 
 struct Person {

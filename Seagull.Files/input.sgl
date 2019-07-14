@@ -2,15 +2,15 @@
 load "person.sgl"
 
 
-main: ()
+void main()
 {
-    a: int[5][10];
-    test : Test.TestStruct;
+    int[5][10] a;
+    Test.TestStruct test;
     
-    person : People.Person;
+    People.Person person;
     person.Age = 3;
     
-    testInner : Test.Inner.TestInnerStruct;
+    Test.Inner.TestInnerStruct testInner;
 }
 
 namespace Test {

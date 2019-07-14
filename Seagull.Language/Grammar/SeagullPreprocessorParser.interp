@@ -10,9 +10,12 @@ null
 'long'
 'byte'
 'enum'
-'delegate'
+'lambda'
+'class'
+'var'
 'null'
 'ptr'
+'any'
 'true'
 'false'
 null
@@ -35,6 +38,11 @@ null
 'protected'
 'private'
 'friend'
+'nullable'
+'const'
+'override'
+'locked'
+'abstract'
 'load'
 'import'
 'namespace'
@@ -53,6 +61,7 @@ null
 '?'
 '+'
 '-'
+'@'
 '++'
 '--'
 '*='
@@ -110,9 +119,12 @@ STRUCT
 LONG
 BYTE
 ENUM
-DELEGATE
+LAMBDA
+CLASS
+VAR
 NULL
 PTR
+ANY
 TRUE
 FALSE
 IF
@@ -135,6 +147,11 @@ PUBLIC
 PROTECTED
 PRIVATE
 FRIEND
+NULLABLE
+CONST
+OVERRIDE
+LOCKED
+ABSTRACT
 LOAD
 IMPORT
 NAMESPACE
@@ -153,6 +170,7 @@ ARROW
 QUESTION
 PLUS
 MINUS
+ADDRESS
 PLUS_PLUS
 MINUS_MINUS
 ASSIGN_MUL
@@ -204,4 +222,4 @@ preprocessorExpression
 
 
 atn:
-[3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 99, 15, 4, 2, 9, 2, 4, 3, 9, 3, 3, 2, 3, 2, 3, 2, 3, 2, 5, 2, 11, 10, 2, 3, 3, 3, 3, 3, 3, 2, 2, 4, 2, 4, 2, 3, 3, 2, 16, 17, 2, 13, 2, 10, 3, 2, 2, 2, 4, 12, 3, 2, 2, 2, 6, 7, 7, 93, 2, 2, 7, 11, 7, 84, 2, 2, 8, 9, 7, 94, 2, 2, 9, 11, 5, 4, 3, 2, 10, 6, 3, 2, 2, 2, 10, 8, 3, 2, 2, 2, 11, 3, 3, 2, 2, 2, 12, 13, 9, 2, 2, 2, 13, 5, 3, 2, 2, 2, 3, 10]
+[3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 108, 15, 4, 2, 9, 2, 4, 3, 9, 3, 3, 2, 3, 2, 3, 2, 3, 2, 5, 2, 11, 10, 2, 3, 3, 3, 3, 3, 3, 2, 2, 4, 2, 4, 2, 3, 3, 2, 19, 20, 2, 13, 2, 10, 3, 2, 2, 2, 4, 12, 3, 2, 2, 2, 6, 7, 7, 102, 2, 2, 7, 11, 7, 93, 2, 2, 8, 9, 7, 103, 2, 2, 9, 11, 5, 4, 3, 2, 10, 6, 3, 2, 2, 2, 10, 8, 3, 2, 2, 2, 11, 3, 3, 2, 2, 2, 12, 13, 9, 2, 2, 2, 13, 5, 3, 2, 2, 2, 3, 10]

@@ -1,19 +1,19 @@
 
 struct Date {
-    day : int;
-    month, year : int;
+    int day;
+    int month, year;
 }
 
 
-v : double[10];
+double[10] v;
 
-main () : void
+void main ()
 {
-    value: double;
-    i, j : int;
-    w: int[4][5];
+    double value;
+    int i, j;
+    int[4][5] w;
     
-    date : Date;
+    Date date;
     
     read(date.day);
     

@@ -62,6 +62,11 @@ imp returns [string Namespace]:
 // * * * * * * * * *   TYPES   * * * * * * * * * * //
 
 
+typeOrVoid returns [IType Ast]:
+        type        { $Ast = $type.Ast; }
+    |   voidType    { $Ast = $voidType.Ast; }
+    ;
+    
 
 type returns [IType Ast]:
         primitive       { $Ast = $primitive.Ast; }
@@ -75,7 +80,7 @@ type returns [IType Ast]:
                 { $Ast = ArrayType.BuildArray( int.Parse($i2.text), $Ast); } 
             )*
 	;
-
+	
 
 	
 // Custom type, which might be in packages	
@@ -271,7 +276,7 @@ variableDef returns [List<VariableDefinition> Ast = new List<VariableDefinition>
                 $Ast.Add(new VariableDefinition($t.Ast.Line, $t.Ast.Column, id, $t.Ast, $e.Ast));
         }
         
-		// TODO let ID '=' expression
+		// TODO var ID '=' expression
 	;
 	
 // Util function, to get variable definition ids
@@ -291,7 +296,7 @@ variableDefIds returns [List<string> Ids = new List<string>()]:
 functionDef returns [FunctionDefinition Ast]
             locals [List<VariableDefinition> _params = new List<VariableDefinition>()]:
         
-        rt=type n=ID L_PAR (p=parameters { $_params = $p.Ast; })? R_PAR fnBlock 
+        rt=typeOrVoid n=ID L_PAR (p=parameters { $_params = $p.Ast; })? R_PAR fnBlock 
         {
             string name = $n.GetText();
             IType fType = new FunctionType($rt.Ast, $_params);
@@ -315,9 +320,9 @@ enumDef returns [EnumDefinition Ast] locals[IType typeOf]:
     ;
     
 
-// TODO create a type with the delegate name
-delegate returns [IType Ast]:
-        DELEGATE n=ID functionType { $Ast = $functionType.Ast; }
+// TODO create a type with the lambda name
+lambda returns [IType Ast]:
+        LAMBDA n=ID functionType { $Ast = $functionType.Ast; }
     ;
 
 
@@ -498,6 +503,11 @@ literal returns [IExpression Ast]:
 	|   c=CHAR_CONSTANT     { $Ast = new CharLiteral($c.GetLine(), $c.GetCol(), LexerHelper.LexemeToChar($c.text)); }
 	|   s=STRING_CONSTANT   { $Ast = new StringLiteral($s.GetLine(), $s.GetCol(), $s.text); }
 	|   b=BOOLEAN_CONSTANT  { $Ast = new BooleanLiteral($b.GetLine(), $b.GetCol(), LexerHelper.LexemeToBoolean($b.text)); }
+	
+	
+	    // TODO array literal
+	    // int[] array = [0, 1, 2, 3];
+	
 	;
 
 

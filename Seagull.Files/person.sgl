@@ -3,9 +3,9 @@
 namespace People {
 
     struct Person {
-        Name : string;
-        Age : int;
-        //Nationality : Nationality;
+        string Name;
+        int Age;
+        // TODO enums Nationality Nationality;
     }
     
     struct Athlete /*: Person TODO inheritance */ {

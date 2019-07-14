@@ -32,13 +32,15 @@ STRUCT:     'struct' ;
 LONG:       'long' ;
 BYTE:       'byte' ;
 ENUM:       'enum' ; // TODO
-DELEGATE:   'delegate' ; // TODO
+LAMBDA:     'lambda' ; // TODO delegate -> lambda
 
 CLASS:      'class' ; // TODO ?
+VAR:        'var' ; // TODO type inference
 
 // Keywords
 NULL:       'null' ; // TODO
 PTR:        'ptr' ; // TODO
+ANY:        'any' ; // TODO ? the Java Object equivalent. Any type, literally
 
 TRUE:       'true' ;
 FALSE:      'false' ;
@@ -66,8 +68,11 @@ DELAY:      'delay' ;
 PUBLIC:     'public' ; // TODO
 PROTECTED:  'protected' ; // TODO
 PRIVATE:    'private' ; // TODO
-// TODO friend namespaces ?
-FRIEND:     'friend' ; // friend namespace 'name' { 'available access nodifiers' }
+FRIEND:     'friend' ;  // TODO friend namespaces 
+                        // friend namespace 'name' { 'available access nodifiers' }
+
+NULLABLE:   'nullable' ; // ?
+CONST:      'const' ; // TODO
 
 OVERRIDE:   'override' ; // TODO ?
 LOCKED:     'locked' ;   // TODO ? - prevents overrides
@@ -98,7 +103,7 @@ OWNED:      'owned' ;  // "Imports" all namespace definitions inside
                        //
                       
 IS:         'is' ; // TODO
-DEFAULT:    'default' ;
+DEFAULT:    'default' ; // TODO ?
 
 
 
@@ -117,6 +122,14 @@ QUESTION:   '?' ;
 
 PLUS:       '+' ;
 MINUS:      '-' ;
+
+ADDRESS:    '@' ; // TODO pointers: @int ??
+                  // int a = 3;
+                  // @int ptr_a = @a;
+                  //
+                  // ... then how do we take the value of a pointer?                  
+                  // $prt_a = 5;
+
 
 // TODO
 PLUS_PLUS:      '++' ;
@@ -146,8 +159,8 @@ BIT_AND:    '&' ;
 BIT_OR:     '|' ;
 BIT_XOR:    '^' ;
 BIT_NOT:    '~' ;
-BIT_RIGHT:  '>>' ;
-BIT_LEFT:   '<<' ;
+BIT_RIGHT:  '>>' ; // ?
+BIT_LEFT:   '<<' ; // ?
 
 EQUAL:              '==' ;
 NOT_EQUAL:          '!=' ;

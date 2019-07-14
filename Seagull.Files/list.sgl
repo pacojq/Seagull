@@ -2,28 +2,39 @@
 
 namespace Lists
 {
-    List : struct
+    struct List
     {
-        Head: ListNode;
+        ListNode Head;
     }
     
-    ListNode : struct
+    struct ListNode
     {
-        Next: ListNode;
-        Element: ptr;
+        ListNode Next;
+        ptr Element;
     }
     
     
-    list_create() : List ->
+    List list_create()
     {
-        list := new List;
+        var list = new List;
         return list;
     }
     
-    list_add(list: List, any element) : List ->
+    void list_add(List list, any element)
     {
-        list := new List;
-        return list;
+        ListNode node = list.Head;
+        
+        if (node == null)
+        {
+            list.Head = new ListNode;
+            list.Head.Element = *element;
+        }
+        
+        while (node.Next != null)
+            node = node.Next;
+        
+        node.Next = new ListNode;
+        node.Next.Element = *element;
     }
 
 }

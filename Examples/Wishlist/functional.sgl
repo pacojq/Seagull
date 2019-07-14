@@ -1,0 +1,34 @@
+
+
+void main()
+{
+    myAction counter = makeCounter();
+    counter(); // prints 1
+    counter(); // prints 2
+    counter(); // prints 3
+
+}
+
+
+lambda void myAction();
+
+myAction makeCounter()
+{
+    int count = 0;
+    
+   	myAction increment = 
+   	    () ->
+        {
+            count = count + 1;
+            print count;
+        }
+   	return increment;
+}
+
+// lambda int myFunc(int a) is a named equivalent to lambda(int->int) ?
+
+
+lambda(->int) one()
+{
+    return () => 1;
+}
