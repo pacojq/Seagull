@@ -1,8 +1,8 @@
-using Seagull.Language.AST;
-using Seagull.Language.AST.Expressions;
-using Seagull.Language.AST.Expressions.Binary;
-using Seagull.Language.AST.Expressions.Literals;
-using Void = Seagull.Language.Visitor.Void;
+using Seagull.AST;
+using Seagull.AST.Expressions;
+using Seagull.AST.Expressions.Binary;
+using Seagull.AST.Expressions.Literals;
+using Void = Seagull.Visitor.Void;
 
 namespace Seagull.CodeGeneration.Mapl
 {

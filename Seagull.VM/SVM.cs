@@ -1,5 +1,6 @@
 using Seagull.VM.Commands;
 using Seagull.VM.Parser;
+using Seagull.VM.VMMemory;
 
 namespace Seagull.VM
 {

@@ -1,9 +1,9 @@
 using System.Globalization;
 using System.Text;
-using Seagull.Language.AST;
-using Seagull.Language.AST.Expressions;
-using Seagull.Language.AST.Expressions.Binary;
-using Seagull.Language.AST.Statements.Definitions;
+using Seagull.AST;
+using Seagull.AST.Expressions;
+using Seagull.AST.Expressions.Binary;
+using Seagull.AST.Statements.Definitions;
 
 
 namespace Seagull.CodeGeneration.Mapl

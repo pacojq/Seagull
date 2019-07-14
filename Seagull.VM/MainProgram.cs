@@ -1,6 +1,5 @@
 ﻿using System;
-using Seagull.Language;
-using Seagull.Language.AST;
+using Seagull.AST;
 
 namespace Seagull.VM
 {

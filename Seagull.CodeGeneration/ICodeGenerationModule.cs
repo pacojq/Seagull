@@ -1,4 +1,4 @@
-using Seagull.Language.AST;
+using Seagull.AST;
 
 namespace Seagull.CodeGeneration
 {

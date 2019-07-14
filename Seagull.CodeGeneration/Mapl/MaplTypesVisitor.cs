@@ -1,14 +1,14 @@
 using System;
 using System.Linq;
-using Seagull.Language.AST.Expressions.Binary;
-using Seagull.Language.AST.Types;
-using Seagull.Language.AST.Types.Namespaces;
-using Seagull.Language.Visitor;
-using Void = Seagull.Language.Visitor.Void;
+using Seagull.AST.Expressions.Binary;
+using Seagull.AST.Types;
+using Seagull.AST.Types.Namespaces;
+using Seagull.Visitor;
+using Void = Seagull.Visitor.Void;
 
 namespace Seagull.CodeGeneration.Mapl
 {
-    public class MaplTypesVisitor : AbstractVisitor<Void, Void>
+    public class MaplTypesVisitor : AbstractVisitor<Visitor.Void, Visitor.Void>
     {
 	    
 	    public override Void Visit(Comparison comparison, Void p)

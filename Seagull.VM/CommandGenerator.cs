@@ -1,6 +1,6 @@
 
 
-namespace Seagull.VM.Commands
+namespace Seagull.VM
 {
 	public class CommandGenerator
 	{

@@ -1,6 +1,6 @@
 using System;
-using Seagull.Language.AST;
-using Seagull.Language.AST.Types;
+using Seagull.AST;
+using Seagull.AST.Types;
 
 namespace Seagull.CodeGeneration.Mapl
 {

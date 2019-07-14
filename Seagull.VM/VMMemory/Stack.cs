@@ -1,6 +1,4 @@
-using Seagull.VM.VMMemory;
-
-namespace Seagull.VM
+namespace Seagull.VM.VMMemory
 {
 	public class Stack
 	{

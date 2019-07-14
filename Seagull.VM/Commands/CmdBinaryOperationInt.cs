@@ -1,4 +1,5 @@
 using System;
+using Seagull.VM.VMMemory;
 
 namespace Seagull.VM.Commands
 {

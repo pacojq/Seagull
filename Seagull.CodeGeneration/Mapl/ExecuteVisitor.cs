@@ -1,10 +1,10 @@
 using System.Text;
-using Seagull.Language.AST;
-using Seagull.Language.AST.Expressions;
-using Seagull.Language.AST.Statements;
-using Seagull.Language.AST.Statements.Definitions;
-using Seagull.Language.AST.Types;
-using Seagull.Language.Visitor;
+using Seagull.AST;
+using Seagull.AST.Expressions;
+using Seagull.AST.Statements;
+using Seagull.AST.Statements.Definitions;
+using Seagull.AST.Types;
+using Seagull.Visitor;
 
 namespace Seagull.CodeGeneration.Mapl
 {

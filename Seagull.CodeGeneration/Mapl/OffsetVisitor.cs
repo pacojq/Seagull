@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
-using Seagull.Language.AST;
-using Seagull.Language.AST.Statements.Definitions;
-using Seagull.Language.AST.Types;
-using Seagull.Language.AST.Types.Namespaces;
+using Seagull.AST;
+using Seagull.AST.Statements.Definitions;
+using Seagull.AST.Types;
+using Seagull.AST.Types.Namespaces;
 using Seagull.Logging;
-using Seagull.Language.Visitor;
-using Void = Seagull.Language.Visitor.Void;
+using Seagull.Visitor;
+using Void = Seagull.Visitor.Void;
 
 namespace Seagull.CodeGeneration.Mapl
 {
-    public class OffsetVisitor : AbstractVisitor<Void, Void>
+    public class OffsetVisitor : AbstractVisitor<Visitor.Void, Visitor.Void>
     {
         private int _globalOffset;
 	

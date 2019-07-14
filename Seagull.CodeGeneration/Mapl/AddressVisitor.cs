@@ -1,9 +1,8 @@
-
-using Seagull.Language.AST;
-using Seagull.Language.AST.Expressions;
-using Seagull.Language.AST.Types;
-using Seagull.Language.AST.Types.Namespaces;
-using Seagull.Language.Visitor;
+using Seagull.AST;
+using Seagull.AST.Expressions;
+using Seagull.AST.Types;
+using Seagull.AST.Types.Namespaces;
+using Seagull.Visitor;
 
 namespace Seagull.CodeGeneration.Mapl
 {

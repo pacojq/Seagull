@@ -47,9 +47,9 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\Seagull.Language\Seagull.Language.csproj">
+      <ProjectReference Include="..\Seagull\Seagull.csproj">
         <Project>{79d5c142-87e3-4b09-b516-c0da43eb1c1d}</Project>
-        <Name>Seagull.Language</Name>
+        <Name>Seagull</Name>
       </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

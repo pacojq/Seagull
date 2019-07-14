@@ -1,6 +1,6 @@
 using System;
 
-namespace Seagull.VM
+namespace Seagull.VM.VMMemory
 {
 	public class Memory
 	{

@@ -1,6 +1,6 @@
 using System.IO;
 using System.Text;
-using Seagull.Language.AST;
+using Seagull.AST;
 
 namespace Seagull.CodeGeneration.Mapl
 {
