@@ -7,8 +7,9 @@
 <br/>
 
 <p align="center">
-  <img src="https://img.shields.io/github/license/pacojq/Seagull.svg?color=blue2" />
-  <img src="https://img.shields.io/badge/version-0.0.1-9cf.svg" />
+  <img src="https://img.shields.io/github/license/pacojq/Seagull.svg?style=flat-square" />
+  <img src="https://img.shields.io/badge/version-0.0.1-9cf.svg?style=flat-square" />
+  <img src="https://img.shields.io/github/stars/pacojq/Seagull.svg?style=flat-square" />
 </p>
 
 
