@@ -33,6 +33,7 @@ which can directly output a C language program after compilation.
   - Target MAPL Virtual Machine as target platform (academic virtual machine, 
   only available for Universidad de Oviedo students).
   - Using basic namespace functionality.
+  - Very basic type inference (only working with literals).
 
 ## Short term goals
 
