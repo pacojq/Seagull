@@ -32,7 +32,6 @@
 	using Seagull.AST.Expressions;
 	using Seagull.AST.Expressions.Binary;
 	using Seagull.AST.Expressions.Literals;
-	using Seagull.AST.Expressions.Increments;
 	
 	using Seagull.AST.Statements;
 	using Seagull.AST.Statements.Definitions;
@@ -1929,7 +1928,7 @@ public partial class SeagullParser : Parser {
 		public StatementContext st;
 		public IToken f;
 		public StatementContext init;
-		public StatementContext incr;
+		public ExpressionContext incr;
 		public VariableContext e;
 		public ExpressionContext col;
 		public IToken c;
@@ -2074,10 +2073,10 @@ public partial class SeagullParser : Parser {
 				State = 417; _localctx.init = statement();
 				State = 418; _localctx.cond = expression(0);
 				State = 419; Match(SEMI_COL);
-				State = 420; _localctx.incr = statement();
+				State = 420; _localctx.incr = expression(0);
 				State = 421; Match(R_PAR);
 				State = 422; _localctx.st = statement();
-				 _localctx.Ast.Add(new ForLoop(_localctx.f.GetLine(), _localctx.f.GetCol(), _localctx.init.Ast[0], _localctx.cond.Ast, _localctx.incr.Ast[0], _localctx.st.Ast)); 
+				 _localctx.Ast.Add(new ForLoop(_localctx.f.GetLine(), _localctx.f.GetCol(), _localctx.init.Ast[0], _localctx.cond.Ast, _localctx.incr.Ast, _localctx.st.Ast)); 
 				}
 				break;
 			case 4:
@@ -2138,7 +2137,7 @@ public partial class SeagullParser : Parser {
 				State = 453; Match(ASSIGN);
 				State = 454; _localctx.e2 = expression(0);
 				State = 455; Match(SEMI_COL);
-				 _localctx.Ast.Add(new Assignment(_localctx.e1.Ast, _localctx.e2.Ast)); 
+				 _localctx.Ast.Add( new Assignment(_localctx.e1.Ast, _localctx.e2.Ast) ); 
 				}
 				break;
 			case 9:
@@ -2657,14 +2656,14 @@ public partial class SeagullParser : Parser {
 				{
 				State = 566; _localctx.p = Match(PLUS_PLUS);
 				State = 567; _localctx.e = _localctx._expression = expression(8);
-				 _localctx.Ast =  new Increment(_localctx.p.GetLine(), _localctx.p.GetCol(), true, _localctx.e.Ast); 
+				 _localctx.Ast =  new Increment(_localctx.p.GetLine(), _localctx.p.GetCol(), true, true, _localctx.e.Ast); 
 				}
 				break;
 			case 10:
 				{
 				State = 570; _localctx.m = Match(MINUS_MINUS);
 				State = 571; _localctx.e = _localctx._expression = expression(7);
-				 _localctx.Ast =  new Decrement(_localctx.m.GetLine(), _localctx.m.GetCol(), true, _localctx.e.Ast); 
+				 _localctx.Ast =  new Increment(_localctx.m.GetLine(), _localctx.m.GetCol(), true, false, _localctx.e.Ast); 
 				}
 				break;
 			case 11:
@@ -2821,7 +2820,7 @@ public partial class SeagullParser : Parser {
 						State = 619;
 						if (!(Precpred(Context, 10))) throw new FailedPredicateException(this, "Precpred(Context, 10)");
 						State = 620; Match(PLUS_PLUS);
-						 _localctx.Ast =  new Increment(_localctx.e.Ast.Line, _localctx.e.Ast.Column, false, _localctx.e.Ast); 
+						 _localctx.Ast =  new Increment(_localctx.e.Ast.Line, _localctx.e.Ast.Column, false, true, _localctx.e.Ast); 
 						}
 						break;
 					case 9:
@@ -2832,7 +2831,7 @@ public partial class SeagullParser : Parser {
 						State = 622;
 						if (!(Precpred(Context, 9))) throw new FailedPredicateException(this, "Precpred(Context, 9)");
 						State = 623; Match(MINUS_MINUS);
-						 _localctx.Ast =  new Decrement(_localctx.e.Ast.Line, _localctx.e.Ast.Column, false, _localctx.e.Ast); 
+						 _localctx.Ast =  new Increment(_localctx.e.Ast.Line, _localctx.e.Ast.Column, false, false, _localctx.e.Ast); 
 						}
 						break;
 					}
@@ -3393,7 +3392,7 @@ public partial class SeagullParser : Parser {
 		'\x3', '\x2', '\x2', '\x2', '\x1A1', '\x1A2', '\a', '\x18', '\x2', '\x2', 
 		'\x1A2', '\x1A3', '\a', 'M', '\x2', '\x2', '\x1A3', '\x1A4', '\x5', '\x32', 
 		'\x1A', '\x2', '\x1A4', '\x1A5', '\x5', '<', '\x1F', '\x2', '\x1A5', '\x1A6', 
-		'\a', '\x37', '\x2', '\x2', '\x1A6', '\x1A7', '\x5', '\x32', '\x1A', '\x2', 
+		'\a', '\x37', '\x2', '\x2', '\x1A6', '\x1A7', '\x5', '<', '\x1F', '\x2', 
 		'\x1A7', '\x1A8', '\a', 'N', '\x2', '\x2', '\x1A8', '\x1A9', '\x5', '\x32', 
 		'\x1A', '\x2', '\x1A9', '\x1AA', '\b', '\x1A', '\x1', '\x2', '\x1AA', 
 		'\x1DC', '\x3', '\x2', '\x2', '\x2', '\x1AB', '\x1AC', '\a', '\x18', '\x2', 

@@ -1,10 +1,12 @@
 using Seagull.Visitor;
 
-namespace Seagull.AST.Expressions.Increments
+namespace Seagull.AST.Expressions
 {
-	public class Increment : AbstractExpression, IIncrement
+	public class Increment : AbstractExpression, IStatement
 	{
 		public bool IsPrefixIncrement { get; }
+		
+		public bool IsPositive { get; }
 		
 		public IExpression Operand { get; }
 		
@@ -12,15 +14,16 @@ namespace Seagull.AST.Expressions.Increments
 		public string CgExecute { get; set; }
 		
 		
-		public Increment(int line, int column, bool isPrefix, IExpression operand) : base(line, column)
+		public Increment(int line, int column, bool isPrefix, bool isPositive, IExpression operand) : base(line, column)
 		{
 			IsPrefixIncrement = isPrefix;
+			IsPositive = isPositive;
 			Operand = operand;
 		}
 
 		public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)
 		{
-			throw new System.NotImplementedException();
+			return visitor.Visit(this, p);
 		}
 
 	}

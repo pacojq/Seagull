@@ -36,6 +36,7 @@
           <HintPath>..\packages\Antlr4.Runtime.Standard.4.7.2\lib\net35\Antlr4.Runtime.Standard.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="Microsoft.CSharp" />
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
@@ -57,9 +58,7 @@
         <Compile Include="AST\Expressions\Cast.cs" />
         <Compile Include="AST\Expressions\Default.cs" />
         <Compile Include="AST\Expressions\FunctionInvocation.cs" />
-        <Compile Include="AST\Expressions\Increments\Decrement.cs" />
-        <Compile Include="AST\Expressions\Increments\IIncrement.cs" />
-        <Compile Include="AST\Expressions\Increments\Increment.cs" />
+        <Compile Include="AST\Expressions\Increment.cs" />
         <Compile Include="AST\Expressions\Indexing.cs" />
         <Compile Include="AST\Expressions\Literal.cs" />
         <Compile Include="AST\Expressions\Literals\BooleanLiteral.cs" />

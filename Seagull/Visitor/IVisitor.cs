@@ -111,12 +111,14 @@ namespace Seagull.Visitor
 		TR Visit(Cast cast, TP p);
 		TR Visit(Default def, TP p);
 		TR Visit(FunctionInvocation functionInvocation, TP p);
+		TR Visit(Increment increment, TP p);
 		TR Visit(Indexing indexing, TP p);
 		TR Visit(Negation negation, TP p);
 		TR Visit(New newExpr, TP p);
 		TR Visit(TernaryOperator ternary, TP p);
 		TR Visit(UnaryMinus unaryMinus, TP p);
 		TR Visit(Variable variable, TP p);
+
 
 		
     }

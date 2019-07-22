@@ -103,5 +103,10 @@ namespace Seagull.AST.Types
         {
             return DefaultOperation($"parentheses operator");
         }
+
+        public virtual IType TypeCheckIncrement()
+        {
+            return DefaultOperation($"parentheses operator");
+        }
     }
 }

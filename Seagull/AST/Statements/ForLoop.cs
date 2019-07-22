@@ -9,14 +9,14 @@ namespace Seagull.AST.Statements
         public IStatement Initialization { get; }
         public IExpression Condition { get; }
         
-        public IStatement Increment { get; }
+        public IExpression Increment { get; }
         
         
         public IEnumerable<IStatement> Statements { get; }
         
         
         public ForLoop(int line, int column, IStatement initialization, 
-            IExpression condition, IStatement increment, IEnumerable<IStatement> statements) 
+            IExpression condition, IExpression increment, IEnumerable<IStatement> statements) 
             : base(line, column)
         {
             Initialization = initialization;

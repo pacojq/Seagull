@@ -15,7 +15,6 @@ options { tokenVocab = SeagullLexer; }
 	using Seagull.AST.Expressions;
 	using Seagull.AST.Expressions.Binary;
 	using Seagull.AST.Expressions.Literals;
-	using Seagull.AST.Expressions.Increments;
 	
 	using Seagull.AST.Statements;
 	using Seagull.AST.Statements.Definitions;
@@ -369,8 +368,9 @@ statement returns [List<IStatement> Ast = new List<IStatement>()]:
 		    { $Ast.Add(new WhileLoop($w.GetLine(), $w.GetCol(), $cond.Ast, $st.Ast)); }
 		    
         // For / Foreach loop
-    |   f=FOR L_PAR init=statement cond=expression SEMI_COL incr=statement R_PAR st=statement
-            { $Ast.Add(new ForLoop($f.GetLine(), $f.GetCol(), $init.Ast[0], $cond.Ast, $incr.Ast[0], $st.Ast)); }
+    |   f=FOR L_PAR init=statement cond=expression SEMI_COL incr=expression R_PAR st=statement
+            { $Ast.Add(new ForLoop($f.GetLine(), $f.GetCol(), $init.Ast[0], $cond.Ast, $incr.Ast, $st.Ast)); }
+            
     |   f=FOR L_PAR e=variable IN col=expression R_PAR st=statement
             { $Ast.Add(new ForeachLoop($f.GetLine(), $f.GetCol(), $e.Ast, $col.Ast, $st.Ast)); }
 	
@@ -384,7 +384,7 @@ statement returns [List<IStatement> Ast = new List<IStatement>()]:
             (ELSE st2=statement  { ((IfStatement)$Ast[0]).Else = $st2.Ast; })?	
 	
 	    // Assignment
-	|   e1=expression ASSIGN e2=expression SEMI_COL	{ $Ast.Add(new Assignment($e1.Ast, $e2.Ast)); }
+	|   e1=expression ASSIGN e2=expression SEMI_COL	{ $Ast.Add( new Assignment($e1.Ast, $e2.Ast) ); }
   	
   	    // Return statement
   	|   r=RETURN expr=expression SEMI_COL  { $Ast.Add(new Return($r.GetLine(), $r.GetCol(), $expr.Ast)); }
@@ -408,6 +408,8 @@ statement returns [List<IStatement> Ast = new List<IStatement>()]:
             }
         }
   	;
+  	
+  	
   		
 
 
@@ -481,10 +483,10 @@ expression returns [IExpression Ast]:
 	|   not=NOT expression { $Ast = new Negation($not.GetLine(), $not.GetCol(), $expression.Ast); }
 	
 	    // Increment and decrement
-	|   e=expression PLUS_PLUS     { $Ast = new Increment($e.Ast.Line, $e.Ast.Column, false, $e.Ast); }
-    |   e=expression MINUS_MINUS   { $Ast = new Decrement($e.Ast.Line, $e.Ast.Column, false, $e.Ast); }
-    |   p=PLUS_PLUS e=expression   { $Ast = new Increment($p.GetLine(), $p.GetCol(), true, $e.Ast); }
-    |   m=MINUS_MINUS e=expression { $Ast = new Decrement($m.GetLine(), $m.GetCol(), true, $e.Ast); }
+	|   e=expression PLUS_PLUS     { $Ast = new Increment($e.Ast.Line, $e.Ast.Column, false, true, $e.Ast); }
+    |   e=expression MINUS_MINUS   { $Ast = new Increment($e.Ast.Line, $e.Ast.Column, false, false, $e.Ast); }
+    |   p=PLUS_PLUS e=expression   { $Ast = new Increment($p.GetLine(), $p.GetCol(), true, true, $e.Ast); }
+    |   m=MINUS_MINUS e=expression { $Ast = new Increment($m.GetLine(), $m.GetCol(), true, false, $e.Ast); }
 		
 		// Arithmetics
 	|   e1=expression op=(STAR|SLASH|PERCENT) e2=expression { $Ast = new Arithmetic($op.text, $e1.Ast, $e2.Ast); }

@@ -7,6 +7,7 @@ using Seagull.AST.Statements;
 using Seagull.AST.Statements.Definitions;
 using Seagull.Errors;
 using Seagull.Visitor;
+using Void = Seagull.Visitor.Void;
 
 namespace Seagull.Semantics.TypeChecking
 {
@@ -158,16 +159,16 @@ namespace Seagull.Semantics.TypeChecking
 			indexing.Type = indexing.Operand.Type.TypeCheckIndexing(indexing.Index.Type);
 			return null;
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+		public override Void Visit(Increment increment, IType p)
+		{
+			base.Visit(increment, p);
+			increment.Type = increment.Operand.Type.TypeCheckIncrement();
+			return null;
+		}
+
+
 		// STATEMENTS HAVE NO TYPE!!!! WE'LL JUST CHECK, NOT ASSIGN.
 		
 		

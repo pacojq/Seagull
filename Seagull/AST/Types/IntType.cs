@@ -54,9 +54,12 @@ namespace Seagull.AST.Types
             }
             return base.TypeCheckCast(other);
         }
-        
-        
-        
+
+
+        public override IType TypeCheckIncrement()
+        {
+            return this;
+        }
 
 
         public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)

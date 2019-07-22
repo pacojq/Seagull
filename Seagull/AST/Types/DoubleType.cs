@@ -48,6 +48,11 @@ namespace Seagull.AST.Types
             return base.TypeCheckCast(other);
         }
         
+        public override IType TypeCheckIncrement()
+        {
+            return this;
+        }
+        
         
         
         public override string ToString()

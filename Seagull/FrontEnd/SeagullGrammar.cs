@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using Antlr4.Runtime;
 using Seagull.AST;
@@ -33,6 +34,9 @@ namespace Seagull.FrontEnd
             }
             SeagullLexer lexer = new SeagullLexer(input);
 
+            // Look for errors in the lexer
+            CheckLexer(lexer);
+            
             
             // create a parser that feeds off the tokens buffer
             CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -50,6 +54,22 @@ namespace Seagull.FrontEnd
 			
             return parser.program().Ast;
         }
+
+
+
+        private int CheckLexer(SeagullLexer lexer)
+        {
+            IToken token;
+            token = lexer.NextToken();
+            while (token.Type != SeagullLexer.Eof)
+            {
+                token = lexer.NextToken();
+            }
+            lexer.Reset();
+            
+            return 0;
+        }
+
         
     }
 }

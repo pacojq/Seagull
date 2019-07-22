@@ -222,7 +222,7 @@ namespace Seagull.Visitor
 		}
 
 
-		public TR Visit(MainFunctionDefinition mainFunctionDefinition, TP p)
+		public virtual TR Visit(MainFunctionDefinition mainFunctionDefinition, TP p)
 		{
 			return this.Visit((FunctionDefinition) mainFunctionDefinition, p);
 		}
@@ -307,8 +307,14 @@ namespace Seagull.Visitor
 			logicalOperation.Right.Accept(this, p);
 			return default(TR);
 		}
-	
-		
+
+
+		public virtual TR Visit(Increment increment, TP p)
+		{
+			increment.Operand.Accept(this, p);
+			return default(TR);
+		}
+
 		public virtual TR Visit(Indexing indexing, TP p)
 		{
 			indexing.Operand.Accept(this, p);

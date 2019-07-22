@@ -259,6 +259,11 @@ namespace Seagull.CodeGeneration.Mapl
             throw new InvalidOperationException(GetMsg(functionInvocation));
         }
 
+        public TR Visit(Increment increment, TP p)
+        {
+            throw new InvalidOperationException(GetMsg(increment));
+        }
+
         public virtual TR Visit(Indexing indexing, TP p)
         {
             throw new InvalidOperationException(GetMsg(indexing));

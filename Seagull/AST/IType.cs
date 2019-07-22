@@ -31,7 +31,8 @@ namespace Seagull.AST
 
         IType TypeCheckAttributeAccess(string attributeName);
         IType TypeCheckParentheses(int line, int column, IEnumerable<IType> arguments);
-        
-        
+
+
+        IType TypeCheckIncrement();
     }
 }
