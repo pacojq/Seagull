@@ -39,10 +39,10 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="CgVisitor.cs" />
         <Compile Include="ICodeGenerationModule.cs" />
         <Compile Include="Mapl\AddressVisitor.cs" />
         <Compile Include="Mapl\CgMapl.cs" />
-        <Compile Include="Mapl\CgVisitor.cs" />
         <Compile Include="Mapl\ExecuteVisitor.cs" />
         <Compile Include="Mapl\MaplCodeGenerator.cs" />
         <Compile Include="Mapl\MaplTypesVisitor.cs" />
@@ -51,6 +51,9 @@
         <Compile Include="Mapl\ValueVisitor.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="SeagullCodeGeneration.cs" />
+        <Compile Include="Windows\CgWindows.cs" />
+        <Compile Include="Windows\ClassDefinitionVisitor.cs" />
+        <Compile Include="Windows\WindowsCodeGenerator.cs" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Seagull.Logging\Seagull.Logging.csproj">

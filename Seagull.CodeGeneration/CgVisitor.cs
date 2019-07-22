@@ -11,7 +11,7 @@ using Seagull.AST.Types.Namespaces;
 using Seagull.Errors;
 using Seagull.Visitor;
 
-namespace Seagull.CodeGeneration.Mapl
+namespace Seagull.CodeGeneration
 {
     public class CgVisitor<TR, TP> : IVisitor<TR, TP>
     {

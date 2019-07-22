@@ -24,13 +24,9 @@ namespace Seagull.CLI.Modules.Compilation
             Console.WriteLine("Generating code...");
 
             // TODO let the user switch target
-            string output = SeagullCodeGeneration.ForMapl.Generate(program, options.InputFile, options.OutputFile);
-            Console.WriteLine("Output file: {0}", output);
-
-            using (StreamWriter w = new StreamWriter(options.OutputFile))
-            {
-                w.Write(output);
-            }
+            SeagullCodeGeneration.ForWindows.Generate(program, options.InputFile, options.OutputFile);
+               
+            Console.WriteLine("Code generated!");
         }
     }
 }
