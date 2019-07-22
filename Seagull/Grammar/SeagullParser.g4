@@ -7,24 +7,24 @@ options { tokenVocab = SeagullLexer; }
     using System.Collections.Generic;
     using System.Linq;
         
-	using Seagull.Language.AST;
-	using Seagull.Language.Grammar;
+	using Seagull.AST;
+	using Seagull.Grammar;
 	
-	using Seagull.Language.Semantics.Symbols;
+	using Seagull.Semantics.Symbols;
 	
-	using Seagull.Language.AST.Expressions;
-	using Seagull.Language.AST.Expressions.Binary;
-	using Seagull.Language.AST.Expressions.Literals;
-	using Seagull.Language.AST.Expressions.Increments;
+	using Seagull.AST.Expressions;
+	using Seagull.AST.Expressions.Binary;
+	using Seagull.AST.Expressions.Literals;
+	using Seagull.AST.Expressions.Increments;
 	
-	using Seagull.Language.AST.Statements;
-	using Seagull.Language.AST.Statements.Definitions;
-	using Seagull.Language.AST.Statements.Definitions.Namespaces;
+	using Seagull.AST.Statements;
+	using Seagull.AST.Statements.Definitions;
+	using Seagull.AST.Statements.Definitions.Namespaces;
 	
-	using Seagull.Language.AST.Types;
-	using Seagull.Language.AST.Types.Namespaces;
+	using Seagull.AST.Types;
+	using Seagull.AST.Types.Namespaces;
 	
-	using Seagull.Language.AST.AccessModifiers;
+	using Seagull.AST.AccessModifiers;
 }
 
 
@@ -277,7 +277,26 @@ variableDef returns [List<VariableDefinition> Ast = new List<VariableDefinition>
         }
         
 		// TODO var ID '=' expression
+		
+	|   i=inferredVariableDef { $Ast.Add($i.Ast); }
 	;
+	
+inferredVariableDef	returns [VariableDefinition Ast]:
+        VAR ID ASSIGN e=expression SEMI_COL
+        {
+            IType t = $e.Ast.Type;
+            if (t == null)
+            {
+                t = Seagull.Errors.ErrorHandler.Instance.RaiseError(
+                        $VAR.GetLine(), $VAR.GetCol(), string.Format("Cannot infer type for variable {0}", $ID.GetText())
+                    );
+            }
+            
+            $Ast = new VariableDefinition($VAR.GetLine(), $VAR.GetCol(), $ID.GetText(), $e.Ast.Type, $e.Ast);
+        }
+    ;
+	
+	
 	
 // Util function, to get variable definition ids
 //  public a, a1, ...
@@ -381,7 +400,7 @@ statement returns [List<IStatement> Ast = new List<IStatement>()]:
   	        if (expr is IStatement)
                 $Ast.Add((IStatement) expr);
             else {
-                Seagull.Language.Errors.ErrorHandler
+                Seagull.Errors.ErrorHandler
                     .Instance
                     .RaiseError(expr.Line, expr.Column, string.Format(
                         "The expression {0} cannot be used as a statement", expr.ToString())

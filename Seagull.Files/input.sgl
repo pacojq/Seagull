@@ -10,6 +10,8 @@ void main()
     People.Person person;
     person.Age = 3;
     
+    var integer = 5;
+    
     Test.Inner.TestInnerStruct testInner;
 }
 
