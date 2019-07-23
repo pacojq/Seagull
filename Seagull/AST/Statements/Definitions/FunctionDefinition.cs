@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Seagull.SymTable.Symbols;
+using Seagull.SymTable.SymbolsWithScope;
 using Seagull.Visitor;
 
 namespace Seagull.AST.Statements.Definitions
@@ -7,6 +9,9 @@ namespace Seagull.AST.Statements.Definitions
     {
         // Code generation
         public int CgLocalBytesSum { get; set; }
+        
+        
+        public FunctionSymbol Symbol { get; set; }
         
         
         

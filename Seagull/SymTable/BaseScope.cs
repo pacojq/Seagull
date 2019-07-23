@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Seagull.SymTable
 {
@@ -32,6 +34,24 @@ namespace Seagull.SymTable
         
         
         
+        public string GetFullName()
+        {
+            StringBuilder str = new StringBuilder();
+            
+            IScope scope = ParentScope;
+            while (scope != null)
+            {
+                str.Append(scope.Name);
+                str.Append(".");
+                scope = scope.ParentScope;
+            }
+
+            str.Append(Name);
+
+            return str.ToString();
+        }
+        
+        
         
         public ISymbol Solve(string name)
         {
@@ -52,7 +72,12 @@ namespace Seagull.SymTable
             return _symbols[name];
         }
 
-        
+        public IScope GetNestedScope(string name)
+        {
+            return _nestedScopes.FirstOrDefault(s => s.Name.Equals(name));
+        }
+
+
         public bool Define(ISymbol symbol)
         {
             if (_symbols.ContainsKey(symbol.Name))

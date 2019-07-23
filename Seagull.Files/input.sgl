@@ -1,25 +1,26 @@
 
-load "person.sgl"
+//load "person.sgl"
 
 
 void main()
 {
     int[5][10] a;
-    Test.TestStruct test;
+    //Test.TestStruct test;
     
-    People.Person person;
-    person.Age = 3;
+    //People.Person person;
+    //person.Age = 3;
     
     int i = 0;
     i ++;
     int b = i --;
     
-    Test.Inner.TestInnerStruct testInner;
+    //Test.Inner.TestInnerStruct testInner;
 }
 
-namespace Test {
+namespace Test
+{
 
-    struct TestStruct
+    struct Inner
     {
 
     }
@@ -33,4 +34,14 @@ namespace Test.Inner {
         
     }
     
+}
+
+namespace Test
+{
+
+    struct Inner
+    {
+
+    }
+
 }

@@ -1,5 +1,5 @@
 
-namespace Seagull.SymTable.Symbols
+namespace Seagull.SymTable.SymbolsWithScope
 {
     public class StructSymbol : SymbolWithScope
     {

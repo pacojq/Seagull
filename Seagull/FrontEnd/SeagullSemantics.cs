@@ -1,8 +1,8 @@
 using Seagull.AST;
 using Seagull.Semantics.Loops;
 using Seagull.Semantics.Recognition;
-using Seagull.Semantics.Symbols;
 using Seagull.Semantics.TypeChecking;
+using Seagull.SymTable;
 
 namespace Seagull.FrontEnd
 {
@@ -13,11 +13,11 @@ namespace Seagull.FrontEnd
         public void Analyze(Program ast)
         {
             // Sets up namespaces
-            SymbolManager.Instance.Init();
-            ast.Accept(new RecognitionFirstPassVisitor(), null);
-            ast.Accept(new RecognitionSecondPassVisitor(), null);
-            ast.Accept(new RecognitionThirdPassVisitor(), null);
-            ast.Accept(new RecognitionFourthPassVisitor(), null);
+            SymbolTable.Init();
+            ast.Accept(new ScopeRecognitionVisitor(), null);
+            ast.Accept(new SymbolDefinitionVisitor(), null);
+            ast.Accept(new DependencyRecognitionVisitor(), null);
+            ast.Accept(new VariableRecognitionVisitor(), null);
             
             // TODO return visitor: check all branches return
             

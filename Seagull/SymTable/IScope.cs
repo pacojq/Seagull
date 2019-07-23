@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Seagull.SymTable.Scopes;
 
 namespace Seagull.SymTable
 {
@@ -13,6 +14,8 @@ namespace Seagull.SymTable
         IEnumerable<IScope> NestedScopes { get; }
         
         
+        
+        string GetFullName();
         
         
         /// <summary>
@@ -30,6 +33,14 @@ namespace Seagull.SymTable
         /// <param name="name"></param>
         /// <returns></returns>
         ISymbol GetSymbol(string name);
+        
+        
+        /// <summary>
+        /// Looks for a nested scope with a given name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        IScope GetNestedScope(string name);
 
 
         /// <summary>
@@ -46,5 +57,7 @@ namespace Seagull.SymTable
         /// <param name="scope"></param>
         /// /// <returns>Whether we succeed defining the new scope.</returns>
         bool Nest(IScope scope);
+
+        
     }
 }

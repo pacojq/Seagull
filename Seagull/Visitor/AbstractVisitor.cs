@@ -4,9 +4,7 @@ using Seagull.AST.Expressions.Binary;
 using Seagull.AST.Expressions.Literals;
 using Seagull.AST.Statements;
 using Seagull.AST.Statements.Definitions;
-using Seagull.AST.Statements.Definitions.Namespaces;
 using Seagull.AST.Types;
-using Seagull.AST.Types.Namespaces;
 using Seagull.Errors;
 
 namespace Seagull.Visitor
@@ -107,7 +105,7 @@ namespace Seagull.Visitor
 
 		public virtual TR Visit(StructType structType, TP p)
 		{
-			foreach (IDefinition def in structType.Definitions)
+			foreach (IDefinition def in structType.Fields)
 				def.Accept(this, p);
 			return default(TR);
 		}

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Seagull.AST.Statements.Definitions;
 using Seagull.Visitor;
 
@@ -45,7 +47,8 @@ namespace Seagull.AST
             
             _loads.AddRange(loads);
             _imports.AddRange(imports);
-            _definitions.AddRange(definitions);
+            
+            AddDefinitions(definitions);
         }
 	
         
@@ -57,7 +60,11 @@ namespace Seagull.AST
         public void AddDefinitions(IEnumerable<IDefinition> definitions)
         {
             foreach (var def in definitions)
+            {
+                if (def == null)
+                    throw new Exception("Cannot add null definitions to a Program.");
                 _definitions.Insert(0, def);
+            }
         }
     }
 }

@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using Seagull.AST.Expressions.Binary;
 using Seagull.AST.Types;
-using Seagull.AST.Types.Namespaces;
 using Seagull.Visitor;
 using Void = Seagull.Visitor.Void;
 
@@ -35,7 +34,7 @@ namespace Seagull.CodeGeneration.Mapl
 	    public override Void Visit(StructType structType, Void p)
 	    { 
 		    base.Visit(structType, p);
-		    structType.CgNumberOfBytes = structType.Definitions
+		    structType.CgNumberOfBytes = structType.Fields
 			    .Select(f => f.Type)
 			    .Sum(t => t.CgNumberOfBytes);
 		    return null;

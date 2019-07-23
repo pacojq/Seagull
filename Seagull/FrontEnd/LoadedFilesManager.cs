@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Seagull.AST;
 using Seagull.Errors;
 
@@ -59,7 +57,8 @@ namespace Seagull.FrontEnd
 
         public void Load(string currentFile, IEnumerable<string> files)
         {
-            Parallel.ForEach(files, f => Load(currentFile, f));
+            foreach (var f in files)
+                Load(currentFile, f);
         }
         
         
@@ -70,7 +69,7 @@ namespace Seagull.FrontEnd
         /// <param name="newFile"></param>
         public void Load(string currentFile, string newFile)
         {
-            Interlocked.Increment(ref _taskCount);
+            _taskCount ++;
             
             string relative = newFile.Trim('"'); // Clean up load path
             string path = Path.Combine(_baseDir, relative);
@@ -85,7 +84,7 @@ namespace Seagull.FrontEnd
                 if (_loadedFiles.Contains(path))
                 {
                     ErrorHandler.Instance.AddWarning(0, 0, $"In {currentFile}. Trying to load an already added file: {newFile}");
-                    Interlocked.Decrement(ref _taskCount);
+                    _taskCount--;
                     return;
                 }
 
@@ -98,7 +97,7 @@ namespace Seagull.FrontEnd
             if (ErrorHandler.Instance.AnyError)
             {
                 ErrorHandler.Instance.PrintErrors();
-                Interlocked.Decrement(ref _taskCount);
+                _taskCount--;
                 return;
             }
 	        
@@ -114,8 +113,10 @@ namespace Seagull.FrontEnd
 
 
             // Recursive imports
-            Parallel.ForEach(program.Loads, f => Load(path, f));
-            Interlocked.Decrement(ref _taskCount);
+            foreach (var f in program.Loads)
+                Load(path, f);
+            
+            _taskCount--;
         }
 
 

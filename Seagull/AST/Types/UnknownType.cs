@@ -1,4 +1,3 @@
-using Seagull.AST.Types.Namespaces;
 using Seagull.Visitor;
 
 namespace Seagull.AST.Types
@@ -13,9 +12,10 @@ namespace Seagull.AST.Types
     {
         
         public string Name { get; }
-        public INamespaceType Namespace { get; }
         
-        public UnknownType(int line, int column, string name, INamespaceType ns = null) : base(line, column)
+        public NamespaceType Namespace { get; } // TODO find it
+        
+        public UnknownType(int line, int column, string name, NamespaceType ns = null) : base(line, column)
         {
             Name = name;
             Namespace = ns;

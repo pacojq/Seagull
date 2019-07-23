@@ -4,9 +4,7 @@ using Seagull.AST.Expressions.Binary;
 using Seagull.AST.Expressions.Literals;
 using Seagull.AST.Statements;
 using Seagull.AST.Statements.Definitions;
-using Seagull.AST.Statements.Definitions.Namespaces;
 using Seagull.AST.Types;
-using Seagull.AST.Types.Namespaces;
 using Seagull.Errors;
 
 namespace Seagull.Visitor

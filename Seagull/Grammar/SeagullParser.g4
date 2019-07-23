@@ -10,18 +10,14 @@ options { tokenVocab = SeagullLexer; }
 	using Seagull.AST;
 	using Seagull.Grammar;
 	
-	using Seagull.Semantics.Symbols;
-	
 	using Seagull.AST.Expressions;
 	using Seagull.AST.Expressions.Binary;
 	using Seagull.AST.Expressions.Literals;
 	
 	using Seagull.AST.Statements;
 	using Seagull.AST.Statements.Definitions;
-	using Seagull.AST.Statements.Definitions.Namespaces;
 	
 	using Seagull.AST.Types;
-	using Seagull.AST.Types.Namespaces;
 	
 	using Seagull.AST.AccessModifiers;
 }
@@ -90,9 +86,9 @@ userDefinedType returns [IType Ast]:
     ;
     
     
-namespaceType returns[INamespaceType Ast]:
-         ID  { $Ast = NamespaceManager.Instance.AddType($ID.GetLine(), $ID.GetCol(), $ID.GetText(), null); }    
-    |    t=namespaceType DOT ID { $Ast = NamespaceManager.Instance.AddType($ID.GetLine(), $ID.GetCol(), $ID.GetText(), $t.Ast); }
+namespaceType returns[NamespaceType Ast]:
+         ID  { $Ast = new NamespaceType($ID.GetLine(), $ID.GetCol(), $ID.GetText()); }
+    |    t=namespaceType DOT ID { $Ast = new NamespaceType($ID.GetLine(), $ID.GetCol(), $ID.GetText()); }
     ;
     
     
@@ -234,25 +230,64 @@ definition returns [List<IDefinition> Ast = new List<IDefinition>()]:
 
 
 namespaceDef returns[NamespaceDefinition Ast]
-             locals [IAccessModifier access]:
+             locals [NamespaceType t]:
         
-        n=NAMESPACE t=namespaceType L_CURL (
-            (am = accessModifier { $access = $am.Ast; })?
-            d=definition
-            {   
-                IDefinition[] defs = $d.Ast.ToArray();
-                foreach (var definition in defs)
-                {
-                    if ($access != null)
-                        definition.AccessModifier = $access;
-                    $t.Ast.AddDefinition(definition);
-                }
-                $access = null;
+        n=NAMESPACE
+        (
+            ID DOT
+            {
+                NamespaceType oldT = $t;
+                                
+                $t = new NamespaceType($ID.GetLine(), $ID.GetCol(), $ID.GetText());
+                $Ast = new NamespaceDefinition($ID.GetLine(), $ID.GetCol(), $t.Name, $t);  
+                
+                if (oldT != null)
+                    oldT.AddDefinition($Ast);
             }
-        )* R_CURL
-        { $Ast = NamespaceManager.Instance.Define($n.GetLine(), $n.GetCol(), $t.Ast); }
+        )*        
+        c=coreNamespaceDef 
+        {
+            if ($t != null)
+                $t.AddDefinition($c.Ast);
+            $Ast = $c.Ast;
+        }
     ;
     
+coreNamespaceDef returns[NamespaceDefinition Ast]
+                 locals [NamespaceType t]:
+
+        ID  { $t = new NamespaceType($ID.GetLine(), $ID.GetCol(), $ID.GetText()); }
+        L_CURL (            
+            d=namespaceDefinitionList
+            {   
+                foreach (var definition in $d.Ast)
+                    $t.AddDefinition(definition);
+            }            
+        )* R_CURL
+        { $Ast = new NamespaceDefinition($ID.GetLine(), $ID.GetCol(), $t.Name, $t); }
+    ;
+        
+namespaceDefinitionList returns[List<IDefinition> Ast = new List<IDefinition>()]
+                        locals [IAccessModifier access]:
+
+        (am = accessModifier { $access = $am.Ast; })?
+        d=definition
+        {   
+            IDefinition[] defs = $d.Ast.ToArray();
+            foreach (var definition in defs)
+            {
+                if ($access != null)
+                    definition.AccessModifier = $access;
+                $Ast.Add(definition);
+            }
+            $access = null;
+        }
+    ;
+    
+
+
+
+
 
 
 /*

@@ -1,9 +1,13 @@
+using Seagull.SymTable.Symbols;
 using Seagull.Visitor;
 
 namespace Seagull.AST.Statements.Definitions
 {
     public class VariableDefinition : AbstractDefinition
     {
+        
+        public VariableSymbol Symbol { get; set; }
+        
         
         public IExpression Initialization { get; }
         

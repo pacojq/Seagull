@@ -3,7 +3,6 @@ using System.Linq;
 using Seagull.AST;
 using Seagull.AST.Statements.Definitions;
 using Seagull.AST.Types;
-using Seagull.AST.Types.Namespaces;
 using Seagull.Logging;
 using Seagull.Visitor;
 using Void = Seagull.Visitor.Void;
@@ -25,7 +24,7 @@ namespace Seagull.CodeGeneration.Mapl
             //base.Visit(structType, p);
             int sum = 0;
 		
-            foreach (IDefinition vd in structType.Definitions) {
+            foreach (IDefinition vd in structType.Fields) {
                 vd.Accept(this, p);
                 vd.CgOffset = sum;
                 sum += vd.Type.CgNumberOfBytes;

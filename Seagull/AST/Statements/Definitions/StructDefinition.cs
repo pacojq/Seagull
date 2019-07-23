@@ -1,10 +1,14 @@
-using Seagull.Semantics.Symbols;
+using Seagull.SymTable.Symbols;
+using Seagull.SymTable.SymbolsWithScope;
 using Seagull.Visitor;
 
-namespace Seagull.AST.Statements.Definitions.Namespaces
+namespace Seagull.AST.Statements.Definitions
 {
-    public class StructDefinition : AbstractDefinition, INamespaceDefinition
+    public class StructDefinition : AbstractDefinition
     {
+        
+        public StructSymbol Symbol { get; set; }
+        
         
         public StructDefinition(int line, int column, string name, IType type) : base(line, column, name, type)
         {
@@ -14,11 +18,8 @@ namespace Seagull.AST.Statements.Definitions.Namespaces
         
         public override string ToString()
         {
-            string ns = "";
-            if (this.Namespace != NamespaceManager.DefaultNamespace)
-                ns = this.Namespace.Name + ".";
-
-            return "struct " + ns + Name;
+            // TODO Maybe add full name with symbol table
+            return "struct " + Name;
         }
 
         public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)
