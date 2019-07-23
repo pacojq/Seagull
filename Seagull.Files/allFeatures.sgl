@@ -1,31 +1,68 @@
 
 load "person.sgl"
 
-void main()
-{
-    
-}
 
+namespace TEST {
 
-void ftWhile()
-{
-    print("\n FEATURE: WHILE LOOPS");
-    print("\n");
-
-    int i = 0;
-    while (i < 10)
+    void main()
     {
-        print(i);
-        i = i + 1;
-        if (i < 10)
-            print(", ");
+        ftIf();
+        ftWhile();
     }
+
+    void ftIf()
+    {
+        print("\n FEATURE: IF/ELSE");
+        print("\n");
     
-    print("\n");
-}
+        if (true)
+            print("true is true\n");
+        else print("WTF");
+        
+        if (false)
+            print("WTF");
+        else print("false is false\n");
+        
+        
+        // TODO fix expression initialization int a = -1;
+        int a = 11;
+        
+        while (a < 0 || a > 10)
+        {
+            print("Enter a number from 0 to 10\n");
+            read(a);
+        }
+        
+        if (a < 5) print("The number is less than 5\n");
+        else if (a == 5) print("The number is 5\n");
+        else print("The number is greater than 5\n");
+        
+        
+        print("\n");
+    }
 
 
-void ftLoad()
-{
-    People.Person a = new People.Person;
+    void ftWhile()
+    {
+        print("\n FEATURE: WHILE LOOPS");
+        print("\n");
+    
+        int i = 0;
+        while (i < 10)
+        {
+            print(i);
+            i = i + 1;
+            if (i < 10)
+                print(", ");
+        }
+        
+        print("\n");
+    }
+
+
+    void ftLoad()
+    {
+        People.Person p = new People.Person;
+    }
+
 }

@@ -20,6 +20,9 @@ namespace Seagull.Semantics.TypeChecking
 		    if (variableDefinition.Initialization != null)
 		    {
 			    IExpression init = variableDefinition.Initialization;
+
+			    if (init.Type == null)
+				    throw new Exception($"Null initialization type for var definition: {variableDefinition}");
 			    
 			    // We already have an error. Don't rise a new one
 			    if (init.Type is ErrorType)

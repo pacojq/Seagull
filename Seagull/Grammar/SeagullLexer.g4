@@ -16,6 +16,9 @@ REAL: INT_CONSTANT? '.' DIGIT+
 	
 fragment NL: ('\n' | '\r' | '\r\n') ;
 
+fragment TRUE:  'true' ;
+fragment FALSE: 'false' ;
+
 
 
 // Compiler directives
@@ -42,8 +45,6 @@ NULL:       'null' ; // TODO
 PTR:        'ptr' ; // TODO
 ANY:        'any' ; // TODO ? the Java Object equivalent. Any type, literally
 
-TRUE:       'true' ;
-FALSE:      'false' ;
 
 IF:         'if' ;
 ELSE:       'else' ;
@@ -174,10 +175,10 @@ GREATER_EQ_THAN:    '>=' ;
 
 
 
-
 // IDs and Constants
-ID: ('_' | LETTER) ('_' | DIGIT | LETTER)* ;
-  		 
+  
+BOOLEAN_CONSTANT: TRUE | FALSE ;
+		 
 INT_CONSTANT: 
         '0'
 	|   [1-9] [0-9]* 
@@ -197,7 +198,7 @@ CHAR_CONSTANT:
 	
 STRING_CONSTANT: '"' .*? '"' ;
 
-BOOLEAN_CONSTANT: TRUE | FALSE ;
+ID: ('_' | LETTER) ('_' | DIGIT | LETTER)* ;
 
 		 
 		 	 

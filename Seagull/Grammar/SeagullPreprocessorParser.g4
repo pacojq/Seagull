@@ -12,6 +12,5 @@ preprocessorDirective :
 
 
 preprocessorExpression :
-	    TRUE
-	|   FALSE
+	    BOOLEAN_CONSTANT
 	;

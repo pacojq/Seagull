@@ -522,11 +522,12 @@ variable returns [Variable Ast]:
 
 
 literal returns [IExpression Ast]:
-	    i=INT_CONSTANT      { $Ast = new IntLiteral($i.GetLine(), $i.GetCol(), LexerHelper.LexemeToInt($i.text)); }
+
+	    b=BOOLEAN_CONSTANT  { $Ast = new BooleanLiteral($b.GetLine(), $b.GetCol(), LexerHelper.LexemeToBoolean($b.text)); }
+	|   i=INT_CONSTANT      { $Ast = new IntLiteral($i.GetLine(), $i.GetCol(), LexerHelper.LexemeToInt($i.text)); }
 	|   r=REAL_CONSTANT     { $Ast = new DoubleLiteral($r.GetLine(), $r.GetCol(), LexerHelper.LexemeToReal($r.text)); }
 	|   c=CHAR_CONSTANT     { $Ast = new CharLiteral($c.GetLine(), $c.GetCol(), LexerHelper.LexemeToChar($c.text)); }
 	|   s=STRING_CONSTANT   { $Ast = new StringLiteral($s.GetLine(), $s.GetCol(), $s.text); }
-	|   b=BOOLEAN_CONSTANT  { $Ast = new BooleanLiteral($b.GetLine(), $b.GetCol(), LexerHelper.LexemeToBoolean($b.text)); }
 	
 	
 	    // TODO array literal
