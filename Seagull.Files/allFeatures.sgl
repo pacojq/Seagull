@@ -1,0 +1,31 @@
+
+load "person.sgl"
+
+void main()
+{
+    
+}
+
+
+void ftWhile()
+{
+    print("\n FEATURE: WHILE LOOPS");
+    print("\n");
+
+    int i = 0;
+    while (i < 10)
+    {
+        print(i);
+        i = i + 1;
+        if (i < 10)
+            print(", ");
+    }
+    
+    print("\n");
+}
+
+
+void ftLoad()
+{
+    People.Person a = new People.Person;
+}

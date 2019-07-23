@@ -84,8 +84,9 @@ type returns [IType Ast]:
 	
 // Custom type, which might be in packages	
 userDefinedType returns [IType Ast]:
-        ID  { $Ast = new UnknownType($ID.GetLine(), $ID.GetCol(), $ID.GetText()); }
-    |   t=namespaceType DOT ID  { $Ast = new UnknownType($ID.GetLine(), $ID.GetCol(), $ID.GetText(), $t.Ast); }
+        
+        t=namespaceType DOT ID  { $Ast = new UnknownType($ID.GetLine(), $ID.GetCol(), $ID.GetText(), $t.Ast); }
+    |   ID  { $Ast = new UnknownType($ID.GetLine(), $ID.GetCol(), $ID.GetText()); }
     ;
     
     
@@ -469,11 +470,13 @@ expression returns [IExpression Ast]:
         // Indexing
     |   e1=expression L_BRACKET e2=expression R_BRACKET { $Ast = new Indexing($e1.Ast, $e2.Ast); }	
 		
+		// New
+    |   n=NEW udt=userDefinedType { $Ast = new New($n.GetLine(), $n.GetCol(), $udt.Ast); }
+        	
+        	
 		// Attribute access
 	|   e=expression DOT att=ID { $Ast = new AttributeAccess($e.Ast, $att.text); }
 		
-		// New
-	|   n=NEW id=ID { $Ast = new New($n.GetLine(), $n.GetCol(), $id.GetText()); }
 	
 	    // Default TODO: primitive or ID
 	|   def=DEFAULT L_PAR type R_PAR { $Ast = new Default($def.GetLine(), $def.GetCol(), $type.Ast); }

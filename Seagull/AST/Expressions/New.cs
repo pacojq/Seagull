@@ -4,11 +4,9 @@ namespace Seagull.AST.Expressions
 {
     public class New : AbstractExpression
     {
-        public string Id { get; }
-        
-        public New(int line, int column, string id) : base(line, column)
+        public New(int line, int column, IType type) : base(line, column)
         {
-            Id = id;
+            Type = type;
         }
 
         

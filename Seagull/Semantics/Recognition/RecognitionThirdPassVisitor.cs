@@ -170,18 +170,10 @@ namespace Seagull.Semantics.Recognition
 		
 		public override bool Visit(New newExpr, INamespaceDefinition p)
 		{
-			base.Visit(newExpr, p);
-			IDefinition def = SymbolManager.Instance.Find(newExpr.Id, p);
+			bool dependency = newExpr.Type.Accept(this, p);
+			if (dependency)
+				newExpr.Type = Solve(newExpr.Type, p);
 			
-			if (def == null)
-			{
-				newExpr.Type = ErrorHandler.Instance.RaiseError(
-					newExpr.Line,
-					newExpr.Column,
-					$"Unknown symbol {newExpr.Id}."
-				);
-				return false;
-			}
 			return false;
 		}
 		
