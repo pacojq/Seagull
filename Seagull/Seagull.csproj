@@ -140,6 +140,18 @@
         <Compile Include="Semantics\Symbols\SymbolManager.cs" />
         <Compile Include="Semantics\Symbols\SymbolTable.cs" />
         <Compile Include="Semantics\TypeChecking\TypeCheckingVisitor.cs" />
+        <Compile Include="SymTable\BaseScope.cs" />
+        <Compile Include="SymTable\BaseSymbol.cs" />
+        <Compile Include="SymTable\IScope.cs" />
+        <Compile Include="SymTable\ISymbol.cs" />
+        <Compile Include="SymTable\Scopes\GlobalScope.cs" />
+        <Compile Include="SymTable\Scopes\LocalScope.cs" />
+        <Compile Include="SymTable\Scopes\NamespaceScope.cs" />
+        <Compile Include="SymTable\Symbols\FunctionSymbol.cs" />
+        <Compile Include="SymTable\Symbols\StructSymbol.cs" />
+        <Compile Include="SymTable\Symbols\VariableSymbol.cs" />
+        <Compile Include="SymTable\SymbolTable.cs" />
+        <Compile Include="SymTable\SymbolWithScope.cs" />
         <Compile Include="Visitor\AbstractVisitor.cs" />
         <Compile Include="Visitor\IVisitor.cs" />
         <Compile Include="Visitor\Void.cs" />
@@ -154,6 +166,7 @@
       <Content Include="Grammar\SeagullLexer.g4" />
       <Content Include="Grammar\SeagullPreprocessorParser.g4" />
       <Content Include="README.txt" />
+      <Content Include="SymTable\README.txt" />
       <Content Include="TODO.txt" />
     </ItemGroup>
     <ItemGroup>
