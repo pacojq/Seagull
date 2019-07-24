@@ -87,12 +87,12 @@
         <Compile Include="AST\Statements\Definitions\EnumElementDefinition.cs" />
         <Compile Include="AST\Statements\Definitions\FunctionDefinition.cs" />
         <Compile Include="AST\Statements\Definitions\MainFunctionDefinition.cs" />
-        <Compile Include="AST\Statements\Definitions\NamespaceDefinition.cs" />
         <Compile Include="AST\Statements\Definitions\StructDefinition.cs" />
         <Compile Include="AST\Statements\Definitions\VariableDefinition.cs" />
         <Compile Include="AST\Statements\ForeachLoop.cs" />
         <Compile Include="AST\Statements\ForLoop.cs" />
         <Compile Include="AST\Statements\IfStatement.cs" />
+        <Compile Include="AST\Statements\NamespaceNode.cs" />
         <Compile Include="AST\Statements\Print.cs" />
         <Compile Include="AST\Statements\Read.cs" />
         <Compile Include="AST\Statements\Return.cs" />
@@ -107,7 +107,6 @@
         <Compile Include="AST\Types\FunctionType.cs" />
         <Compile Include="AST\Types\IntType.cs" />
         <Compile Include="AST\Types\LongType.cs" />
-        <Compile Include="AST\Types\NamespaceType.cs" />
         <Compile Include="AST\Types\PointerType.cs" />
         <Compile Include="AST\Types\StringType.cs" />
         <Compile Include="AST\Types\StructType.cs" />

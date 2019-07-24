@@ -48,7 +48,6 @@ namespace Seagull.SymTable
             if (scope == null)
                 throw new ArgumentNullException(nameof(scope));
             
-            Logger.Instance.LogDebug("-- entering scope " + scope.Name + " --");
             CurrentScope = scope;
         }
         
@@ -60,7 +59,6 @@ namespace Seagull.SymTable
             if (CurrentScope.ParentScope == null)
                 throw new Exception($"Something went wrong. {CurrentScope.Name} parent scope is null.");
 
-            Logger.Instance.LogDebug("-- exiting scope " + CurrentScope.Name + " --");
             CurrentScope = CurrentScope.ParentScope;
         }
 

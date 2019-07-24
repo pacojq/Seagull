@@ -7,8 +7,9 @@ options { tokenVocab = SeagullLexer; }
     using System.Collections.Generic;
     using System.Linq;
         
-	using Seagull.AST;
 	using Seagull.Grammar;
+	
+	using Seagull.AST;
 	
 	using Seagull.AST.Expressions;
 	using Seagull.AST.Expressions.Binary;
@@ -27,17 +28,17 @@ options { tokenVocab = SeagullLexer; }
 program returns [Program Ast, 
                 List<string> Loads = new List<string>(), 
                 List<string> Imports = new List<string>(),
-                List<IDefinition> Def = new List<IDefinition>()]:
+                List<IDefinition> Def = new List<IDefinition>(),
+                List<NamespaceNode> Ns = new List<NamespaceNode>()]:
                 
 		(l=load { $Loads.Add($l.File); })*
 		(i=imp { $Imports.Add($i.Namespace); })*
-		// TODO protection level
 		(
-		      (n=namespaceDef   { $Def.Add($namespaceDef.Ast); })
-		    | (d=definition     { $Def.AddRange($d.Ast); })
+		      (n=namespaceNode  { $Ns.Add($n.Ast); })
+		    | (d=definition     { $Def.AddRange($d.Ast); }) // TODO access level
 		)*
 		EOF
-		{ $Ast = new Program(0, 0, $Loads, $Imports, $Def); }
+		{ $Ast = new Program(0, 0, $Loads, $Imports, $Def, $Ns); }
 	;
 	    
 	    
@@ -67,7 +68,7 @@ type returns [IType Ast]:
         primitive       { $Ast = $primitive.Ast; }
 	|   functionType    { $Ast = $functionType.Ast; }
     |   structType      { $Ast = $structType.Ast; }
-	|   userDefinedType { $Ast = $userDefinedType.Ast; }
+	|   namedType       { $Ast = $namedType.Ast; }
 	    // Arrays
     |   t=type L_BRACKET i=INT_CONSTANT R_BRACKET  
             { $Ast = ArrayType.BuildArray(int.Parse($i.text), $t.Ast); }
@@ -78,18 +79,15 @@ type returns [IType Ast]:
 	
 
 	
-// Custom type, which might be in packages	
-userDefinedType returns [IType Ast]:
-        
-        t=namespaceType DOT ID  { $Ast = new UnknownType($ID.GetLine(), $ID.GetCol(), $ID.GetText(), $t.Ast); }
-    |   ID  { $Ast = new UnknownType($ID.GetLine(), $ID.GetCol(), $ID.GetText()); }
+// Custom type, which might be inside a namespace	
+namedType returns [IType Ast]
+          locals [List<string> typeNamespace = new List<string>()]:
+          
+        (ID DOT { $typeNamespace.Add($ID.GetText()); }) *
+        ID  { $Ast = new UnknownType($ID.GetLine(), $ID.GetCol(), $ID.GetText(), $typeNamespace); }
     ;
     
-    
-namespaceType returns[NamespaceType Ast]:
-         ID  { $Ast = new NamespaceType($ID.GetLine(), $ID.GetCol(), $ID.GetText()); }
-    |    t=namespaceType DOT ID { $Ast = new NamespaceType($ID.GetLine(), $ID.GetCol(), $ID.GetText()); }
-    ;
+
     
     
 
@@ -229,46 +227,17 @@ definition returns [List<IDefinition> Ast = new List<IDefinition>()]:
 
 
 
-namespaceDef returns[NamespaceDefinition Ast]
-             locals [NamespaceType t]:
+namespaceNode returns[NamespaceNode Ast]
+              locals [List<string> parents = new List<string>(), 
+                      List<IDefinition> defs = new List<IDefinition>()]:
         
-        n=NAMESPACE
-        (
-            ID DOT
-            {
-                NamespaceType oldT = $t;
-                                
-                $t = new NamespaceType($ID.GetLine(), $ID.GetCol(), $ID.GetText());
-                $Ast = new NamespaceDefinition($ID.GetLine(), $ID.GetCol(), $t.Name, $t);  
-                
-                if (oldT != null)
-                    oldT.AddDefinition($Ast);
-            }
-        )*        
-        c=coreNamespaceDef 
-        {
-            if ($t != null)
-                $t.AddDefinition($c.Ast);
-            $Ast = $c.Ast;
-        }
-    ;
-    
-coreNamespaceDef returns[NamespaceDefinition Ast]
-                 locals [NamespaceType t]:
-
-        ID  { $t = new NamespaceType($ID.GetLine(), $ID.GetCol(), $ID.GetText()); }
-        L_CURL (            
-            d=namespaceDefinitionList
-            {   
-                foreach (var definition in $d.Ast)
-                    $t.AddDefinition(definition);
-            }            
-        )* R_CURL
-        { $Ast = new NamespaceDefinition($ID.GetLine(), $ID.GetCol(), $t.Name, $t); }
+        ns=NAMESPACE (p=ID DOT { $parents.Add($p.GetText()); })*
+        n=ID L_CURL (d=namespaceDefinitions { $defs.AddRange($d.Ast); })* R_CURL
+        { $Ast = new NamespaceNode($n.GetLine(), $n.GetCol(), $n.GetText(), $parents, $defs); }
     ;
         
-namespaceDefinitionList returns[List<IDefinition> Ast = new List<IDefinition>()]
-                        locals [IAccessModifier access]:
+namespaceDefinitions returns[List<IDefinition> Ast = new List<IDefinition>()]
+                     locals [IAccessModifier access]:
 
         (am = accessModifier { $access = $am.Ast; })?
         d=definition
@@ -506,7 +475,7 @@ expression returns [IExpression Ast]:
     |   e1=expression L_BRACKET e2=expression R_BRACKET { $Ast = new Indexing($e1.Ast, $e2.Ast); }	
 		
 		// New
-    |   n=NEW udt=userDefinedType { $Ast = new New($n.GetLine(), $n.GetCol(), $udt.Ast); }
+    |   n=NEW nt=namedType { $Ast = new New($n.GetLine(), $n.GetCol(), $nt.Ast); }
         	
         	
 		// Attribute access

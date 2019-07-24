@@ -17,31 +17,13 @@ void main()
     //Test.Inner.TestInnerStruct testInner;
 }
 
-namespace Test
+
+namespace Test.Inner
 {
-
-    struct Inner
-    {
-
-    }
-
-}
-
-namespace Test.Inner {
 
     struct TestInnerStruct
     {
         
     }
     
-}
-
-namespace Test
-{
-
-    struct Inner
-    {
-
-    }
-
 }

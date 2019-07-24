@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Seagull.AST;
+using Seagull.AST.Statements.Definitions;
 using Seagull.Errors;
 
 namespace Seagull.FrontEnd
@@ -18,11 +19,11 @@ namespace Seagull.FrontEnd
         private readonly string _mainFile;
         private readonly string _baseDir;
         
-        private readonly List<IDefinition> _loads;
+        
         private readonly HashSet<string> _loadedFiles;
         
-        private readonly object _loadsLock = new object();
-        private readonly object _setLock = new object();
+        private readonly List<IDefinition> _definitions;
+        private readonly List<NamespaceNode> _namespaces;
         
         
 
@@ -33,26 +34,22 @@ namespace Seagull.FrontEnd
             _mainFile = mainFile;
             _baseDir = Path.GetDirectoryName(mainFile);
             
-            _loads = new List<IDefinition>();
             _loadedFiles = new HashSet<string>();
+            
+            _definitions = new List<IDefinition>();
+            _namespaces = new List<NamespaceNode>();
         }
 
 
         public void Dispose()
         {
-            lock(_loadsLock)
-                _loads.Clear();
-            lock(_setLock)
-                _loadedFiles.Clear();
+            _loadedFiles.Clear();
+            
+            _definitions.Clear();
+            _namespaces.Clear();
         }
         
         
-        public IEnumerable<IDefinition> GetImports()
-        {
-            lock(_loadsLock)
-                return _loads;
-        }
-
 
 
         public void Load(string currentFile, IEnumerable<string> files)
@@ -79,18 +76,15 @@ namespace Seagull.FrontEnd
                 return;
             
             // Check if we have loaded it already
-            lock (_setLock)
+            if (_loadedFiles.Contains(path))
             {
-                if (_loadedFiles.Contains(path))
-                {
-                    ErrorHandler.Instance.AddWarning(0, 0, $"In {currentFile}. Trying to load an already added file: {newFile}");
-                    _taskCount--;
-                    return;
-                }
-
-                _loadedFiles.Add(path);
+                ErrorHandler.Instance.AddWarning(0, 0, $"In {currentFile}. Trying to load an already added file: {newFile}");
+                _taskCount--;
+                return;
             }
 
+            _loadedFiles.Add(path);
+            
             
             Program program = _compiler.Grammar.Analyze(path);
             
@@ -101,15 +95,9 @@ namespace Seagull.FrontEnd
                 return;
             }
 	        
-            var result = program.Definitions.ToList();
-
-            // Remove the main function
-            if (program.MainFunction != null)
-                result.Remove(program.MainFunction);
-            
-            // Add to imports
-            lock(_loads)
-                _loads.AddRange(result);
+            // Add new definitions and namespaces
+            _definitions.AddRange(program.Definitions);
+            _namespaces.AddRange(program.Namespaces);
 
 
             // Recursive imports
@@ -120,5 +108,14 @@ namespace Seagull.FrontEnd
         }
 
 
+        public IEnumerable<IDefinition> GetDefinitions()
+        {
+            return _definitions;
+        }
+        
+        public IEnumerable<NamespaceNode> GetNamespaces()
+        {
+            return _namespaces;
+        }
     }
 }

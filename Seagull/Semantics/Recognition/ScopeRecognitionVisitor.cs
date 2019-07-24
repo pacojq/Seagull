@@ -27,32 +27,38 @@ namespace Seagull.Semantics.Recognition
         
         
         
-        public override Void Visit(NamespaceDefinition namespaceDefinition, Void p)
+        public override Void Visit(NamespaceNode namespaceNode, Void p)
         {
-            string name = namespaceDefinition.Name;
-            Logger.Instance.LogDebug("Namespace definition: {0}. Current scope: {1}", name, SymbolTable.Instance.CurrentScope.Name);
+            int line = namespaceNode.Line;
+            int col = namespaceNode.Column;
             
-            IScope scope = SymbolTable.Instance.CurrentScope.GetNestedScope(name);
+            IScope currentScope = SymbolTable.Instance.CurrentScope;
+            foreach (var parent in namespaceNode.Parents)
+                currentScope = EnterOrDefineNamespace(line, col, parent, currentScope);
+            
+            namespaceNode.Scope = EnterOrDefineNamespace(line, col, namespaceNode.Name, currentScope);
+            
+            base.Visit(namespaceNode, p);
+            return null;
+        }
+
+        private NamespaceScope EnterOrDefineNamespace(int line, int col, string name, IScope currentScope)
+        {
+            IScope scope = currentScope.GetNestedScope(name);
             if (scope == null)
             {
-                namespaceDefinition.Scope = new NamespaceScope(name, SymbolTable.Instance.CurrentScope);
-                SymbolTable.Instance.Nest(namespaceDefinition.Scope);
-                
-                Logger.Instance.LogDebug("It's new! " + namespaceDefinition.Scope.GetFullName());
+                NamespaceScope newScope = new NamespaceScope(name, currentScope);
+                SymbolTable.Instance.Nest(newScope);
+                return newScope;
             }
             else if (scope is NamespaceScope)
             {
-                namespaceDefinition.Scope = (NamespaceScope) scope;
-            }
-            else
-            {
-                ErrorHandler.Instance.RaiseError(namespaceDefinition.Line, namespaceDefinition.Column,
-                    $"Incompatible namespace name. The symbol {name} already exists in the parent namespace.");
-                namespaceDefinition.Scope = new NamespaceScope(name, SymbolTable.Instance.CurrentScope);
+                return (NamespaceScope) scope;
             }
             
-            base.Visit(namespaceDefinition, p);
-            return null;
+            ErrorHandler.Instance.RaiseError(line, col,
+                $"Incompatible namespace name. The symbol {name} already exists in the parent namespace.");
+            return new NamespaceScope(name, SymbolTable.Instance.CurrentScope);
         }
         
         
@@ -62,12 +68,10 @@ namespace Seagull.Semantics.Recognition
         public override Void Visit(StructDefinition structDefinition, Void p)
         {
             string name = structDefinition.Name;
-            Logger.Instance.LogDebug("Struct definition: {0}", name);
             
             IScope scope = SymbolTable.Instance.CurrentScope.GetNestedScope(name);
             if (scope == null)
             {
-                Logger.Instance.LogDebug("Unexistent", name);
                 StructSymbol structSymbol = new StructSymbol(name, SymbolTable.Instance.CurrentScope);
                 structSymbol.Definition = structDefinition;
                 structDefinition.Symbol = structSymbol;

@@ -29,11 +29,11 @@ namespace Seagull.Semantics.Recognition
         
         // ====================================== SCOPES ====================================== //
         
-        public override T Visit(NamespaceDefinition namespaceDefinition, Void p)
+        public override T Visit(NamespaceNode namespaceNode, Void p)
         {
-            SymbolTable.Instance.Set(namespaceDefinition.Scope);
+            SymbolTable.Instance.Set(namespaceNode.Scope);
             
-            base.Visit(namespaceDefinition, p);
+            base.Visit(namespaceNode, p);
             
             SymbolTable.Instance.Reset();
             

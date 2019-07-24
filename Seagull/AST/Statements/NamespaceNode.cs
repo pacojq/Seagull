@@ -5,25 +5,32 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Statements.Definitions
 {
-    public class NamespaceDefinition : AbstractDefinition
+    public class NamespaceNode : AbstractStatement
     {
 
         public NamespaceScope Scope { get; set; }
+        
+        public string Name { get; }
+        
+        public List<string> Parents { get; }
         
         public IEnumerable<IDefinition> Definitions => _definitions;
 
         private List<IDefinition> _definitions;
         
 
-        public NamespaceDefinition(int line, int column, string name, NamespaceType type)
-            : base(line, column, name, type)
+        public NamespaceNode(int line, int column, string name, 
+                IEnumerable<string> parents, IEnumerable<IDefinition> definitions) : base(line, column)
         {
+            Name = name;
+            Parents = new List<string>(parents);
+            _definitions = new List<IDefinition>(definitions);
         }
 
 
         public override string ToString()
         {
-            return Type.ToString() + " definition";
+            return Name + " namespace";
         }
 
 

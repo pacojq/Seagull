@@ -77,11 +77,6 @@ namespace Seagull.CodeGeneration
             throw new InvalidOperationException(GetMsg(longType));
         }
 
-        public virtual TR Visit(NamespaceType namespaceType, TP p)
-        {
-            throw new InvalidOperationException(GetMsg(namespaceType));
-        }
-
         public virtual TR Visit(PointerType pointerType, TP p)
         {
             throw new InvalidOperationException(GetMsg(pointerType));
@@ -182,9 +177,9 @@ namespace Seagull.CodeGeneration
             return this.Visit((FunctionDefinition) mainFunctionDefinition, p);
         }
 
-        public virtual TR Visit(NamespaceDefinition namespaceDefinition, TP p)
+        public virtual TR Visit(NamespaceNode namespaceNode, TP p)
         {
-            throw new InvalidOperationException(GetMsg(namespaceDefinition));
+            throw new InvalidOperationException(GetMsg(namespaceNode));
         }
 
         public virtual TR Visit(StructDefinition structDefinition, TP p)

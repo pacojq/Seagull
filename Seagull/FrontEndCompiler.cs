@@ -57,7 +57,9 @@ namespace Seagull
             while (!_loadedFilesManager.Ready) { /* Wait */ }
             
             // ... and add to the Ast before the Semantic analysis
-            ast.AddDefinitions(_loadedFilesManager.GetImports());
+            ast.AddDefinitions(_loadedFilesManager.GetDefinitions());
+            ast.AddNamespaces(_loadedFilesManager.GetNamespaces());
+            
             _loadedFilesManager.Dispose();
             
             if (ErrorHandler.Instance.AnyError)

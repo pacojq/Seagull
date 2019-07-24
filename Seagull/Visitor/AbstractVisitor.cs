@@ -14,9 +14,14 @@ namespace Seagull.Visitor
         
         
         
-		public virtual TR Visit(Program program, TP p){
+		public virtual TR Visit(Program program, TP p) {
+			
+			foreach (NamespaceNode ns in program.Namespaces)
+				ns.Accept(this, p);
+			
 			foreach (IDefinition def in program.Definitions)
 				def.Accept(this, p);
+			
 			return default(TR);
 		}
 	
@@ -90,12 +95,6 @@ namespace Seagull.Visitor
 			return default(TR);
 		}
 
-		public virtual TR Visit(NamespaceType namespaceType, TP p)
-		{
-			foreach (var def in namespaceType.Definitions)
-				def.Accept(this, p);
-			return default(TR);
-		}
 
 		public virtual TR Visit(PointerType pointerType, TP p)
 		{
@@ -225,9 +224,10 @@ namespace Seagull.Visitor
 			return this.Visit((FunctionDefinition) mainFunctionDefinition, p);
 		}
 
-		public virtual TR Visit(NamespaceDefinition namespaceDefinition, TP p)
+		public virtual TR Visit(NamespaceNode namespaceNode, TP p)
 		{
-			namespaceDefinition.Type.Accept(this, p);
+			foreach (var def in namespaceNode.Definitions)
+				def.Accept(this, p);
 			return default(TR);
 		}
 
