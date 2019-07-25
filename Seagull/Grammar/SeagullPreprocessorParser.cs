@@ -49,9 +49,9 @@ public partial class SeagullPreprocessorParser : Parser {
 		R_BRACKET=72, L_PAR=73, R_PAR=74, L_CURL=75, R_CURL=76, BIT_AND=77, BIT_OR=78, 
 		BIT_XOR=79, BIT_NOT=80, BIT_RIGHT=81, BIT_LEFT=82, EQUAL=83, NOT_EQUAL=84, 
 		LESS_THAN=85, GREATER_THAN=86, LESS_EQ_THAN=87, GREATER_EQ_THAN=88, BOOLEAN_CONSTANT=89, 
-		ID=90, INT_CONSTANT=91, REAL_CONSTANT=92, CHAR_CONSTANT=93, STRING_CONSTANT=94, 
-		SL_COMMENT=95, ML_COMMENT=96, BLANKS=97, DIR_DEFINE=98, DIR_IF=99, DIR_ELIF=100, 
-		DIR_ELSE=101, DIR_WHITESPACE=102, DIR_ML_COMMENT=103, DIR_NEWLINE=104;
+		INT_CONSTANT=90, REAL_CONSTANT=91, CHAR_CONSTANT=92, STRING_CONSTANT=93, 
+		ID=94, SL_COMMENT=95, ML_COMMENT=96, BLANKS=97, DIR_DEFINE=98, DIR_IF=99, 
+		DIR_ELIF=100, DIR_ELSE=101, DIR_WHITESPACE=102, DIR_ML_COMMENT=103, DIR_NEWLINE=104;
 	public const int
 		RULE_preprocessorDirective = 0, RULE_preprocessorExpression = 1;
 	public static readonly string[] ruleNames = {
@@ -86,8 +86,8 @@ public partial class SeagullPreprocessorParser : Parser {
 		"OR", "L_BRACKET", "R_BRACKET", "L_PAR", "R_PAR", "L_CURL", "R_CURL", 
 		"BIT_AND", "BIT_OR", "BIT_XOR", "BIT_NOT", "BIT_RIGHT", "BIT_LEFT", "EQUAL", 
 		"NOT_EQUAL", "LESS_THAN", "GREATER_THAN", "LESS_EQ_THAN", "GREATER_EQ_THAN", 
-		"BOOLEAN_CONSTANT", "ID", "INT_CONSTANT", "REAL_CONSTANT", "CHAR_CONSTANT", 
-		"STRING_CONSTANT", "SL_COMMENT", "ML_COMMENT", "BLANKS", "DIR_DEFINE", 
+		"BOOLEAN_CONSTANT", "INT_CONSTANT", "REAL_CONSTANT", "CHAR_CONSTANT", 
+		"STRING_CONSTANT", "ID", "SL_COMMENT", "ML_COMMENT", "BLANKS", "DIR_DEFINE", 
 		"DIR_IF", "DIR_ELIF", "DIR_ELSE", "DIR_WHITESPACE", "DIR_ML_COMMENT", 
 		"DIR_NEWLINE"
 	};
@@ -211,7 +211,7 @@ public partial class SeagullPreprocessorParser : Parser {
 		'\x2', '\v', '\n', '\x2', '\x3', '\x3', '\x3', '\x3', '\x3', '\x3', '\x2', 
 		'\x2', '\x4', '\x2', '\x4', '\x2', '\x2', '\x2', '\r', '\x2', '\n', '\x3', 
 		'\x2', '\x2', '\x2', '\x4', '\f', '\x3', '\x2', '\x2', '\x2', '\x6', '\a', 
-		'\a', '\x64', '\x2', '\x2', '\a', '\v', '\a', '\\', '\x2', '\x2', '\b', 
+		'\a', '\x64', '\x2', '\x2', '\a', '\v', '\a', '`', '\x2', '\x2', '\b', 
 		'\t', '\a', '\x65', '\x2', '\x2', '\t', '\v', '\x5', '\x4', '\x3', '\x2', 
 		'\n', '\x6', '\x3', '\x2', '\x2', '\x2', '\n', '\b', '\x3', '\x2', '\x2', 
 		'\x2', '\v', '\x3', '\x3', '\x2', '\x2', '\x2', '\f', '\r', '\a', '[', 

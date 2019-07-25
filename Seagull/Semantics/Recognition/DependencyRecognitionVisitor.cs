@@ -1,11 +1,11 @@
 using Seagull.AST;
 using Seagull.AST.Expressions;
 using Seagull.AST.Statements.Definitions;
-using Seagull.AST.Statements.Definitions.Namespaces;
 using Seagull.AST.Types;
 using Seagull.Errors;
 using Seagull.Logging;
-using Seagull.Semantics.Symbols;
+using Seagull.SymTable;
+using Seagull.Visitor;
 
 namespace Seagull.Semantics.Recognition
 {
@@ -17,18 +17,18 @@ namespace Seagull.Semantics.Recognition
 	///
 	/// TR: bool -> returns true if we've found a user-defined symbol.
 	/// </summary>
-	public class RecognitionThirdPassVisitor : AbstractRecognitionVisitor<bool>
+	public class DependencyRecognitionVisitor : AbstractRecognitionVisitor<bool>
 	{
 
 
-		public RecognitionThirdPassVisitor() : base("THIRD PASS", "Check for user-defined symbols")
+		public DependencyRecognitionVisitor() : base("THIRD PASS", "Check for user-defined symbols")
 		{
 			
 		}
 		
 		
 		
-		public override bool Visit(UnknownType unknown, INamespaceDefinition p)
+		public override bool Visit(UnknownType unknown, Void p)
 		{
 			Logger.Instance.LogDebug("[{0} : {1}] USER-DEFINED FOUND: {2}",
 				unknown.Line,
@@ -38,15 +38,17 @@ namespace Seagull.Semantics.Recognition
 		}
 
 
-		private IType Solve(IType userDefined, INamespaceDefinition inNamespace)
+		private IType Solve(IType userDefined, Void inNamespace)
 		{
 			UnknownType ut = (UnknownType) userDefined;
-			IDefinition def;
+			ISymbol symbol = null;
 			
 			// Find it in its namespace, if we're told so
 			if (ut.Namespace != null)
 			{
-				def = SymbolManager.Instance.Find(ut.Name, ut.Namespace);
+				// TODO
+				/*
+				def = SymbolTable.Instance.Find(ut.Name, ut.Namespace);
 				if (def == null)
 				{
 					return ErrorHandler.Instance.RaiseError(
@@ -55,12 +57,13 @@ namespace Seagull.Semantics.Recognition
 						"Symbol not found: " + ut.Namespace.Name + "." + ut.Name
 					);
 				}
+				*/
 			}
 			// Otherwise, find it in the current namespace
 			else
 			{
-				def = SymbolManager.Instance.Find(ut.Name, inNamespace);
-				if (def == null)
+				symbol = SymbolTable.Instance.Solve(ut.Name);
+				if (symbol == null)
 				{
 					return ErrorHandler.Instance.RaiseError(
 						ut.Line,
@@ -75,7 +78,7 @@ namespace Seagull.Semantics.Recognition
 				ut.Column,
 				ut.Name);
 			
-			return def.Type;
+			return symbol.Definition.Type;
 		}
 		
 		
@@ -97,7 +100,7 @@ namespace Seagull.Semantics.Recognition
 		
 		
 		
-		public override bool Visit(ArrayType arrayType, INamespaceDefinition p)
+		public override bool Visit(ArrayType arrayType, Void p)
 		{
 			bool dependency = arrayType.TypeOf.Accept(this, p);
 			if (dependency)
@@ -107,7 +110,7 @@ namespace Seagull.Semantics.Recognition
 		}
 		
 		
-		public override bool Visit(FunctionType functionType, INamespaceDefinition p)
+		public override bool Visit(FunctionType functionType, Void p)
 		{
 			bool dependency = functionType.ReturnType.Accept(this, p);
 			if (dependency)
@@ -131,7 +134,7 @@ namespace Seagull.Semantics.Recognition
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
 		
-		public override bool Visit(VariableDefinition variableDefinition, INamespaceDefinition p)
+		public override bool Visit(VariableDefinition variableDefinition, Void p)
 		{
 			bool dependency =  variableDefinition.Type.Accept(this, p);
 			if (dependency)
@@ -157,7 +160,7 @@ namespace Seagull.Semantics.Recognition
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
 		
-		public override bool Visit(Cast cast, INamespaceDefinition p)
+		public override bool Visit(Cast cast, Void p)
 		{
 			bool dependency = cast.TargetType.Accept(this, p);
 			if (dependency)
@@ -168,7 +171,7 @@ namespace Seagull.Semantics.Recognition
 		}
 		
 		
-		public override bool Visit(New newExpr, INamespaceDefinition p)
+		public override bool Visit(New newExpr, Void p)
 		{
 			bool dependency = newExpr.Type.Accept(this, p);
 			if (dependency)

@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Seagull.AST;
+using Seagull.AST.Statements.Definitions;
 using Seagull.Errors;
 
 namespace Seagull.FrontEnd
@@ -20,11 +19,11 @@ namespace Seagull.FrontEnd
         private readonly string _mainFile;
         private readonly string _baseDir;
         
-        private readonly List<IDefinition> _loads;
+        
         private readonly HashSet<string> _loadedFiles;
         
-        private readonly object _loadsLock = new object();
-        private readonly object _setLock = new object();
+        private readonly List<IDefinition> _definitions;
+        private readonly List<NamespaceNode> _namespaces;
         
         
 
@@ -35,31 +34,28 @@ namespace Seagull.FrontEnd
             _mainFile = mainFile;
             _baseDir = Path.GetDirectoryName(mainFile);
             
-            _loads = new List<IDefinition>();
             _loadedFiles = new HashSet<string>();
+            
+            _definitions = new List<IDefinition>();
+            _namespaces = new List<NamespaceNode>();
         }
 
 
         public void Dispose()
         {
-            lock(_loadsLock)
-                _loads.Clear();
-            lock(_setLock)
-                _loadedFiles.Clear();
+            _loadedFiles.Clear();
+            
+            _definitions.Clear();
+            _namespaces.Clear();
         }
         
         
-        public IEnumerable<IDefinition> GetImports()
-        {
-            lock(_loadsLock)
-                return _loads;
-        }
-
 
 
         public void Load(string currentFile, IEnumerable<string> files)
         {
-            Parallel.ForEach(files, f => Load(currentFile, f));
+            foreach (var f in files)
+                Load(currentFile, f);
         }
         
         
@@ -70,7 +66,7 @@ namespace Seagull.FrontEnd
         /// <param name="newFile"></param>
         public void Load(string currentFile, string newFile)
         {
-            Interlocked.Increment(ref _taskCount);
+            _taskCount ++;
             
             string relative = newFile.Trim('"'); // Clean up load path
             string path = Path.Combine(_baseDir, relative);
@@ -80,44 +76,46 @@ namespace Seagull.FrontEnd
                 return;
             
             // Check if we have loaded it already
-            lock (_setLock)
+            if (_loadedFiles.Contains(path))
             {
-                if (_loadedFiles.Contains(path))
-                {
-                    ErrorHandler.Instance.AddWarning(0, 0, $"In {currentFile}. Trying to load an already added file: {newFile}");
-                    Interlocked.Decrement(ref _taskCount);
-                    return;
-                }
-
-                _loadedFiles.Add(path);
+                ErrorHandler.Instance.AddWarning(0, 0, $"In {currentFile}. Trying to load an already added file: {newFile}");
+                _taskCount--;
+                return;
             }
 
+            _loadedFiles.Add(path);
+            
             
             Program program = _compiler.Grammar.Analyze(path);
             
             if (ErrorHandler.Instance.AnyError)
             {
                 ErrorHandler.Instance.PrintErrors();
-                Interlocked.Decrement(ref _taskCount);
+                _taskCount--;
                 return;
             }
 	        
-            var result = program.Definitions.ToList();
-
-            // Remove the main function
-            if (program.MainFunction != null)
-                result.Remove(program.MainFunction);
-            
-            // Add to imports
-            lock(_loads)
-                _loads.AddRange(result);
+            // Add new definitions and namespaces
+            _definitions.AddRange(program.Definitions);
+            _namespaces.AddRange(program.Namespaces);
 
 
             // Recursive imports
-            Parallel.ForEach(program.Loads, f => Load(path, f));
-            Interlocked.Decrement(ref _taskCount);
+            foreach (var f in program.Loads)
+                Load(path, f);
+            
+            _taskCount--;
         }
 
 
+        public IEnumerable<IDefinition> GetDefinitions()
+        {
+            return _definitions;
+        }
+        
+        public IEnumerable<NamespaceNode> GetNamespaces()
+        {
+            return _namespaces;
+        }
     }
 }

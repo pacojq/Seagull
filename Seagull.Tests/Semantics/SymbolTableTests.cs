@@ -1,6 +1,4 @@
 ﻿using NUnit.Framework;
-using Seagull.AST.Statements.Definitions;
-using Seagull.Semantics.Symbols;
 
 namespace Seagull.Tests.Semantics
 {
@@ -10,6 +8,8 @@ namespace Seagull.Tests.Semantics
         [Test]
         public void TestInsert()
         {
+            Assert.Fail();
+            /* TODO test the SymbolTable
             SymbolTable st = new SymbolTable();
             
             VariableDefinition definition = new VariableDefinition(0, 0, "a", null, null);
@@ -23,6 +23,7 @@ namespace Seagull.Tests.Semantics
             Assert.False(st.Insert(definition2));
             st.Reset();
             Assert.False(st.Insert(definition));
+            */
         }
     }
 }

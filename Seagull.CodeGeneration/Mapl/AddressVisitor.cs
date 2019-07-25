@@ -1,7 +1,7 @@
+using System.Linq;
 using Seagull.AST;
 using Seagull.AST.Expressions;
 using Seagull.AST.Types;
-using Seagull.AST.Types.Namespaces;
 using Seagull.Visitor;
 
 namespace Seagull.CodeGeneration.Mapl
@@ -67,7 +67,7 @@ namespace Seagull.CodeGeneration.Mapl
 			IExpression s = attributeAccess.Operand;
 		
 			StructType t = (StructType) s.Type;
-			int offset = t.FindDefinition(attributeAccess.AttributeName).CgOffset;
+			int offset = t.Fields.First(f => f.Name.Equals(attributeAccess.AttributeName)).CgOffset;
 		
 				s.Accept(this, null);
 			attributeAccess.CgAddress = s.CgAddress;
