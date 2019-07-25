@@ -1,4 +1,4 @@
-using Seagull.AST.Types.Namespaces;
+using System.Collections.Generic;
 using Seagull.Visitor;
 
 namespace Seagull.AST.Types
@@ -13,12 +13,13 @@ namespace Seagull.AST.Types
     {
         
         public string Name { get; }
-        public INamespaceType Namespace { get; }
         
-        public UnknownType(int line, int column, string name, INamespaceType ns = null) : base(line, column)
+        public List<string> Namespace { get; } // TODO find it
+        
+        public UnknownType(int line, int column, string name, List<string> ns) : base(line, column)
         {
             Name = name;
-            Namespace = ns;
+            Namespace = new List<string>(ns);
         }
 
         public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)

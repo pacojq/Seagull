@@ -1,5 +1,4 @@
 using Seagull.AST.AccessModifiers;
-using Seagull.AST.Statements.Definitions.Namespaces;
 
 namespace Seagull.AST
 {
@@ -12,11 +11,6 @@ namespace Seagull.AST
         int Scope { get; set; }
         
         IAccessModifier AccessModifier { get; set; }
-        
-        
-        INamespaceDefinition Namespace { get; set; }
-        
-        
         
         
         // Code Generation

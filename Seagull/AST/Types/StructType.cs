@@ -4,20 +4,21 @@ using Seagull.AST.Statements.Definitions;
 using Seagull.Errors;
 using Seagull.Visitor;
 
-namespace Seagull.AST.Types.Namespaces
+namespace Seagull.AST.Types
 {
-    public class StructType : AbstractNamespaceType
+    public class StructType : AbstractType
     {
 
-        public sealed override string Name { get; set; }
+        public IEnumerable<IDefinition> Fields => _fields;
         
+        private readonly List<IDefinition> _fields;
         
         public StructType(int line, int column, IEnumerable<VariableDefinition> fields)
             : base(line, column)
         {
-            foreach (var f in fields)
-                AddDefinition(f);
-            Name = this.ToString();
+            _fields = new List<IDefinition>();
+            if (fields != null)
+                _fields.AddRange(fields);
         }
 
         
@@ -32,7 +33,7 @@ namespace Seagull.AST.Types.Namespaces
         
         public override IType TypeCheckAttributeAccess(string attribute)
         {
-            IDefinition def = FindDefinition(attribute);
+            IDefinition def = _fields.FirstOrDefault(f => f.Name.Equals(attribute));
             if (def == null)
             {
                 return ErrorHandler.Instance.RaiseError(
@@ -50,15 +51,13 @@ namespace Seagull.AST.Types.Namespaces
 
         public override string ToString()
         {
-            string str = Name;
-            str += " { ";
+            string str = "struct { ";
 
-            var defs = Definitions.ToList();
-            if (defs.Count > 0)
+            if (_fields.Count > 0)
             {
-                str += defs[0].ToString();
-                for (int i = 1; i < defs.Count; i ++)
-                    str += ", " + defs[i].ToString();
+                str += _fields[0].ToString();
+                for (int i = 1; i < _fields.Count; i ++)
+                    str += ", " + _fields[i].ToString();
             }
             str += " }";
             return str;

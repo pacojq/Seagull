@@ -1,5 +1,4 @@
 using Seagull.AST.AccessModifiers;
-using Seagull.AST.Statements.Definitions.Namespaces;
 
 namespace Seagull.AST.Statements
 {
@@ -16,7 +15,6 @@ namespace Seagull.AST.Statements
         
         public IAccessModifier AccessModifier { get; set; }
         
-        public virtual INamespaceDefinition Namespace { get; set; }
 
         public AbstractDefinition(int line, int column, string name, IType type) : base(line, column)
         {

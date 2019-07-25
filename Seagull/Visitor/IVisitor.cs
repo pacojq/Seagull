@@ -4,9 +4,7 @@ using Seagull.AST.Expressions.Binary;
 using Seagull.AST.Expressions.Literals;
 using Seagull.AST.Statements;
 using Seagull.AST.Statements.Definitions;
-using Seagull.AST.Statements.Definitions.Namespaces;
 using Seagull.AST.Types;
-using Seagull.AST.Types.Namespaces;
 using Seagull.Errors;
 
 namespace Seagull.Visitor
@@ -40,7 +38,6 @@ namespace Seagull.Visitor
 		TR Visit(FunctionType functionType, TP p);
 		TR Visit(IntType intType, TP p);
 		TR Visit(LongType longType, TP p);
-		TR Visit(NamespaceType namespaceType, TP p);
 		TR Visit(PointerType pointerType, TP p);
 		TR Visit(StringType stringType, TP p);
 		TR Visit(StructType structType, TP p);
@@ -76,7 +73,7 @@ namespace Seagull.Visitor
 		TR Visit(EnumElementDefinition enumElementDefinition, TP p);
 		TR Visit(FunctionDefinition functionDefinition, TP p);
 		TR Visit(MainFunctionDefinition mainFunctionDefinition, TP p);
-		TR Visit(NamespaceDefinition namespaceDefinition, TP p);
+		TR Visit(NamespaceNode namespaceNode, TP p);
 		TR Visit(StructDefinition structDefinition, TP p);
 		TR Visit(VariableDefinition variableDefinition, TP p);
 		

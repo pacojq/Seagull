@@ -5,9 +5,7 @@ using Seagull.AST.Expressions.Binary;
 using Seagull.AST.Expressions.Literals;
 using Seagull.AST.Statements;
 using Seagull.AST.Statements.Definitions;
-using Seagull.AST.Statements.Definitions.Namespaces;
 using Seagull.AST.Types;
-using Seagull.AST.Types.Namespaces;
 using Seagull.Errors;
 using Seagull.Visitor;
 
@@ -77,11 +75,6 @@ namespace Seagull.CodeGeneration
         public virtual TR Visit(LongType longType, TP p)
         {
             throw new InvalidOperationException(GetMsg(longType));
-        }
-
-        public virtual TR Visit(NamespaceType namespaceType, TP p)
-        {
-            throw new InvalidOperationException(GetMsg(namespaceType));
         }
 
         public virtual TR Visit(PointerType pointerType, TP p)
@@ -184,9 +177,9 @@ namespace Seagull.CodeGeneration
             return this.Visit((FunctionDefinition) mainFunctionDefinition, p);
         }
 
-        public virtual TR Visit(NamespaceDefinition namespaceDefinition, TP p)
+        public virtual TR Visit(NamespaceNode namespaceNode, TP p)
         {
-            throw new InvalidOperationException(GetMsg(namespaceDefinition));
+            throw new InvalidOperationException(GetMsg(namespaceNode));
         }
 
         public virtual TR Visit(StructDefinition structDefinition, TP p)
