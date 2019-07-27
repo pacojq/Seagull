@@ -61,7 +61,7 @@ public partial class SeagullParser : Parser {
 		IF=17, ELSE=18, WHILE=19, FOR=20, IN=21, SWITCH=22, CASE=23, BREAK=24, 
 		CONTINUE=25, NEW=26, DELETE=27, RETURN=28, PRINT=29, READ=30, ASSERT=31, 
 		DELAY=32, PUBLIC=33, PROTECTED=34, PRIVATE=35, FRIEND=36, NULLABLE=37, 
-		CONST=38, OVERRIDE=39, LOCKED=40, ABSTRACT=41, LOAD=42, IMPORT=43, NAMESPACE=44, 
+		CONST=38, OVERRIDE=39, LOCKED=40, ABSTRACT=41, LINK=42, IMPORT=43, NAMESPACE=44, 
 		OWNED=45, IS=46, DEFAULT=47, DOT=48, COMMA=49, COL=50, SEMI_COL=51, ASSIGN=52, 
 		STAR=53, SLASH=54, PERCENT=55, ARROW=56, QUESTION=57, PLUS=58, MINUS=59, 
 		ADDRESS=60, PLUS_PLUS=61, MINUS_MINUS=62, ASSIGN_MUL=63, ASSIGN_DIV=64, 
@@ -73,7 +73,7 @@ public partial class SeagullParser : Parser {
 		ID=94, SL_COMMENT=95, ML_COMMENT=96, BLANKS=97, DIR_DEFINE=98, DIR_IF=99, 
 		DIR_ELIF=100, DIR_ELSE=101, DIR_WHITESPACE=102, DIR_ML_COMMENT=103, DIR_NEWLINE=104;
 	public const int
-		RULE_program = 0, RULE_load = 1, RULE_imp = 2, RULE_typeOrVoid = 3, RULE_type = 4, 
+		RULE_program = 0, RULE_link = 1, RULE_imp = 2, RULE_typeOrVoid = 3, RULE_type = 4, 
 		RULE_namedType = 5, RULE_functionType = 6, RULE_parameters = 7, RULE_structType = 8, 
 		RULE_enumType = 9, RULE_enumElement = 10, RULE_primitive = 11, RULE_voidType = 12, 
 		RULE_accessModifier = 13, RULE_definition = 14, RULE_namespaceNode = 15, 
@@ -83,7 +83,7 @@ public partial class SeagullParser : Parser {
 		RULE_funcInvocation = 26, RULE_fnBlock = 27, RULE_fnBlockContent = 28, 
 		RULE_expression = 29, RULE_variable = 30, RULE_literal = 31;
 	public static readonly string[] ruleNames = {
-		"program", "load", "imp", "typeOrVoid", "type", "namedType", "functionType", 
+		"program", "link", "imp", "typeOrVoid", "type", "namedType", "functionType", 
 		"parameters", "structType", "enumType", "enumElement", "primitive", "voidType", 
 		"accessModifier", "definition", "namespaceNode", "namespaceDefinitions", 
 		"variableDef", "inferredVariableDef", "variableDefIds", "functionDef", 
@@ -98,7 +98,7 @@ public partial class SeagullParser : Parser {
 		"'case'", "'break'", "'continue'", "'new'", "'delete'", "'return'", "'print'", 
 		"'read'", "'assert'", "'delay'", "'public'", "'protected'", "'private'", 
 		"'friend'", "'nullable'", "'const'", "'override'", "'locked'", "'abstract'", 
-		"'load'", "'import'", "'namespace'", "'owned'", "'is'", "'default'", "'.'", 
+		"'link'", "'import'", "'namespace'", "'owned'", "'is'", "'default'", "'.'", 
 		"','", "':'", "';'", "'='", "'*'", "'/'", "'%'", "'->'", "'?'", "'+'", 
 		"'-'", "'@'", "'++'", "'--'", "'*='", "'/='", "'%='", "'+='", "'-='", 
 		"'!'", "'&&'", "'||'", "'['", "']'", "'('", "')'", "'{'", "'}'", "'&'", 
@@ -112,7 +112,7 @@ public partial class SeagullParser : Parser {
 		"ELSE", "WHILE", "FOR", "IN", "SWITCH", "CASE", "BREAK", "CONTINUE", "NEW", 
 		"DELETE", "RETURN", "PRINT", "READ", "ASSERT", "DELAY", "PUBLIC", "PROTECTED", 
 		"PRIVATE", "FRIEND", "NULLABLE", "CONST", "OVERRIDE", "LOCKED", "ABSTRACT", 
-		"LOAD", "IMPORT", "NAMESPACE", "OWNED", "IS", "DEFAULT", "DOT", "COMMA", 
+		"LINK", "IMPORT", "NAMESPACE", "OWNED", "IS", "DEFAULT", "DOT", "COMMA", 
 		"COL", "SEMI_COL", "ASSIGN", "STAR", "SLASH", "PERCENT", "ARROW", "QUESTION", 
 		"PLUS", "MINUS", "ADDRESS", "PLUS_PLUS", "MINUS_MINUS", "ASSIGN_MUL", 
 		"ASSIGN_DIV", "ASSIGN_MOD", "ASSIGN_SUM", "ASSIGN_SUB", "NOT", "AND", 
@@ -162,16 +162,16 @@ public partial class SeagullParser : Parser {
 		public List<string> Imports = new List<string>();
 		public List<IDefinition> Def = new List<IDefinition>();
 		public List<NamespaceNode> Ns = new List<NamespaceNode>();
-		public LoadContext l;
+		public LinkContext l;
 		public ImpContext i;
 		public NamespaceNodeContext n;
 		public DefinitionContext d;
 		public ITerminalNode Eof() { return GetToken(SeagullParser.Eof, 0); }
-		public LoadContext[] load() {
-			return GetRuleContexts<LoadContext>();
+		public LinkContext[] link() {
+			return GetRuleContexts<LinkContext>();
 		}
-		public LoadContext load(int i) {
-			return GetRuleContext<LoadContext>(i);
+		public LinkContext link(int i) {
+			return GetRuleContext<LinkContext>(i);
 		}
 		public ImpContext[] imp() {
 			return GetRuleContexts<ImpContext>();
@@ -209,10 +209,10 @@ public partial class SeagullParser : Parser {
 			State = 69;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while (_la==LOAD) {
+			while (_la==LINK) {
 				{
 				{
-				State = 64; _localctx.l = load();
+				State = 64; _localctx.l = link();
 				 _localctx.Loads.Add(_localctx.l.File); 
 				}
 				}
@@ -294,26 +294,26 @@ public partial class SeagullParser : Parser {
 		return _localctx;
 	}
 
-	public partial class LoadContext : ParserRuleContext {
+	public partial class LinkContext : ParserRuleContext {
 		public string File;
 		public IToken p;
-		public ITerminalNode LOAD() { return GetToken(SeagullParser.LOAD, 0); }
+		public ITerminalNode LINK() { return GetToken(SeagullParser.LINK, 0); }
 		public ITerminalNode STRING_CONSTANT() { return GetToken(SeagullParser.STRING_CONSTANT, 0); }
-		public LoadContext(ParserRuleContext parent, int invokingState)
+		public LinkContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
 		}
-		public override int RuleIndex { get { return RULE_load; } }
+		public override int RuleIndex { get { return RULE_link; } }
 	}
 
 	[RuleVersion(0)]
-	public LoadContext load() {
-		LoadContext _localctx = new LoadContext(Context, State);
-		EnterRule(_localctx, 2, RULE_load);
+	public LinkContext link() {
+		LinkContext _localctx = new LinkContext(Context, State);
+		EnterRule(_localctx, 2, RULE_link);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 94; Match(LOAD);
+			State = 94; Match(LINK);
 			State = 95; _localctx.p = Match(STRING_CONSTANT);
 			 _localctx.File =  (_localctx.p!=null?_localctx.p.Text:null); 
 			}

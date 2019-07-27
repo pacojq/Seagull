@@ -125,6 +125,8 @@
         <Compile Include="Grammar\SeagullParser.cs" />
         <Compile Include="FrontEndCompiler.cs" />
         <Compile Include="Grammar\SeagullPreprocessorParser.cs" />
+        <Compile Include="Linking\Linker.cs" />
+        <Compile Include="Linking\Scanner.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Semantics\Loops\LoopVisitor.cs" />
         <Compile Include="Semantics\Recognition\AbstractRecognitionVisitor.cs" />

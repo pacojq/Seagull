@@ -64,6 +64,24 @@ namespace Seagull.SymTable
 
             return ParentScope.Solve(name);
         }
+        
+        
+        public IScope SolveScope(string name)
+        {
+            IScope s = GetNestedScope(name);
+            if (s != null)
+                return s;
+
+            if (ParentScope == null)
+                return null;
+
+            return ParentScope.SolveScope(name);
+        }
+
+        
+        
+        
+        
 
         public ISymbol GetSymbol(string name)
         {

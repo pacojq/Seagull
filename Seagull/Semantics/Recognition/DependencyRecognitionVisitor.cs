@@ -1,3 +1,4 @@
+using System.Text;
 using Seagull.AST;
 using Seagull.AST.Expressions;
 using Seagull.AST.Statements.Definitions;
@@ -38,42 +39,63 @@ namespace Seagull.Semantics.Recognition
 		}
 
 
-		private IType Solve(IType userDefined, Void inNamespace)
+		private IType Solve(IType userDefined, Void p)
 		{
 			UnknownType ut = (UnknownType) userDefined;
 			ISymbol symbol = null;
+			IScope scope = SymbolTable.Instance.CurrentScope;
 			
-			// Find it in its namespace, if we're told so
-			if (ut.Namespace != null)
+			// Now we'll find the correct scope in which we'll look for the symbol
+			
+			// First, check in the current scope
+			for (int i = 0; i < ut.Namespace.Count; i++)
 			{
-				// TODO
-				/*
-				def = SymbolTable.Instance.Find(ut.Name, ut.Namespace);
-				if (def == null)
-				{
-					return ErrorHandler.Instance.RaiseError(
-						ut.Line,
-						ut.Column,
-						"Symbol not found: " + ut.Namespace.Name + "." + ut.Name
-					);
-				}
-				*/
-			}
-			// Otherwise, find it in the current namespace
-			else
-			{
-				symbol = SymbolTable.Instance.Solve(ut.Name);
-				if (symbol == null)
-				{
-					return ErrorHandler.Instance.RaiseError(
-						ut.Line,
-						ut.Column,
-						"Symbol not found: " + ut.Name
-					);
-				}
+				scope = scope.SolveScope(ut.Namespace[i]);
+				if (scope == null)
+					break;
 			}
 
-			Logger.Instance.LogDebug("[{0} : {1}] SYMBOL FOUND: {2}",
+			// If we haven't find it, find in the global scope
+			if (scope == null)
+			{
+				scope = SymbolTable.GlobalScope;
+				for (int i = 0; i < ut.Namespace.Count; i++)
+				{
+					scope = scope.SolveScope(ut.Namespace[i]);
+					if (scope == null)
+						break;
+				}
+			}
+			
+			// Okay, we couldn't find the scope. Raise an error
+			if (scope == null)
+			{
+				StringBuilder str = new StringBuilder();
+				str.Append(ut.Namespace[0]);
+				for (int i = 1; i < ut.Namespace.Count; i++)
+					str.Append("." + ut.Namespace[i]);
+				
+				return ErrorHandler.Instance.RaiseError(
+					ut.Line,
+					ut.Column,
+					$"The namespace {str.ToString()} could not be found."
+				);
+			}
+			
+			
+			// Otherwise, find it in the current namespace
+			symbol = scope.Solve(ut.Name);
+			if (symbol == null)
+			{
+				return ErrorHandler.Instance.RaiseError(
+					ut.Line,
+					ut.Column,
+					"Symbol not found: " + ut.Name
+				);
+			}
+			
+
+			Logger.Instance.LogDebug("[{0} : {1}] SYMBOL SOLVED: {2}",
 				ut.Line,
 				ut.Column,
 				ut.Name);

@@ -1,20 +1,24 @@
 
-//load "person.sgl"
+link "person.sgl"
 
 
-void main()
-{
-    int[5][10] a;
-    //Test.TestStruct test;
-    
-    //People.Person person;
-    //person.Age = 3;
-    
-    int i = 0;
-    i ++;
-    int b = i --;
-    
-    //Test.Inner.TestInnerStruct testInner;
+namespace Test {
+
+    void main()
+    {
+        int[5][10] a;
+        //Test.TestStruct test;
+        
+        People.Person person;
+        person.Age = 3;
+        
+        var i = 0;
+        i ++;
+        int b = i --;
+        
+        Inner.TestInnerStruct testInner;
+    }
+
 }
 
 

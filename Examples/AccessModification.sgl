@@ -1,6 +1,6 @@
 
-// Load files to compile them
-//load "person.sgl"
+// Link files to compile them
+//link "person.sgl"
 
 // Import existing namespaces
 //import Other.Namespace;
