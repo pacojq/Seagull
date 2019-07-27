@@ -11,6 +11,6 @@ namespace Seagull.CodeGeneration
         /// <param name="inputPath"></param>
         /// <param name="outputPath"></param>
         /// <returns></returns>
-        void Generate(Program program, string inputPath, string outputPath);
+        void Generate(ProgramNode program, string inputPath, string outputPath);
     }
 }

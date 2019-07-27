@@ -19,7 +19,7 @@ namespace Seagull.FrontEnd
         }
         
         
-        public Program Analyze(string filename)
+        public ProgramNode Analyze(string filename)
         {
             // create a lexer that feeds off of input stream
             AntlrInputStream input;

@@ -7,7 +7,7 @@ namespace Seagull.CodeGeneration.Mapl
 {
     public class CgMapl : ICodeGenerationModule
     {
-        public void Generate(Program program, string inputPath, string outputPath)
+        public void Generate(ProgramNode program, string inputPath, string outputPath)
         {
             program.Accept(new OffsetVisitor(), null);
             program.Accept(new MaplTypesVisitor(), null);

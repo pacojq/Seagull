@@ -2,13 +2,13 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Statements
 {
-    public class Assignment : AbstractStatement
+    public class AssignmentNode : AbstractStatement
     {
         
         public IExpression Left { get; }
         public IExpression Right { get; }
         
-        public Assignment(IExpression left, IExpression right)
+        public AssignmentNode(IExpression left, IExpression right)
             : base(left.Line, left.Column)
         {
             Left = left;

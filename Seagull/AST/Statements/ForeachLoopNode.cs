@@ -3,7 +3,7 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Statements
 {
-    public class ForeachLoop : AbstractStatement
+    public class ForeachLoopNode : AbstractStatement
     {
         
         public IExpression Element { get; }
@@ -13,7 +13,7 @@ namespace Seagull.AST.Statements
         public IEnumerable<IStatement> Statements { get; }
         
         
-        public ForeachLoop(int line, int column, IExpression element,  IExpression collection, 
+        public ForeachLoopNode(int line, int column, IExpression element,  IExpression collection, 
                 IEnumerable<IStatement> statements) 
             : base(line, column)
         {

@@ -10,7 +10,7 @@ namespace Seagull.FrontEnd
     {
         
         
-        public void Analyze(Program ast)
+        public void Analyze(ProgramNode ast)
         {
             // Sets up namespaces
             SymbolTable.Init();

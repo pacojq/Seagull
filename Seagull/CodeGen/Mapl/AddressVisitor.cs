@@ -15,7 +15,7 @@ namespace Seagull.CodeGeneration.Mapl
 		// - - - - - - - - WE ONLY DEAL WITH L-VALUE IExpressionS - - - - - - - - //
 	
 	
-		public override Void Visit(Variable variable, Void p)
+		public override Void Visit(VariableNode variable, Void p)
 		{
 			IDefinition def = variable.Definition;		
 		
@@ -33,7 +33,7 @@ namespace Seagull.CodeGeneration.Mapl
 		}
 	
 	
-		public override Void Visit(Indexing arrayAccess, Void p)
+		public override Void Visit(IndexingNode arrayAccess, Void p)
 		{
 			IExpression array = arrayAccess.Operand;
 			IExpression index = arrayAccess.Index;
@@ -62,7 +62,7 @@ namespace Seagull.CodeGeneration.Mapl
 		}
 	
 	
-		public override Void Visit(AttributeAccess attributeAccess, Void p)
+		public override Void Visit(AttributeAccessNode attributeAccess, Void p)
 		{
 			IExpression s = attributeAccess.Operand;
 		

@@ -22,7 +22,7 @@ namespace Seagull.CodeGeneration
         
         
         
-        public virtual TR Visit(Program program, TP p)
+        public virtual TR Visit(ProgramNode program, TP p)
         {
             throw new InvalidOperationException(GetMsg(program));
         }
@@ -102,52 +102,52 @@ namespace Seagull.CodeGeneration
             throw new InvalidOperationException(GetMsg(unknown));
         }
 
-        public virtual TR Visit(Assignment assignment, TP p)
+        public virtual TR Visit(AssignmentNode assignment, TP p)
         {
             throw new InvalidOperationException(GetMsg(assignment));
         }
 
-        public virtual TR Visit(Break br, TP p)
+        public virtual TR Visit(BreakNode br, TP p)
         {
             throw new InvalidOperationException(GetMsg(br));
         }
 
-        public virtual TR Visit(Continue cont, TP p)
+        public virtual TR Visit(ContinueNode cont, TP p)
         {
             throw new InvalidOperationException(GetMsg(cont));
         }
 
-        public virtual TR Visit(ForeachLoop foreachLoop, TP p)
+        public virtual TR Visit(ForeachLoopNode foreachLoop, TP p)
         {
             throw new InvalidOperationException(GetMsg(foreachLoop));
         }
 
-        public virtual TR Visit(ForLoop forLoop, TP p)
+        public virtual TR Visit(ForLoopNode forLoop, TP p)
         {
             throw new InvalidOperationException(GetMsg(forLoop));
         }
 
-        public virtual TR Visit(IfStatement ifStatement, TP p)
+        public virtual TR Visit(IfNode ifNode, TP p)
         {
-            throw new InvalidOperationException(GetMsg(ifStatement));
+            throw new InvalidOperationException(GetMsg(ifNode));
         }
 
-        public virtual TR Visit(Print print, TP p)
+        public virtual TR Visit(PrintNode print, TP p)
         {
             throw new InvalidOperationException(GetMsg(print));
         }
 
-        public virtual TR Visit(Read read, TP p)
+        public virtual TR Visit(ReadNode read, TP p)
         {
             throw new InvalidOperationException(GetMsg(read));
         }
 
-        public virtual TR Visit(Return ret, TP p)
+        public virtual TR Visit(ReturnNode ret, TP p)
         {
             throw new InvalidOperationException(GetMsg(ret));
         }
 
-        public virtual TR Visit(WhileLoop whileLoop, TP p)
+        public virtual TR Visit(WhileLoopNode whileLoop, TP p)
         {
             throw new InvalidOperationException(GetMsg(whileLoop));
         }
@@ -192,17 +192,17 @@ namespace Seagull.CodeGeneration
             throw new InvalidOperationException(GetMsg(variableDefinition));
         }
 
-        public virtual TR Visit(Arithmetic arithmetic, TP p)
+        public virtual TR Visit(ArithmeticNode arithmetic, TP p)
         {
             throw new InvalidOperationException(GetMsg(arithmetic));
         }
 
-        public virtual TR Visit(Comparison comparison, TP p)
+        public virtual TR Visit(ComparisonNode comparison, TP p)
         {
             throw new InvalidOperationException(GetMsg(comparison));
         }
 
-        public virtual TR Visit(LogicalOperation logicalOperation, TP p)
+        public virtual TR Visit(LogicalOperationNode logicalOperation, TP p)
         {
             throw new InvalidOperationException(GetMsg(logicalOperation));
         }
@@ -232,17 +232,17 @@ namespace Seagull.CodeGeneration
             throw new InvalidOperationException(GetMsg(stringLiteral));
         }
 
-        public virtual TR Visit(AttributeAccess attributeAccess, TP p)
+        public virtual TR Visit(AttributeAccessNode attributeAccess, TP p)
         {
             throw new InvalidOperationException(GetMsg(attributeAccess));
         }
 
-        public virtual TR Visit(Cast cast, TP p)
+        public virtual TR Visit(CastNode cast, TP p)
         {
             throw new InvalidOperationException(GetMsg(cast));
         }
 
-        public virtual TR Visit(Default def, TP p)
+        public virtual TR Visit(DefaultNode def, TP p)
         {
             throw new InvalidOperationException(GetMsg(def));
         }
@@ -252,37 +252,37 @@ namespace Seagull.CodeGeneration
             throw new InvalidOperationException(GetMsg(functionInvocation));
         }
 
-        public TR Visit(Increment increment, TP p)
+        public TR Visit(IncrementNode increment, TP p)
         {
             throw new InvalidOperationException(GetMsg(increment));
         }
 
-        public virtual TR Visit(Indexing indexing, TP p)
+        public virtual TR Visit(IndexingNode indexing, TP p)
         {
             throw new InvalidOperationException(GetMsg(indexing));
         }
 
-        public virtual TR Visit(Negation negation, TP p)
+        public virtual TR Visit(NegationNode negation, TP p)
         {
             throw new InvalidOperationException(GetMsg(negation));
         }
 
-        public virtual TR Visit(New newExpr, TP p)
+        public virtual TR Visit(NewNode newExpr, TP p)
         {
             throw new InvalidOperationException(GetMsg(newExpr));
         }
 
-        public virtual TR Visit(TernaryOperator ternary, TP p)
+        public virtual TR Visit(TernaryOperatorNode ternary, TP p)
         {
             throw new InvalidOperationException(GetMsg(ternary));
         }
 
-        public virtual TR Visit(UnaryMinus unaryMinus, TP p)
+        public virtual TR Visit(UnaryMinusNode unaryMinus, TP p)
         {
             throw new InvalidOperationException(GetMsg(unaryMinus));
         }
 
-        public virtual TR Visit(Variable variable, TP p)
+        public virtual TR Visit(VariableNode variable, TP p)
         {
             throw new InvalidOperationException(GetMsg(variable));
         }

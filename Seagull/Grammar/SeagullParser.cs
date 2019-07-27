@@ -157,8 +157,8 @@ public partial class SeagullParser : Parser {
 	}
 
 	public partial class ProgramContext : ParserRuleContext {
-		public Program Ast;
-		public List<string> Loads = new List<string>();
+		public ProgramNode Ast;
+		public List<string> Links = new List<string>();
 		public List<string> Imports = new List<string>();
 		public List<IDefinition> Def = new List<IDefinition>();
 		public List<NamespaceNode> Ns = new List<NamespaceNode>();
@@ -213,7 +213,7 @@ public partial class SeagullParser : Parser {
 				{
 				{
 				State = 64; _localctx.l = link();
-				 _localctx.Loads.Add(_localctx.l.File); 
+				 _localctx.Links.Add(_localctx.l.File); 
 				}
 				}
 				State = 71;
@@ -280,7 +280,7 @@ public partial class SeagullParser : Parser {
 				_la = TokenStream.LA(1);
 			}
 			State = 91; Match(Eof);
-			 _localctx.Ast =  new Program(0, 0, _localctx.Loads, _localctx.Imports, _localctx.Def, _localctx.Ns); 
+			 _localctx.Ast =  new ProgramNode(0, 0, _localctx.Links, _localctx.Imports, _localctx.Def, _localctx.Ns); 
 			}
 		}
 		catch (RecognitionException re) {
@@ -1072,7 +1072,7 @@ public partial class SeagullParser : Parser {
 
 				            IExpression def = new IntLiteral(_localctx.id.GetLine(), _localctx.id.GetCol(), defaultInt);
 				            if (!(_localctx.typeOf is IntType))
-				                def = new Default(_localctx.id.GetLine(), _localctx.id.GetCol(), _localctx.typeOf);
+				                def = new DefaultNode(_localctx.id.GetLine(), _localctx.id.GetCol(), _localctx.typeOf);
 				            _localctx.Ast =  new EnumElementDefinition(_localctx.id.GetLine(), _localctx.id.GetCol(), (_localctx.id!=null?_localctx.id.Text:null), def, _localctx.typeOf); 
 				        
 				}
@@ -2048,7 +2048,7 @@ public partial class SeagullParser : Parser {
 				State = 410; _localctx.cond = expression(0);
 				State = 411; Match(R_PAR);
 				State = 412; _localctx.st = statement();
-				 _localctx.Ast.Add(new WhileLoop(_localctx.w.GetLine(), _localctx.w.GetCol(), _localctx.cond.Ast, _localctx.st.Ast)); 
+				 _localctx.Ast.Add(new WhileLoopNode(_localctx.w.GetLine(), _localctx.w.GetCol(), _localctx.cond.Ast, _localctx.st.Ast)); 
 				}
 				break;
 			case 3:
@@ -2062,7 +2062,7 @@ public partial class SeagullParser : Parser {
 				State = 420; _localctx.incr = expression(0);
 				State = 421; Match(R_PAR);
 				State = 422; _localctx.st = statement();
-				 _localctx.Ast.Add(new ForLoop(_localctx.f.GetLine(), _localctx.f.GetCol(), _localctx.init.Ast[0], _localctx.cond.Ast, _localctx.incr.Ast, _localctx.st.Ast)); 
+				 _localctx.Ast.Add(new ForLoopNode(_localctx.f.GetLine(), _localctx.f.GetCol(), _localctx.init.Ast[0], _localctx.cond.Ast, _localctx.incr.Ast, _localctx.st.Ast)); 
 				}
 				break;
 			case 4:
@@ -2075,7 +2075,7 @@ public partial class SeagullParser : Parser {
 				State = 429; _localctx.col = expression(0);
 				State = 430; Match(R_PAR);
 				State = 431; _localctx.st = statement();
-				 _localctx.Ast.Add(new ForeachLoop(_localctx.f.GetLine(), _localctx.f.GetCol(), _localctx.e.Ast, _localctx.col.Ast, _localctx.st.Ast)); 
+				 _localctx.Ast.Add(new ForeachLoopNode(_localctx.f.GetLine(), _localctx.f.GetCol(), _localctx.e.Ast, _localctx.col.Ast, _localctx.st.Ast)); 
 				}
 				break;
 			case 5:
@@ -2083,7 +2083,7 @@ public partial class SeagullParser : Parser {
 				{
 				State = 434; _localctx.c = Match(CONTINUE);
 				State = 435; Match(SEMI_COL);
-				 _localctx.Ast.Add(new Continue(_localctx.c.GetLine(), _localctx.c.GetCol())); 
+				 _localctx.Ast.Add(new ContinueNode(_localctx.c.GetLine(), _localctx.c.GetCol())); 
 				}
 				break;
 			case 6:
@@ -2091,7 +2091,7 @@ public partial class SeagullParser : Parser {
 				{
 				State = 437; _localctx.br = Match(BREAK);
 				State = 438; Match(SEMI_COL);
-				 _localctx.Ast.Add(new Break(_localctx.br.GetLine(), _localctx.br.GetCol())); 
+				 _localctx.Ast.Add(new BreakNode(_localctx.br.GetLine(), _localctx.br.GetCol())); 
 				}
 				break;
 			case 7:
@@ -2102,7 +2102,7 @@ public partial class SeagullParser : Parser {
 				State = 442; _localctx.cond = expression(0);
 				State = 443; Match(R_PAR);
 				State = 444; _localctx.st1 = statement();
-				 _localctx.Ast.Add(new IfStatement(_localctx.i.GetLine(), _localctx.i.GetCol(), _localctx.cond.Ast, _localctx.st1.Ast)); 
+				 _localctx.Ast.Add(new IfNode(_localctx.i.GetLine(), _localctx.i.GetCol(), _localctx.cond.Ast, _localctx.st1.Ast)); 
 				State = 450;
 				ErrorHandler.Sync(this);
 				switch ( Interpreter.AdaptivePredict(TokenStream,32,Context) ) {
@@ -2110,7 +2110,7 @@ public partial class SeagullParser : Parser {
 					{
 					State = 446; Match(ELSE);
 					State = 447; _localctx.st2 = statement();
-					 ((IfStatement)_localctx.Ast[0]).Else = _localctx.st2.Ast; 
+					 ((IfNode)_localctx.Ast[0]).Else = _localctx.st2.Ast; 
 					}
 					break;
 				}
@@ -2123,7 +2123,7 @@ public partial class SeagullParser : Parser {
 				State = 453; Match(ASSIGN);
 				State = 454; _localctx.e2 = expression(0);
 				State = 455; Match(SEMI_COL);
-				 _localctx.Ast.Add( new Assignment(_localctx.e1.Ast, _localctx.e2.Ast) ); 
+				 _localctx.Ast.Add( new AssignmentNode(_localctx.e1.Ast, _localctx.e2.Ast) ); 
 				}
 				break;
 			case 9:
@@ -2132,7 +2132,7 @@ public partial class SeagullParser : Parser {
 				State = 458; _localctx.r = Match(RETURN);
 				State = 459; _localctx.expr = expression(0);
 				State = 460; Match(SEMI_COL);
-				 _localctx.Ast.Add(new Return(_localctx.r.GetLine(), _localctx.r.GetCol(), _localctx.expr.Ast)); 
+				 _localctx.Ast.Add(new ReturnNode(_localctx.r.GetLine(), _localctx.r.GetCol(), _localctx.expr.Ast)); 
 				}
 				break;
 			case 10:
@@ -2140,7 +2140,7 @@ public partial class SeagullParser : Parser {
 				{
 				State = 463; _localctx.r = Match(RETURN);
 				State = 464; Match(SEMI_COL);
-				 _localctx.Ast.Add(new Return(_localctx.r.GetLine(), _localctx.r.GetCol(), null)); 
+				 _localctx.Ast.Add(new ReturnNode(_localctx.r.GetLine(), _localctx.r.GetCol(), null)); 
 				}
 				break;
 			case 11:
@@ -2218,7 +2218,7 @@ public partial class SeagullParser : Parser {
 				State = 477; _localctx.e = expression(0);
 				State = 478; Match(R_PAR);
 				State = 479; Match(SEMI_COL);
-				 _localctx.Ast =  new Print(_localctx.p.GetLine(), _localctx.p.GetCol(), _localctx.e.Ast); 
+				 _localctx.Ast =  new PrintNode(_localctx.p.GetLine(), _localctx.p.GetCol(), _localctx.e.Ast); 
 				}
 				break;
 			case READ:
@@ -2229,7 +2229,7 @@ public partial class SeagullParser : Parser {
 				State = 484; _localctx.e = expression(0);
 				State = 485; Match(R_PAR);
 				State = 486; Match(SEMI_COL);
-				 _localctx.Ast =  new Read(_localctx.r.GetLine(), _localctx.r.GetCol(), _localctx.e.Ast); 
+				 _localctx.Ast =  new ReadNode(_localctx.r.GetLine(), _localctx.r.GetCol(), _localctx.e.Ast); 
 				}
 				break;
 			default:
@@ -2615,7 +2615,7 @@ public partial class SeagullParser : Parser {
 				{
 				State = 549; _localctx.n = Match(NEW);
 				State = 550; _localctx.nt = namedType();
-				 _localctx.Ast =  new New(_localctx.n.GetLine(), _localctx.n.GetCol(), _localctx.nt.Ast); 
+				 _localctx.Ast =  new NewNode(_localctx.n.GetLine(), _localctx.n.GetCol(), _localctx.nt.Ast); 
 				}
 				break;
 			case 6:
@@ -2624,35 +2624,35 @@ public partial class SeagullParser : Parser {
 				State = 554; Match(L_PAR);
 				State = 555; _localctx._type = type(0);
 				State = 556; Match(R_PAR);
-				 _localctx.Ast =  new Default(_localctx.def.GetLine(), _localctx.def.GetCol(), _localctx._type.Ast); 
+				 _localctx.Ast =  new DefaultNode(_localctx.def.GetLine(), _localctx.def.GetCol(), _localctx._type.Ast); 
 				}
 				break;
 			case 7:
 				{
 				State = 559; _localctx.um = Match(MINUS);
 				State = 560; _localctx._expression = expression(12);
-				 _localctx.Ast =  new UnaryMinus(_localctx.um.GetLine(), _localctx.um.GetCol(), _localctx._expression.Ast); 
+				 _localctx.Ast =  new UnaryMinusNode(_localctx.um.GetLine(), _localctx.um.GetCol(), _localctx._expression.Ast); 
 				}
 				break;
 			case 8:
 				{
 				State = 563; _localctx.not = Match(NOT);
 				State = 564; _localctx._expression = expression(11);
-				 _localctx.Ast =  new Negation(_localctx.not.GetLine(), _localctx.not.GetCol(), _localctx._expression.Ast); 
+				 _localctx.Ast =  new NegationNode(_localctx.not.GetLine(), _localctx.not.GetCol(), _localctx._expression.Ast); 
 				}
 				break;
 			case 9:
 				{
 				State = 567; _localctx.p = Match(PLUS_PLUS);
 				State = 568; _localctx.e = _localctx._expression = expression(8);
-				 _localctx.Ast =  new Increment(_localctx.p.GetLine(), _localctx.p.GetCol(), true, true, _localctx.e.Ast); 
+				 _localctx.Ast =  new IncrementNode(_localctx.p.GetLine(), _localctx.p.GetCol(), true, true, _localctx.e.Ast); 
 				}
 				break;
 			case 10:
 				{
 				State = 571; _localctx.m = Match(MINUS_MINUS);
 				State = 572; _localctx.e = _localctx._expression = expression(7);
-				 _localctx.Ast =  new Increment(_localctx.m.GetLine(), _localctx.m.GetCol(), true, false, _localctx.e.Ast); 
+				 _localctx.Ast =  new IncrementNode(_localctx.m.GetLine(), _localctx.m.GetCol(), true, false, _localctx.e.Ast); 
 				}
 				break;
 			case 11:
@@ -2661,7 +2661,7 @@ public partial class SeagullParser : Parser {
 				State = 576; _localctx.t = primitive();
 				State = 577; Match(R_PAR);
 				State = 578; _localctx.e = _localctx._expression = expression(4);
-				 _localctx.Ast =  new Cast(_localctx.p.GetLine(), _localctx.p.GetCol(), _localctx.t.Ast, _localctx.e.Ast); 
+				 _localctx.Ast =  new CastNode(_localctx.p.GetLine(), _localctx.p.GetCol(), _localctx.t.Ast, _localctx.e.Ast); 
 				}
 				break;
 			}
@@ -2696,7 +2696,7 @@ public partial class SeagullParser : Parser {
 						    Consume();
 						}
 						State = 585; _localctx.e2 = _localctx._expression = expression(7);
-						 _localctx.Ast =  new Arithmetic((_localctx.op!=null?_localctx.op.Text:null), _localctx.e1.Ast, _localctx.e2.Ast); 
+						 _localctx.Ast =  new ArithmeticNode((_localctx.op!=null?_localctx.op.Text:null), _localctx.e1.Ast, _localctx.e2.Ast); 
 						}
 						break;
 					case 2:
@@ -2717,7 +2717,7 @@ public partial class SeagullParser : Parser {
 						    Consume();
 						}
 						State = 590; _localctx.e2 = _localctx._expression = expression(6);
-						 _localctx.Ast =  new Arithmetic((_localctx.op!=null?_localctx.op.Text:null), _localctx.e1.Ast, _localctx.e2.Ast); 
+						 _localctx.Ast =  new ArithmeticNode((_localctx.op!=null?_localctx.op.Text:null), _localctx.e1.Ast, _localctx.e2.Ast); 
 						}
 						break;
 					case 3:
@@ -2738,7 +2738,7 @@ public partial class SeagullParser : Parser {
 						    Consume();
 						}
 						State = 595; _localctx.e2 = _localctx._expression = expression(4);
-						 _localctx.Ast =  new Comparison((_localctx.op!=null?_localctx.op.Text:null), _localctx.e1.Ast, _localctx.e2.Ast); 
+						 _localctx.Ast =  new ComparisonNode((_localctx.op!=null?_localctx.op.Text:null), _localctx.e1.Ast, _localctx.e2.Ast); 
 						}
 						break;
 					case 4:
@@ -2759,7 +2759,7 @@ public partial class SeagullParser : Parser {
 						    Consume();
 						}
 						State = 600; _localctx.e2 = _localctx._expression = expression(3);
-						 _localctx.Ast =  new LogicalOperation((_localctx.op!=null?_localctx.op.Text:null), _localctx.e1.Ast, _localctx.e2.Ast); 
+						 _localctx.Ast =  new LogicalOperationNode((_localctx.op!=null?_localctx.op.Text:null), _localctx.e1.Ast, _localctx.e2.Ast); 
 						}
 						break;
 					case 5:
@@ -2773,7 +2773,7 @@ public partial class SeagullParser : Parser {
 						State = 605; _localctx.e2 = _localctx._expression = expression(0);
 						State = 606; Match(COL);
 						State = 607; _localctx.e3 = _localctx._expression = expression(2);
-						 _localctx.Ast =  new TernaryOperator(_localctx.e1.Ast, _localctx.e2.Ast, _localctx.e3.Ast); 
+						 _localctx.Ast =  new TernaryOperatorNode(_localctx.e1.Ast, _localctx.e2.Ast, _localctx.e3.Ast); 
 						}
 						break;
 					case 6:
@@ -2786,7 +2786,7 @@ public partial class SeagullParser : Parser {
 						State = 611; Match(L_BRACKET);
 						State = 612; _localctx.e2 = _localctx._expression = expression(0);
 						State = 613; Match(R_BRACKET);
-						 _localctx.Ast =  new Indexing(_localctx.e1.Ast, _localctx.e2.Ast); 
+						 _localctx.Ast =  new IndexingNode(_localctx.e1.Ast, _localctx.e2.Ast); 
 						}
 						break;
 					case 7:
@@ -2798,7 +2798,7 @@ public partial class SeagullParser : Parser {
 						if (!(Precpred(Context, 14))) throw new FailedPredicateException(this, "Precpred(Context, 14)");
 						State = 617; Match(DOT);
 						State = 618; _localctx.att = Match(ID);
-						 _localctx.Ast =  new AttributeAccess(_localctx.e.Ast, (_localctx.att!=null?_localctx.att.Text:null)); 
+						 _localctx.Ast =  new AttributeAccessNode(_localctx.e.Ast, (_localctx.att!=null?_localctx.att.Text:null)); 
 						}
 						break;
 					case 8:
@@ -2809,7 +2809,7 @@ public partial class SeagullParser : Parser {
 						State = 620;
 						if (!(Precpred(Context, 10))) throw new FailedPredicateException(this, "Precpred(Context, 10)");
 						State = 621; Match(PLUS_PLUS);
-						 _localctx.Ast =  new Increment(_localctx.e.Ast.Line, _localctx.e.Ast.Column, false, true, _localctx.e.Ast); 
+						 _localctx.Ast =  new IncrementNode(_localctx.e.Ast.Line, _localctx.e.Ast.Column, false, true, _localctx.e.Ast); 
 						}
 						break;
 					case 9:
@@ -2820,7 +2820,7 @@ public partial class SeagullParser : Parser {
 						State = 623;
 						if (!(Precpred(Context, 9))) throw new FailedPredicateException(this, "Precpred(Context, 9)");
 						State = 624; Match(MINUS_MINUS);
-						 _localctx.Ast =  new Increment(_localctx.e.Ast.Line, _localctx.e.Ast.Column, false, false, _localctx.e.Ast); 
+						 _localctx.Ast =  new IncrementNode(_localctx.e.Ast.Line, _localctx.e.Ast.Column, false, false, _localctx.e.Ast); 
 						}
 						break;
 					}
@@ -2844,7 +2844,7 @@ public partial class SeagullParser : Parser {
 	}
 
 	public partial class VariableContext : ParserRuleContext {
-		public Variable Ast;
+		public VariableNode Ast;
 		public IToken _ID;
 		public ITerminalNode ID() { return GetToken(SeagullParser.ID, 0); }
 		public VariableContext(ParserRuleContext parent, int invokingState)
@@ -2862,7 +2862,7 @@ public partial class SeagullParser : Parser {
 			EnterOuterAlt(_localctx, 1);
 			{
 			State = 631; _localctx._ID = Match(ID);
-			 _localctx.Ast =  new Variable(_localctx._ID.GetLine(), _localctx._ID.GetCol(), (_localctx._ID!=null?_localctx._ID.Text:null)); 
+			 _localctx.Ast =  new VariableNode(_localctx._ID.GetLine(), _localctx._ID.GetCol(), (_localctx._ID!=null?_localctx._ID.Text:null)); 
 			}
 		}
 		catch (RecognitionException re) {

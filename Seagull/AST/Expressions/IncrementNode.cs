@@ -2,7 +2,7 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Expressions
 {
-	public class Increment : AbstractExpression, IStatement
+	public class IncrementNode : AbstractExpression, IStatement
 	{
 		public bool IsPrefixIncrement { get; }
 		
@@ -14,7 +14,7 @@ namespace Seagull.AST.Expressions
 		public string CgExecute { get; set; }
 		
 		
-		public Increment(int line, int column, bool isPrefix, bool isPositive, IExpression operand) : base(line, column)
+		public IncrementNode(int line, int column, bool isPrefix, bool isPositive, IExpression operand) : base(line, column)
 		{
 			IsPrefixIncrement = isPrefix;
 			IsPositive = isPositive;

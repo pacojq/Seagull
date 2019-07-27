@@ -2,9 +2,9 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Expressions
 {
-    public class New : AbstractExpression
+    public class NewNode : AbstractExpression
     {
-        public New(int line, int column, IType type) : base(line, column)
+        public NewNode(int line, int column, IType type) : base(line, column)
         {
             Type = type;
         }

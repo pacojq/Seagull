@@ -23,7 +23,7 @@ namespace Seagull.Semantics.Recognition
 
 		
 		
-		public override Void Visit(Variable var, Void p)
+		public override Void Visit(VariableNode var, Void p)
 		{
 			ISymbol symbol = SymbolTable.Instance.Solve(var.Name);
 			

@@ -2,12 +2,12 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Statements
 {
-    public class Print : AbstractStatement
+    public class PrintNode : AbstractStatement
     {
         public IExpression Expression { get; }
         
         
-        public Print(int line, int column, IExpression expression) : base(line, column)
+        public PrintNode(int line, int column, IExpression expression) : base(line, column)
         {
             Expression = expression;
         }

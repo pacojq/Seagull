@@ -10,7 +10,7 @@ namespace Seagull.CodeGeneration.Mapl
     public class MaplTypesVisitor : AbstractVisitor<Visitor.Void, Visitor.Void>
     {
 	    
-	    public override Void Visit(Comparison comparison, Void p)
+	    public override Void Visit(ComparisonNode comparison, Void p)
 	    {
 		    base.Visit(comparison, p);
 		    comparison.Type.Accept(this, p);
@@ -18,7 +18,7 @@ namespace Seagull.CodeGeneration.Mapl
 	    }
 	
 		
-	    public override Void Visit(LogicalOperation logicalOperation, Void p)
+	    public override Void Visit(LogicalOperationNode logicalOperation, Void p)
 	    {
 		    base.Visit(logicalOperation, p);
 		    logicalOperation.Type.Accept(this, p);

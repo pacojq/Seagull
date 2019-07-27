@@ -27,7 +27,7 @@ namespace Seagull.CodeGeneration.Mapl
 		}
 		
 		
-		public override Void Visit(Program program, Void p)
+		public override Void Visit(ProgramNode program, Void p)
 		{
 			
 			foreach (IDefinition def in program.Definitions)
@@ -119,7 +119,7 @@ namespace Seagull.CodeGeneration.Mapl
 		
 		
 		
-		public override Void Visit(Assignment assignment, Void p)
+		public override Void Visit(AssignmentNode assignment, Void p)
 		{
 			assignment.CgExecute = _cg.Line(assignment);
 			
@@ -134,50 +134,50 @@ namespace Seagull.CodeGeneration.Mapl
 		}
 		
 		
-		public override Void Visit(IfStatement ifStatement, Void p)
+		public override Void Visit(IfNode ifNode, Void p)
 		{
-			ifStatement.CgExecute = _cg.Line(ifStatement);
+			ifNode.CgExecute = _cg.Line(ifNode);
 			
 			int labelNumber = _cg.GetLabels(2);
 			
-			IExpression condition = ifStatement.Condition;
+			IExpression condition = ifNode.Condition;
 			
 			// Check condition
 			condition.Accept(valueVisitor, null);
-			ifStatement.CgExecute += condition.CgValue;
+			ifNode.CgExecute += condition.CgValue;
 			
 			// Jump to else if false (0)
-			ifStatement.CgExecute += _cg.JumpZero(labelNumber);
+			ifNode.CgExecute += _cg.JumpZero(labelNumber);
 			
 			
 			// Execute all the "if" part...
-			ifStatement.CgExecute += _cg.Comment("Body of the if branch");
-			foreach (IStatement st in ifStatement.Then)
+			ifNode.CgExecute += _cg.Comment("Body of the if branch");
+			foreach (IStatement st in ifNode.Then)
 			{
 				st.Accept(this, p);
-				ifStatement.CgExecute += st.CgExecute;
+				ifNode.CgExecute += st.CgExecute;
 			}
 			
 			// ...and jump over the else part
-			ifStatement.CgExecute += _cg.Jump(labelNumber + 1);
+			ifNode.CgExecute += _cg.Jump(labelNumber + 1);
 			
 			
 			// Execute all the "else" part
-			ifStatement.CgExecute += _cg.Label(labelNumber);
-			ifStatement.CgExecute += _cg.Comment("Body of the else branch");
-			foreach (IStatement st in ifStatement.Else)
+			ifNode.CgExecute += _cg.Label(labelNumber);
+			ifNode.CgExecute += _cg.Comment("Body of the else branch");
+			foreach (IStatement st in ifNode.Else)
 			{
 				st.Accept(this, p);
-				ifStatement.CgExecute += st.CgExecute;
+				ifNode.CgExecute += st.CgExecute;
 			}
 			
 			// End
-			ifStatement.CgExecute += _cg.Label(labelNumber + 1);
+			ifNode.CgExecute += _cg.Label(labelNumber + 1);
 			
 			return null;
 		}
 		
-		public override Void Visit(Read read, Void p)
+		public override Void Visit(ReadNode read, Void p)
 		{
 			read.CgExecute = _cg.Line(read);
 
@@ -192,7 +192,7 @@ namespace Seagull.CodeGeneration.Mapl
 			return null;
 		}
 		
-		public override Void Visit(Return ret, Void p)
+		public override Void Visit(ReturnNode ret, Void p)
 		{
 			ret.CgExecute = _cg.Line(ret);
 			ret.CgExecute += _cg.Comment("Return");
@@ -204,7 +204,7 @@ namespace Seagull.CodeGeneration.Mapl
 			return null;
 		}
 		
-		public override Void Visit(WhileLoop whileLoop, Void p)
+		public override Void Visit(WhileLoopNode whileLoop, Void p)
 		{
 			whileLoop.CgExecute = _cg.Line(whileLoop);
 			
@@ -241,7 +241,7 @@ namespace Seagull.CodeGeneration.Mapl
 		}
 		
 		
-		public override Void Visit(Print print, Void p)
+		public override Void Visit(PrintNode print, Void p)
 		{
 			print.CgExecute = _cg.Line(print);
 

@@ -2,10 +2,10 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Expressions
 {
-    public class Default : AbstractExpression
+    public class DefaultNode : AbstractExpression
     {
         
-        public Default(int line, int column, IType type) : base(line, column)
+        public DefaultNode(int line, int column, IType type) : base(line, column)
         {
             Type = type;
         }

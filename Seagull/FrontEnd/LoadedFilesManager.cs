@@ -86,7 +86,7 @@ namespace Seagull.FrontEnd
             _loadedFiles.Add(path);
             
             
-            Program program = _compiler.Grammar.Analyze(path);
+            ProgramNode program = _compiler.Grammar.Analyze(path);
             
             if (ErrorHandler.Instance.AnyError)
             {
@@ -101,7 +101,7 @@ namespace Seagull.FrontEnd
 
 
             // Recursive imports
-            foreach (var f in program.Loads)
+            foreach (var f in program.Links)
                 Load(path, f);
             
             _taskCount--;

@@ -33,14 +33,14 @@ namespace Seagull
 	    
 	    
 	    
-        public Program Compile(string filename)
+        public ProgramNode Compile(string filename)
         {
 	        SetUp(filename);
 	        
 	        
 	        // Syntactic analysis //
 	        
-	        Program ast = Grammar.Analyze(filename);
+	        ProgramNode ast = Grammar.Analyze(filename);
             
 	        if (ErrorHandler.Instance.AnyError)
             {
@@ -53,7 +53,7 @@ namespace Seagull
             // Load needed files //
             
             // Perform a grammatical analysis
-            _loadedFilesManager.Load(filename, ast.Loads);
+            _loadedFilesManager.Load(filename, ast.Links);
             while (!_loadedFilesManager.Ready) { /* Wait */ }
             
             // ... and add to the Ast before the Semantic analysis

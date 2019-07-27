@@ -25,20 +25,20 @@ options { tokenVocab = SeagullLexer; }
 
 
 
-program returns [Program Ast, 
-                List<string> Loads = new List<string>(), 
+program returns [ProgramNode Ast, 
+                List<string> Links = new List<string>(), 
                 List<string> Imports = new List<string>(),
                 List<IDefinition> Def = new List<IDefinition>(),
                 List<NamespaceNode> Ns = new List<NamespaceNode>()]:
                 
-		(l=link { $Loads.Add($l.File); })*
+		(l=link { $Links.Add($l.File); })*
 		(i=imp { $Imports.Add($i.Namespace); })*
 		(
 		      (n=namespaceNode  { $Ns.Add($n.Ast); })
 		    | (d=definition     { $Def.AddRange($d.Ast); }) // TODO access level
 		)*
 		EOF
-		{ $Ast = new Program(0, 0, $Loads, $Imports, $Def, $Ns); }
+		{ $Ast = new ProgramNode(0, 0, $Links, $Imports, $Def, $Ns); }
 	;
 	    
 	    
@@ -173,7 +173,7 @@ enumElement[IType typeOf, int defaultInt] returns [EnumElementDefinition Ast]:
         {
             IExpression def = new IntLiteral($id.GetLine(), $id.GetCol(), defaultInt);
             if (!($typeOf is IntType))
-                def = new Default($id.GetLine(), $id.GetCol(), $typeOf);
+                def = new DefaultNode($id.GetLine(), $id.GetCol(), $typeOf);
             $Ast = new EnumElementDefinition($id.GetLine(), $id.GetCol(), $id.text, def, $typeOf); 
         }
     ;
@@ -370,30 +370,30 @@ statement returns [List<IStatement> Ast = new List<IStatement>()]:
 		
 		// While loop
 	|	w=WHILE L_PAR cond=expression R_PAR st=statement
-		    { $Ast.Add(new WhileLoop($w.GetLine(), $w.GetCol(), $cond.Ast, $st.Ast)); }
+		    { $Ast.Add(new WhileLoopNode($w.GetLine(), $w.GetCol(), $cond.Ast, $st.Ast)); }
 		    
         // For / Foreach loop
     |   f=FOR L_PAR init=statement cond=expression SEMI_COL incr=expression R_PAR st=statement
-            { $Ast.Add(new ForLoop($f.GetLine(), $f.GetCol(), $init.Ast[0], $cond.Ast, $incr.Ast, $st.Ast)); }
+            { $Ast.Add(new ForLoopNode($f.GetLine(), $f.GetCol(), $init.Ast[0], $cond.Ast, $incr.Ast, $st.Ast)); }
             
     |   f=FOR L_PAR e=variable IN col=expression R_PAR st=statement
-            { $Ast.Add(new ForeachLoop($f.GetLine(), $f.GetCol(), $e.Ast, $col.Ast, $st.Ast)); }
+            { $Ast.Add(new ForeachLoopNode($f.GetLine(), $f.GetCol(), $e.Ast, $col.Ast, $st.Ast)); }
 	
 	    // Continue / Break
-	|   c=CONTINUE SEMI_COL { $Ast.Add(new Continue($c.GetLine(), $c.GetCol())); }
-	|   br=BREAK SEMI_COL   { $Ast.Add(new Break($br.GetLine(), $br.GetCol())); }
+	|   c=CONTINUE SEMI_COL { $Ast.Add(new ContinueNode($c.GetLine(), $c.GetCol())); }
+	|   br=BREAK SEMI_COL   { $Ast.Add(new BreakNode($br.GetLine(), $br.GetCol())); }
 	
 	    // If / Else
 	|   i=IF L_PAR cond=expression R_PAR st1=statement
-            { $Ast.Add(new IfStatement($i.GetLine(), $i.GetCol(), $cond.Ast, $st1.Ast)); }
-            (ELSE st2=statement  { ((IfStatement)$Ast[0]).Else = $st2.Ast; })?	
+            { $Ast.Add(new IfNode($i.GetLine(), $i.GetCol(), $cond.Ast, $st1.Ast)); }
+            (ELSE st2=statement  { ((IfNode)$Ast[0]).Else = $st2.Ast; })?	
 	
 	    // Assignment
-	|   e1=expression ASSIGN e2=expression SEMI_COL	{ $Ast.Add( new Assignment($e1.Ast, $e2.Ast) ); }
+	|   e1=expression ASSIGN e2=expression SEMI_COL	{ $Ast.Add( new AssignmentNode($e1.Ast, $e2.Ast) ); }
   	
   	    // Return statement
-  	|   r=RETURN expr=expression SEMI_COL  { $Ast.Add(new Return($r.GetLine(), $r.GetCol(), $expr.Ast)); }
-  	|   r=RETURN SEMI_COL               { $Ast.Add(new Return($r.GetLine(), $r.GetCol(), null)); }
+  	|   r=RETURN expr=expression SEMI_COL  { $Ast.Add(new ReturnNode($r.GetLine(), $r.GetCol(), $expr.Ast)); }
+  	|   r=RETURN SEMI_COL               { $Ast.Add(new ReturnNode($r.GetLine(), $r.GetCol(), null)); }
   	
   	    // Read / Print
   	|   readPrint { $Ast.Add($readPrint.Ast); }
@@ -420,8 +420,8 @@ statement returns [List<IStatement> Ast = new List<IStatement>()]:
 
 // TODO read write syntactic sugar
 readPrint returns [IStatement Ast]:
- 		p=PRINT L_PAR e=expression R_PAR SEMI_COL { $Ast = new Print($p.GetLine(), $p.GetCol(), $e.Ast); }
-  	|   r=READ L_PAR e=expression R_PAR SEMI_COL	{ $Ast = new Read($r.GetLine(), $r.GetCol(), $e.Ast); }
+ 		p=PRINT L_PAR e=expression R_PAR SEMI_COL { $Ast = new PrintNode($p.GetLine(), $p.GetCol(), $e.Ast); }
+  	|   r=READ L_PAR e=expression R_PAR SEMI_COL	{ $Ast = new ReadNode($r.GetLine(), $r.GetCol(), $e.Ast); }
   	;
 
 
@@ -472,44 +472,45 @@ expression returns [IExpression Ast]:
     |   L_PAR e=expression R_PAR { $Ast = $e.Ast; }	
     
         // Indexing
-    |   e1=expression L_BRACKET e2=expression R_BRACKET { $Ast = new Indexing($e1.Ast, $e2.Ast); }	
+    |   e1=expression L_BRACKET e2=expression R_BRACKET { $Ast = new IndexingNode($e1.Ast, $e2.Ast); }	
 		
 		// New
-    |   n=NEW nt=namedType { $Ast = new New($n.GetLine(), $n.GetCol(), $nt.Ast); }
+    |   n=NEW nt=namedType { $Ast = new NewNode($n.GetLine(), $n.GetCol(), $nt.Ast); }
         	
         	
 		// Attribute access
-	|   e=expression DOT att=ID { $Ast = new AttributeAccess($e.Ast, $att.text); }
+	|   e=expression DOT att=ID { $Ast = new AttributeAccessNode($e.Ast, $att.text); }
 		
 	
 	    // Default TODO: primitive or ID
-	|   def=DEFAULT L_PAR type R_PAR { $Ast = new Default($def.GetLine(), $def.GetCol(), $type.Ast); }
+	|   def=DEFAULT L_PAR type R_PAR { $Ast = new DefaultNode($def.GetLine(), $def.GetCol(), $type.Ast); }
 		
 		// Unary operations
-	|   um=MINUS expression { $Ast = new UnaryMinus($um.GetLine(), $um.GetCol(), $expression.Ast); }
-	|   not=NOT expression { $Ast = new Negation($not.GetLine(), $not.GetCol(), $expression.Ast); }
+	|   um=MINUS expression { $Ast = new UnaryMinusNode($um.GetLine(), $um.GetCol(), $expression.Ast); }
+	|   not=NOT expression { $Ast = new NegationNode($not.GetLine(), $not.GetCol(), $expression.Ast); }
 	
 	    // Increment and decrement
-	|   e=expression PLUS_PLUS     { $Ast = new Increment($e.Ast.Line, $e.Ast.Column, false, true, $e.Ast); }
-    |   e=expression MINUS_MINUS   { $Ast = new Increment($e.Ast.Line, $e.Ast.Column, false, false, $e.Ast); }
-    |   p=PLUS_PLUS e=expression   { $Ast = new Increment($p.GetLine(), $p.GetCol(), true, true, $e.Ast); }
-    |   m=MINUS_MINUS e=expression { $Ast = new Increment($m.GetLine(), $m.GetCol(), true, false, $e.Ast); }
+	|   e=expression PLUS_PLUS     { $Ast = new IncrementNode($e.Ast.Line, $e.Ast.Column, false, true, $e.Ast); }
+    |   e=expression MINUS_MINUS   { $Ast = new IncrementNode($e.Ast.Line, $e.Ast.Column, false, false, $e.Ast); }
+    |   p=PLUS_PLUS e=expression   { $Ast = new IncrementNode($p.GetLine(), $p.GetCol(), true, true, $e.Ast); }
+    |   m=MINUS_MINUS e=expression { $Ast = new IncrementNode($m.GetLine(), $m.GetCol(), true, false, $e.Ast); }
 		
 		// Arithmetics
-	|   e1=expression op=(STAR|SLASH|PERCENT) e2=expression { $Ast = new Arithmetic($op.text, $e1.Ast, $e2.Ast); }
-	|   e1=expression op=(PLUS|MINUS) e2=expression { $Ast = new Arithmetic($op.text, $e1.Ast, $e2.Ast); }
+	|   e1=expression op=(STAR|SLASH|PERCENT) e2=expression { $Ast = new ArithmeticNode($op.text, $e1.Ast, $e2.Ast); }
+	|   e1=expression op=(PLUS|MINUS) e2=expression { $Ast = new ArithmeticNode($op.text, $e1.Ast, $e2.Ast); }
 		
 		// Cast
-	|   p=L_PAR t=primitive R_PAR e=expression { $Ast = new Cast($p.GetLine(), $p.GetCol(), $t.Ast, $e.Ast); }
+	|   p=L_PAR t=primitive R_PAR e=expression { $Ast = new CastNode($p.GetLine(), $p.GetCol(), $t.Ast, $e.Ast); }
 		
 		// Comparisons
-	|   e1=expression op=(GREATER_THAN|LESS_THAN|GREATER_EQ_THAN|LESS_EQ_THAN|EQUAL|NOT_EQUAL) e2=expression { $Ast = new Comparison($op.text, $e1.Ast, $e2.Ast); }
+	|   e1=expression op=(GREATER_THAN|LESS_THAN|GREATER_EQ_THAN|LESS_EQ_THAN|EQUAL|NOT_EQUAL) e2=expression
+	        { $Ast = new ComparisonNode($op.text, $e1.Ast, $e2.Ast); }
 		
 		// Logical operations
-	|   e1=expression op=(AND|OR) e2=expression { $Ast = new LogicalOperation($op.text, $e1.Ast, $e2.Ast); }
+	|   e1=expression op=(AND|OR) e2=expression { $Ast = new LogicalOperationNode($op.text, $e1.Ast, $e2.Ast); }
 	
 	    // Ternary operator
-	|   e1=expression QUESTION e2=expression COL e3=expression { $Ast = new TernaryOperator($e1.Ast, $e2.Ast, $e3.Ast); }
+	|   e1=expression QUESTION e2=expression COL e3=expression { $Ast = new TernaryOperatorNode($e1.Ast, $e2.Ast, $e3.Ast); }
 	;
 	
 
@@ -519,8 +520,8 @@ expression returns [IExpression Ast]:
 
 
 
-variable returns [Variable Ast]:
-		ID { $Ast = new Variable($ID.GetLine(), $ID.GetCol(), $ID.text); }
+variable returns [VariableNode Ast]:
+		ID { $Ast = new VariableNode($ID.GetLine(), $ID.GetCol(), $ID.text); }
 		;
 
 

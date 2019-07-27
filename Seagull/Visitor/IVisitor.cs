@@ -16,7 +16,7 @@ namespace Seagull.Visitor
     /// <typeparam name="TP">Return type (synthesized attributes)</typeparam>
     public interface IVisitor<TR, TP>
     {
-        TR Visit(Program program, TP p);
+        TR Visit(ProgramNode program, TP p);
 	
 		TR Visit(ErrorType error, TP p);
 		
@@ -55,16 +55,16 @@ namespace Seagull.Visitor
 		/*														 */
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
-		TR Visit(Assignment assignment, TP p);
-		TR Visit(Break br, TP p);
-		TR Visit(Continue cont, TP p);
-		TR Visit(ForeachLoop foreachLoop, TP p);
-		TR Visit(ForLoop forLoop, TP p);
-		TR Visit(IfStatement ifStatement, TP p);
-		TR Visit(Print print, TP p);
-		TR Visit(Read read, TP p);
-		TR Visit(Return ret, TP p);
-		TR Visit(WhileLoop whileLoop, TP p);
+		TR Visit(AssignmentNode assignment, TP p);
+		TR Visit(BreakNode br, TP p);
+		TR Visit(ContinueNode cont, TP p);
+		TR Visit(ForeachLoopNode foreachLoop, TP p);
+		TR Visit(ForLoopNode forLoop, TP p);
+		TR Visit(IfNode ifNode, TP p);
+		TR Visit(PrintNode print, TP p);
+		TR Visit(ReadNode read, TP p);
+		TR Visit(ReturnNode ret, TP p);
+		TR Visit(WhileLoopNode whileLoop, TP p);
 
 
 		// Definitions //
@@ -90,9 +90,9 @@ namespace Seagull.Visitor
 		
 		
 		// Binary
-		TR Visit(Arithmetic arithmetic, TP p);
-		TR Visit(Comparison comparison, TP p);
-		TR Visit(LogicalOperation logicalOperation, TP p);
+		TR Visit(ArithmeticNode arithmetic, TP p);
+		TR Visit(ComparisonNode comparison, TP p);
+		TR Visit(LogicalOperationNode logicalOperation, TP p);
 		
 		
 		// Literals
@@ -104,17 +104,17 @@ namespace Seagull.Visitor
 		
 		
 		// All expressions
-		TR Visit(AttributeAccess attributeAccess, TP p);
-		TR Visit(Cast cast, TP p);
-		TR Visit(Default def, TP p);
+		TR Visit(AttributeAccessNode attributeAccess, TP p);
+		TR Visit(CastNode cast, TP p);
+		TR Visit(DefaultNode def, TP p);
 		TR Visit(FunctionInvocation functionInvocation, TP p);
-		TR Visit(Increment increment, TP p);
-		TR Visit(Indexing indexing, TP p);
-		TR Visit(Negation negation, TP p);
-		TR Visit(New newExpr, TP p);
-		TR Visit(TernaryOperator ternary, TP p);
-		TR Visit(UnaryMinus unaryMinus, TP p);
-		TR Visit(Variable variable, TP p);
+		TR Visit(IncrementNode increment, TP p);
+		TR Visit(IndexingNode indexing, TP p);
+		TR Visit(NegationNode negation, TP p);
+		TR Visit(NewNode newExpr, TP p);
+		TR Visit(TernaryOperatorNode ternary, TP p);
+		TR Visit(UnaryMinusNode unaryMinus, TP p);
+		TR Visit(VariableNode variable, TP p);
 
 
 		

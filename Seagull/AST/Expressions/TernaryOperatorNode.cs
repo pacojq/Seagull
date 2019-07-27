@@ -2,7 +2,7 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Expressions
 {
-    public class TernaryOperator : AbstractExpression
+    public class TernaryOperatorNode : AbstractExpression
     {
         
         public IExpression Condition { get; }
@@ -10,7 +10,7 @@ namespace Seagull.AST.Expressions
         public IExpression ElseExpr { get; }
         
         
-        public TernaryOperator(IExpression condition, IExpression thenExpr, IExpression elseExpr) 
+        public TernaryOperatorNode(IExpression condition, IExpression thenExpr, IExpression elseExpr) 
             : base(condition.Line, condition.Column)
         {
             Condition = condition;

@@ -16,7 +16,7 @@ namespace Seagull
         {
             FrontEndCompiler frontEnd = new FrontEndCompiler();
 		    
-            AST.Program program = frontEnd.Compile(inputFile);
+            AST.ProgramNode program = frontEnd.Compile(inputFile);
             if (program == null)
                 return -1;
             

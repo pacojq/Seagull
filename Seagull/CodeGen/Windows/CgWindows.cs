@@ -16,7 +16,7 @@ namespace Seagull.CodeGeneration.Windows
         private AssemblyBuilder _assemblyBuilder;
         private ModuleBuilder _moduleBuilder;
         
-        public void Generate(Program program, string inputPath, string outputPath)
+        public void Generate(ProgramNode program, string inputPath, string outputPath)
         {
             _programName = Path.GetFileNameWithoutExtension(outputPath);
             

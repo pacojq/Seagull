@@ -14,7 +14,7 @@ namespace Seagull.Visitor
         
         
         
-		public virtual TR Visit(Program program, TP p) {
+		public virtual TR Visit(ProgramNode program, TP p) {
 			
 			foreach (NamespaceNode ns in program.Namespaces)
 				ns.Accept(this, p);
@@ -141,24 +141,24 @@ namespace Seagull.Visitor
 		
 		
 		
-		public virtual TR Visit(Assignment assignment, TP p)
+		public virtual TR Visit(AssignmentNode assignment, TP p)
 		{
 			assignment.Left.Accept(this, p);
 			assignment.Right.Accept(this, p);
 			return default(TR);
 		}
 
-		public virtual TR Visit(Break br, TP p)
+		public virtual TR Visit(BreakNode br, TP p)
 		{
 			return default(TR);
 		}
 
-		public virtual TR Visit(Continue cont, TP p)
+		public virtual TR Visit(ContinueNode cont, TP p)
 		{
 			return default(TR);
 		}
 
-		public virtual TR Visit(ForeachLoop foreachLoop, TP p)
+		public virtual TR Visit(ForeachLoopNode foreachLoop, TP p)
 		{
 			foreachLoop.Element.Accept(this, p);
 			foreachLoop.Collection.Accept(this, p);
@@ -167,7 +167,7 @@ namespace Seagull.Visitor
 			return default(TR);
 		}
 
-		public virtual TR Visit(ForLoop forLoop, TP p)
+		public virtual TR Visit(ForLoopNode forLoop, TP p)
 		{
 			forLoop.Initialization.Accept(this, p);
 			forLoop.Condition.Accept(this, p);
@@ -178,32 +178,32 @@ namespace Seagull.Visitor
 		}
 
 
-		public virtual TR Visit(IfStatement ifStatement, TP p)
+		public virtual TR Visit(IfNode ifNode, TP p)
 		{
-			ifStatement.Condition.Accept(this, p);
-			foreach (IStatement st in ifStatement.Then)
+			ifNode.Condition.Accept(this, p);
+			foreach (IStatement st in ifNode.Then)
 				st.Accept(this, p);
-			foreach (IStatement st in ifStatement.Else)
+			foreach (IStatement st in ifNode.Else)
 				st.Accept(this, p);
 			return default(TR);
 		}
 		
 		
-		public virtual TR Visit(Read read, TP p)
+		public virtual TR Visit(ReadNode read, TP p)
 		{
 			read.Expression.Accept(this, p);
 			return default(TR);
 		}
 		
 		
-		public virtual TR Visit(Return returnStmnt, TP p)
+		public virtual TR Visit(ReturnNode returnNode, TP p)
 		{
-			returnStmnt.Value.Accept(this, p);
+			returnNode.Value.Accept(this, p);
 			return default(TR);
 		}
 
 		
-		public virtual TR Visit(WhileLoop whileLoop, TP p)
+		public virtual TR Visit(WhileLoopNode whileLoop, TP p)
 		{
 			whileLoop.Condition.Accept(this, p);
 			foreach (IStatement st in whileLoop.Statements)
@@ -212,7 +212,7 @@ namespace Seagull.Visitor
 		}
 	
 		
-		public virtual TR Visit(Print print, TP p)
+		public virtual TR Visit(PrintNode print, TP p)
 		{
 			print.Expression.Accept(this, p);
 			return default(TR);
@@ -283,7 +283,7 @@ namespace Seagull.Visitor
 		
 		
 		
-		public virtual TR Visit(Arithmetic arithmetic, TP p)
+		public virtual TR Visit(ArithmeticNode arithmetic, TP p)
 		{
 			arithmetic.Left.Accept(this, p);
 			arithmetic.Right.Accept(this, p);
@@ -291,7 +291,7 @@ namespace Seagull.Visitor
 		}
 	
 		
-		public virtual TR Visit(Comparison comparison, TP p)
+		public virtual TR Visit(ComparisonNode comparison, TP p)
 		{
 			comparison.Left.Accept(this, p);
 			comparison.Right.Accept(this, p);
@@ -299,7 +299,7 @@ namespace Seagull.Visitor
 		}
 	
 		
-		public virtual TR Visit(LogicalOperation logicalOperation, TP p)
+		public virtual TR Visit(LogicalOperationNode logicalOperation, TP p)
 		{
 			logicalOperation.Left.Accept(this, p);
 			logicalOperation.Right.Accept(this, p);
@@ -307,13 +307,13 @@ namespace Seagull.Visitor
 		}
 
 
-		public virtual TR Visit(Increment increment, TP p)
+		public virtual TR Visit(IncrementNode increment, TP p)
 		{
 			increment.Operand.Accept(this, p);
 			return default(TR);
 		}
 
-		public virtual TR Visit(Indexing indexing, TP p)
+		public virtual TR Visit(IndexingNode indexing, TP p)
 		{
 			indexing.Operand.Accept(this, p);
 			indexing.Index.Accept(this, p);
@@ -321,33 +321,33 @@ namespace Seagull.Visitor
 		}
 	
 		
-		public virtual TR Visit(AttributeAccess attributeAccess, TP p)
+		public virtual TR Visit(AttributeAccessNode attributeAccess, TP p)
 		{
 			attributeAccess.Operand.Accept(this, p);
 			return default(TR);
 		}
 	
 		
-		public virtual TR Visit(Cast cast, TP p)
+		public virtual TR Visit(CastNode cast, TP p)
 		{
 			cast.TargetType.Accept(this, p);
 			cast.Operand.Accept(this, p);
 			return default(TR);
 		}
 
-		public virtual TR Visit(Default def, TP p)
+		public virtual TR Visit(DefaultNode def, TP p)
 		{
 			def.Type.Accept(this, p);
 			return default(TR);
 		}
 
 
-		public virtual TR Visit(New newExpr, TP p)
+		public virtual TR Visit(NewNode newExpr, TP p)
 		{
 			return default(TR);
 		}
 
-		public virtual TR Visit(TernaryOperator ternary, TP p)
+		public virtual TR Visit(TernaryOperatorNode ternary, TP p)
 		{
 			ternary.Condition.Accept(this, p);
 			ternary.ThenExpr.Accept(this, p);
@@ -386,21 +386,21 @@ namespace Seagull.Visitor
 		}
 	
 		
-		public virtual TR Visit(Negation negation, TP p)
+		public virtual TR Visit(NegationNode negation, TP p)
 		{
 			negation.Operand.Accept(this, p);
 			return default(TR);
 		}
 	
 		
-		public virtual TR Visit(UnaryMinus unaryMinus, TP p)
+		public virtual TR Visit(UnaryMinusNode unaryMinus, TP p)
 		{
 			unaryMinus.Operand.Accept(this, p);
 			return default(TR);
 		}
 	
 		
-		public virtual TR Visit(Variable variable, TP p)
+		public virtual TR Visit(VariableNode variable, TP p)
 		{
 			return default(TR);
 		}

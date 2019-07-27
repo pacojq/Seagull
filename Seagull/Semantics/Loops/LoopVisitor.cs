@@ -14,7 +14,7 @@ namespace Seagull.Semantics.Loops
     {
         
         
-        public override Void Visit(Break br, IStatement p)
+        public override Void Visit(BreakNode br, IStatement p)
         {
             if (p != null)
                 return null;
@@ -23,7 +23,7 @@ namespace Seagull.Semantics.Loops
             return null;
         }
 
-        public override Void Visit(Continue cont, IStatement p)
+        public override Void Visit(ContinueNode cont, IStatement p)
         {
             if (p != null)
                 return null;
@@ -36,7 +36,7 @@ namespace Seagull.Semantics.Loops
         
         
         
-        public override Void Visit(ForeachLoop foreachLoop, IStatement p)
+        public override Void Visit(ForeachLoopNode foreachLoop, IStatement p)
         {
             foreach (IStatement st in foreachLoop.Statements)
                 st.Accept(this, foreachLoop);
@@ -44,7 +44,7 @@ namespace Seagull.Semantics.Loops
         }
 
 
-        public override Void Visit(ForLoop forLoop, IStatement p)
+        public override Void Visit(ForLoopNode forLoop, IStatement p)
         {
             foreach (IStatement st in forLoop.Statements)
                 st.Accept(this, forLoop);
@@ -52,7 +52,7 @@ namespace Seagull.Semantics.Loops
         }
 
 
-        public override Void Visit(WhileLoop whileLoop, IStatement p)
+        public override Void Visit(WhileLoopNode whileLoop, IStatement p)
         {
             foreach (IStatement st in whileLoop.Statements)
                 st.Accept(this, whileLoop);

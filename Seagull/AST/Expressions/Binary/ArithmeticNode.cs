@@ -2,9 +2,9 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Expressions.Binary
 {
-	public class LogicalOperation : BinaryOperation
+	public class ArithmeticNode : BinaryOperation
 	{
-		public LogicalOperation(string op, IExpression left, IExpression right) 
+		public ArithmeticNode(string op, IExpression left, IExpression right) 
 			: base(op, left, right)
 		{
 		}

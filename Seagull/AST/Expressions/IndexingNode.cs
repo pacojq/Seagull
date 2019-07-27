@@ -2,24 +2,22 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Expressions
 {
-	public class AttributeAccess : AbstractExpression
+	public class IndexingNode : AbstractExpression
 	{
 		public IExpression Operand { get; }
-		public string AttributeName { get; }
+		public IExpression Index { get; }
 
-		
-		public AttributeAccess(IExpression op, string attributeName)
+		public IndexingNode(IExpression op, IExpression index)
 			: base(op.Line, op.Column)
 		{
 			Operand = op;
-			AttributeName = attributeName;
+			Index = index;
 		}
 
 		public override string ToString()
 		{
-			return $"{Operand}.{AttributeName}";
+			return $"{Operand}[{Index}]";
 		}
-		
 		
 		
 		public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)

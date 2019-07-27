@@ -1,10 +1,10 @@
 namespace Seagull.AST.Expressions
 {
-	public abstract class Literal<T> : AbstractExpression
+	public abstract class AbstractLiteral<T> : AbstractExpression
 	{
 		public T Value { get; }
 
-		public Literal(int line, int column, T value) : base(line, column)
+		public AbstractLiteral(int line, int column, T value) : base(line, column)
 		{
 			Value = value;
 		}

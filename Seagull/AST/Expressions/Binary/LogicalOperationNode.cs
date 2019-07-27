@@ -2,12 +2,13 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Expressions.Binary
 {
-	public class Comparison : BinaryOperation
+	public class LogicalOperationNode : BinaryOperation
 	{
-		public Comparison(string op, IExpression left, IExpression right) 
+		public LogicalOperationNode(string op, IExpression left, IExpression right) 
 			: base(op, left, right)
 		{
 		}
+		
 		
 		public override TR Accept<TR, TP>(IVisitor<TR, TP> visitor, TP p)
 		{

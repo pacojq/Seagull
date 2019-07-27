@@ -163,7 +163,7 @@ namespace Seagull.CodeGeneration.Mapl
 
 		// ======================= Arithmetics ======================= //
 
-		public string Arithmetic(Arithmetic arithmetic)
+		public string Arithmetic(ArithmeticNode arithmetic)
 		{
 			IType t = arithmetic.Type;
 
@@ -239,7 +239,7 @@ namespace Seagull.CodeGeneration.Mapl
 		// ======================= Comparisons ======================= //
 
 
-		public string Comparison(Comparison comparison)
+		public string Comparison(ComparisonNode comparison)
 		{
 			IType t = comparison.Type;
 
@@ -321,7 +321,7 @@ namespace Seagull.CodeGeneration.Mapl
 		// ==================== Logical Operations ==================== //
 
 
-		public string LogicalOperation(LogicalOperation logicalOperation)
+		public string LogicalOperation(LogicalOperationNode logicalOperation)
 		{
 			StringBuilder str = new StringBuilder();
 		

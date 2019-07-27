@@ -16,7 +16,7 @@ namespace Seagull.CodeGeneration.Mapl
 		// WE ONLY DEAL WITH EXPRESSIONS //
 	
 	
-		public override Void Visit(Arithmetic arithmetic, Void p)
+		public override Void Visit(ArithmeticNode arithmetic, Void p)
 		{
 			arithmetic.Left.Accept(this, p);
 			arithmetic.Right.Accept(this, p);		
@@ -27,7 +27,7 @@ namespace Seagull.CodeGeneration.Mapl
 		}
 
 	
-		public override Void Visit(Comparison comparison, Void p)
+		public override Void Visit(ComparisonNode comparison, Void p)
 		{
 			comparison.Left.Accept(this, p);
 			comparison.Right.Accept(this, p);		
@@ -38,7 +38,7 @@ namespace Seagull.CodeGeneration.Mapl
 		}
 	
 
-		public override Void Visit(LogicalOperation logicalOperation, Void p)
+		public override Void Visit(LogicalOperationNode logicalOperation, Void p)
 		{
 			logicalOperation.Left.Accept(this, p);
 			logicalOperation.Right.Accept(this, p);
@@ -49,7 +49,7 @@ namespace Seagull.CodeGeneration.Mapl
 		}
 	
 
-		public override Void Visit(Indexing indexing, Void p)
+		public override Void Visit(IndexingNode indexing, Void p)
 		{
 			indexing.Accept(addressVisitor, null);
 			indexing.CgValue = indexing.CgAddress;
@@ -59,7 +59,7 @@ namespace Seagull.CodeGeneration.Mapl
 			return null;
 		}
 
-		public override Void Visit(AttributeAccess attributeAccess, Void p)
+		public override Void Visit(AttributeAccessNode attributeAccess, Void p)
 		{
 		
 			attributeAccess.Accept(addressVisitor, null);
@@ -70,7 +70,7 @@ namespace Seagull.CodeGeneration.Mapl
 		 	return null;
 		}
 
-		public override Void Visit(Cast cast, Void p)
+		public override Void Visit(CastNode cast, Void p)
 		{
 			IExpression operand = cast.Operand;
 		
@@ -121,7 +121,7 @@ namespace Seagull.CodeGeneration.Mapl
 
 	
 
-		public override Void Visit(Negation negation, Void p)
+		public override Void Visit(NegationNode negation, Void p)
 		{
 		
 			IExpression operand = negation.Operand;
@@ -133,7 +133,7 @@ namespace Seagull.CodeGeneration.Mapl
 		}
 	
 
-		public override Void Visit(UnaryMinus unaryMinus, Void p)
+		public override Void Visit(UnaryMinusNode unaryMinus, Void p)
 		{
 			IType t = unaryMinus.Type;
 		
@@ -149,7 +149,7 @@ namespace Seagull.CodeGeneration.Mapl
 
 	
 	
-		public override Void Visit(Variable variable, Void p)
+		public override Void Visit(VariableNode variable, Void p)
 		{
 
 			variable.Accept(addressVisitor, null);

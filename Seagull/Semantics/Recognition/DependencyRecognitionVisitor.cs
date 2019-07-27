@@ -182,7 +182,7 @@ namespace Seagull.Semantics.Recognition
 		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 		
 		
-		public override bool Visit(Cast cast, Void p)
+		public override bool Visit(CastNode cast, Void p)
 		{
 			bool dependency = cast.TargetType.Accept(this, p);
 			if (dependency)
@@ -193,7 +193,7 @@ namespace Seagull.Semantics.Recognition
 		}
 		
 		
-		public override bool Visit(New newExpr, Void p)
+		public override bool Visit(NewNode newExpr, Void p)
 		{
 			bool dependency = newExpr.Type.Accept(this, p);
 			if (dependency)

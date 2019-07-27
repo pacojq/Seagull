@@ -18,7 +18,7 @@ namespace Seagull.Semantics.Recognition
             _description = description;
         }
         
-        public override T Visit(Program program, Void p)
+        public override T Visit(ProgramNode program, Void p)
         {
             Logger.Instance.LogWarning("Symbol recognition stage: {0} | {1}.", _name, _description);
             base.Visit(program, p);

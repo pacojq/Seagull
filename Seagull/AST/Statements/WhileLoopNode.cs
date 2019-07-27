@@ -3,14 +3,14 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Statements
 {
-    public class WhileLoop : AbstractStatement
+    public class WhileLoopNode : AbstractStatement
     {
         
         public IExpression Condition { get; }
         public IEnumerable<IStatement> Statements { get; }
         
         
-        public WhileLoop(int line, int column, IExpression condition, IEnumerable<IStatement> statements) 
+        public WhileLoopNode(int line, int column, IExpression condition, IEnumerable<IStatement> statements) 
             : base(line, column)
         {
             Condition = condition;

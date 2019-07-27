@@ -10,10 +10,10 @@ namespace Seagull.AST.Expressions
 		
 		
 		
-		public Variable Function { get; }
+		public VariableNode Function { get; }
 		public IEnumerable<IExpression> Arguments { get; }
 		
-		public FunctionInvocation(Variable function, IEnumerable<IExpression> args)
+		public FunctionInvocation(VariableNode function, IEnumerable<IExpression> args)
 			: base(function.Line, function.Column)
 		{
 			Function = function;

@@ -45,7 +45,7 @@ namespace Seagull.Semantics.TypeChecking
 	    
 	    
 	    
-        public override Visitor.Void Visit(Variable variable, IType p)
+        public override Visitor.Void Visit(VariableNode variable, IType p)
         {
 			base.Visit(variable, variable.Type);
 			if (variable.Definition == null)
@@ -78,7 +78,7 @@ namespace Seagull.Semantics.TypeChecking
 		
 		
 		
-		public override Visitor.Void Visit(Arithmetic arithmetic, IType p)
+		public override Visitor.Void Visit(ArithmeticNode arithmetic, IType p)
 		{
 			base.Visit(arithmetic, p);
 			arithmetic.Type = arithmetic.Left.Type.TypeCheckArithmetic(arithmetic.Right.Type);		
@@ -86,7 +86,7 @@ namespace Seagull.Semantics.TypeChecking
 		}
 		
 		
-		public override Visitor.Void Visit(LogicalOperation logicalOperation, IType p)
+		public override Visitor.Void Visit(LogicalOperationNode logicalOperation, IType p)
 		{
 			base.Visit(logicalOperation, p);
 			logicalOperation.Type = logicalOperation.Left.Type.TypeCheckLogicalOperation(logicalOperation.Right.Type);		
@@ -94,7 +94,7 @@ namespace Seagull.Semantics.TypeChecking
 		}
 		
 		
-		public override Visitor.Void Visit(Comparison comparison, IType p)
+		public override Visitor.Void Visit(ComparisonNode comparison, IType p)
 		{
 			base.Visit(comparison, p);
 			comparison.Type = comparison.Left.Type.TypeCheckComparison(comparison.Right.Type);
@@ -107,7 +107,7 @@ namespace Seagull.Semantics.TypeChecking
 		
 		
 		
-		public override Visitor.Void Visit(Assignment assignment, IType p)
+		public override Visitor.Void Visit(AssignmentNode assignment, IType p)
 		{
 			base.Visit(assignment, p);
 			IType t1 = assignment.Left.Type;
@@ -129,7 +129,7 @@ namespace Seagull.Semantics.TypeChecking
 		
 		
 		
-		public override Visitor.Void Visit(Cast cast, IType p)
+		public override Visitor.Void Visit(CastNode cast, IType p)
 		{
 			base.Visit(cast, p);
 			cast.Type = cast.Operand.Type.TypeCheckCast(cast.TargetType);
@@ -138,7 +138,7 @@ namespace Seagull.Semantics.TypeChecking
 		
 		
 		
-		public override Visitor.Void Visit(New newExpr, IType p)
+		public override Visitor.Void Visit(NewNode newExpr, IType p)
 		{
 			base.Visit(newExpr, p);
 			newExpr.Type = newExpr.Type.TypeCheckNew();
@@ -147,7 +147,7 @@ namespace Seagull.Semantics.TypeChecking
 		
 		
 		
-		public override Visitor.Void Visit(AttributeAccess attributeAccess, IType p)
+		public override Visitor.Void Visit(AttributeAccessNode attributeAccess, IType p)
 		{
 			base.Visit(attributeAccess, p);
 			attributeAccess.Type = attributeAccess.Operand.Type.TypeCheckAttributeAccess(attributeAccess.AttributeName);
@@ -156,7 +156,7 @@ namespace Seagull.Semantics.TypeChecking
 		
 		
 		
-		public override Visitor.Void Visit(Indexing indexing, IType p)
+		public override Visitor.Void Visit(IndexingNode indexing, IType p)
 		{
 			base.Visit(indexing, p);
 			indexing.Type = indexing.Operand.Type.TypeCheckIndexing(indexing.Index.Type);
@@ -164,7 +164,7 @@ namespace Seagull.Semantics.TypeChecking
 		}
 
 
-		public override Void Visit(Increment increment, IType p)
+		public override Void Visit(IncrementNode increment, IType p)
 		{
 			base.Visit(increment, p);
 			increment.Type = increment.Operand.Type.TypeCheckIncrement();
@@ -176,15 +176,15 @@ namespace Seagull.Semantics.TypeChecking
 		
 		
 		
-		public override Visitor.Void Visit(IfStatement ifStatement, IType p)
+		public override Visitor.Void Visit(IfNode ifNode, IType p)
 		{
-			base.Visit(ifStatement, p);
-			IType t = ifStatement.Condition.Type;
+			base.Visit(ifNode, p);
+			IType t = ifNode.Condition.Type;
 			if (!t.IsLogical)
 			{
 				ErrorHandler.Instance.RaiseError(
-						ifStatement.Line, 
-						ifStatement.Column,
+						ifNode.Line, 
+						ifNode.Column,
 						$"Cannot evaluate the type {t} as a logical expression."
 				);
 			}
@@ -192,7 +192,7 @@ namespace Seagull.Semantics.TypeChecking
 		}
 		
 		
-		public override Visitor.Void Visit(WhileLoop whileLoop, IType p)
+		public override Visitor.Void Visit(WhileLoopNode whileLoop, IType p)
 		{
 			base.Visit(whileLoop, p);
 			IType t = whileLoop.Condition.Type;

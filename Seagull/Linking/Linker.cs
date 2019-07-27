@@ -31,12 +31,12 @@ namespace Seagull.Linking
         /// </summary>
         private Queue<string> _filesPendingToLink;
         
-        private List<Program> _loadedPrograms;
+        private List<ProgramNode> _loadedPrograms;
 
         private Linker()
         {
             _scanner = new Scanner();
-            _loadedPrograms = new List<Program>();
+            _loadedPrograms = new List<ProgramNode>();
         }
 
 

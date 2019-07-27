@@ -2,9 +2,9 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Statements
 {
-    public class Continue : AbstractStatement
+    public class BreakNode : AbstractStatement
     {
-        public Continue(int line, int column) : base(line, column)
+        public BreakNode(int line, int column) : base(line, column)
         {
         }
 

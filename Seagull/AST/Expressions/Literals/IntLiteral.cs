@@ -3,7 +3,7 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Expressions.Literals
 {
-	public class IntLiteral : Literal<int>
+	public class IntLiteral : AbstractLiteral<int>
 	{
 		public IntLiteral(int line, int column, int value)
 			: base(line, column, value)

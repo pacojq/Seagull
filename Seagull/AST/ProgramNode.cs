@@ -6,7 +6,7 @@ using Seagull.Visitor;
 
 namespace Seagull.AST
 {
-    public class Program : IAstNode
+    public class ProgramNode : IAstNode
     {
         public int Line { get; private set; }
         public int Column { get; private set; }
@@ -25,8 +25,8 @@ namespace Seagull.AST
         /// <summary>
         /// Imported files
         /// </summary>
-        private readonly List<string> _loads;
-        public IEnumerable<string> Loads => _loads;
+        private readonly List<string> _links;
+        public IEnumerable<string> Links => _links;
         
         
         /// <summary>
@@ -50,17 +50,17 @@ namespace Seagull.AST
         
 
 
-        public Program(int line, int column, IEnumerable<string> loads, IEnumerable<string> imports, 
+        public ProgramNode(int line, int column, IEnumerable<string> links, IEnumerable<string> imports, 
                 IEnumerable<IDefinition> definitions, IEnumerable<NamespaceNode> namespaces)
         {
             Line = line;
             Column = column;
-            _loads = new List<string>();
+            _links = new List<string>();
             _imports = new List<string>();
             _definitions = new List<IDefinition>();
             _namespaces = new List<NamespaceNode>();
             
-            _loads.AddRange(loads);
+            _links.AddRange(links);
             _imports.AddRange(imports);
             
             AddDefinitions(definitions);
@@ -74,7 +74,7 @@ namespace Seagull.AST
             foreach (var def in definitions)
             {
                 if (def == null)
-                    throw new Exception("Cannot add null definitions to a Program.");
+                    throw new Exception("Cannot add null definitions to a ProgramNode.");
                 //_definitions.Insert(0, def);
                 _definitions.Add(def);
             }
@@ -85,7 +85,7 @@ namespace Seagull.AST
             foreach (var ns in namespaces)
             {
                 if (ns == null)
-                    throw new Exception("Cannot add null namespace to a Program.");
+                    throw new Exception("Cannot add null namespace to a ProgramNode.");
                 //_definitions.Insert(0, ns);
                 _namespaces.Add(ns);
             }

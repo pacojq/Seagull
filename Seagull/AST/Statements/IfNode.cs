@@ -3,7 +3,7 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Statements
 {
-    public class IfStatement : AbstractStatement
+    public class IfNode : AbstractStatement
     {
         
         public IExpression Condition { get; }
@@ -11,7 +11,7 @@ namespace Seagull.AST.Statements
         public IEnumerable<IStatement> Else { get; set; }
         
         
-        public IfStatement(int line, int column, IExpression condition, IEnumerable<IStatement> thenPart)
+        public IfNode(int line, int column, IExpression condition, IEnumerable<IStatement> thenPart)
             : base(line, column)
         {
             Condition = condition;

@@ -2,13 +2,13 @@ using Seagull.Visitor;
 
 namespace Seagull.AST.Statements
 {
-    public class Return : AbstractStatement
+    public class ReturnNode : AbstractStatement
     {
         
         public IExpression Value { get; }
         
         
-        public Return(int line, int column, IExpression value) : base(line, column)
+        public ReturnNode(int line, int column, IExpression value) : base(line, column)
         {
             Value = value;
         }
