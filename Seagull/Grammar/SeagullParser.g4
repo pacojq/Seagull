@@ -31,7 +31,7 @@ program returns [Program Ast,
                 List<IDefinition> Def = new List<IDefinition>(),
                 List<NamespaceNode> Ns = new List<NamespaceNode>()]:
                 
-		(l=load { $Loads.Add($l.File); })*
+		(l=link { $Loads.Add($l.File); })*
 		(i=imp { $Imports.Add($i.Namespace); })*
 		(
 		      (n=namespaceNode  { $Ns.Add($n.Ast); })
@@ -44,8 +44,8 @@ program returns [Program Ast,
 	    
 
 // Imports and loads
-load returns [string File]:
-        LOAD p=STRING_CONSTANT { $File = $p.text; }
+link returns [string File]:
+        LINK p=STRING_CONSTANT { $File = $p.text; }
     ;
 
 imp returns [string Namespace]:

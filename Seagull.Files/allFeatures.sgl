@@ -1,5 +1,5 @@
 
-load "person.sgl"
+link "person.sgl"
 
 
 namespace TEST {

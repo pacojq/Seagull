@@ -80,7 +80,7 @@ LOCKED:     'locked' ;   // TODO ? - prevents overrides
 ABSTRACT:   'abstract' ; // TODO ?
 
 
-LOAD:       'load' ;
+LINK:       'link' ;
 IMPORT:     'import' ;
 NAMESPACE:  'namespace' ;
 

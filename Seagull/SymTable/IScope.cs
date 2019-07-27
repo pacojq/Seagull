@@ -26,6 +26,16 @@ namespace Seagull.SymTable
         /// <returns></returns>
         ISymbol Solve(string name);
 
+        
+        /// <summary>
+        /// Finds a scope recursively: if the scope is
+        /// not in the nested scopes, we'll look in our
+        /// parent scopes.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        IScope SolveScope(string name);
+
 
         /// <summary>
         /// Looks for a symbol in the current scope.

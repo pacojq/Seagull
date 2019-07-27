@@ -41,7 +41,7 @@ null
 'override'
 'locked'
 'abstract'
-'load'
+'link'
 'import'
 'namespace'
 'owned'
@@ -148,7 +148,7 @@ CONST
 OVERRIDE
 LOCKED
 ABSTRACT
-LOAD
+LINK
 IMPORT
 NAMESPACE
 OWNED
