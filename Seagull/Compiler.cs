@@ -1,32 +1,39 @@
 using System;
-using System.IO;
-using Seagull.CLI.Verbs;
 using Seagull.CodeGeneration;
 
-namespace Seagull.CLI.Modules.Compilation
+namespace Seagull
 {
     public class Compiler
     {
-        public static void Run(CompileOptions options)
+        public int CompileProject(string project)
+        {
+            // TODO
+
+            return 0;
+        }
+        
+        public int CompileFile(string inputFile, string outputFile)
         {
             FrontEndCompiler frontEnd = new FrontEndCompiler();
 		    
-            AST.Program program = frontEnd.Compile(options.InputFile);
+            AST.Program program = frontEnd.Compile(inputFile);
             if (program == null)
-                return;
+                return -1;
             
             Console.WriteLine("The file is correct!");
 		    
             // Stop here if the output is null
-            if (options.OutputFile == null)
-                return;
+            if (outputFile == null)
+                return 0;
             
             Console.WriteLine("Generating code...");
 
             // TODO let the user switch target
-            SeagullCodeGeneration.ForWindows.Generate(program, options.InputFile, options.OutputFile);
+            SeagullCodeGeneration.ForWindows.Generate(program, inputFile, outputFile);
                
             Console.WriteLine("Code generated!");
+
+            return 0;
         }
     }
 }

@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using CommandLine;
-using Seagull.CLI.Modules.Compilation;
 using Seagull.CLI.Verbs;
-using Seagull.CodeGeneration;
 
 namespace Seagull.CLI
 {
@@ -27,7 +23,8 @@ namespace Seagull.CLI
         
         private static int RunCompiler(CompileOptions options)
         {
-            Compiler.Run(options);
+            Compiler compiler = new Compiler();
+            compiler.CompileFile(options.InputFile, options.OutputFile);
             return 0;
         }
         

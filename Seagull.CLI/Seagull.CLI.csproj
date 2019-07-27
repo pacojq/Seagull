@@ -42,17 +42,12 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Modules\Compilation\Compiler.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Verbs\CompileOptions.cs" />
         <Compile Include="Verbs\NewOptions.cs" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\Seagull.CodeGeneration\Seagull.CodeGeneration.csproj">
-        <Project>{d41c6352-61b5-4eee-877e-d2e997f5203a}</Project>
-        <Name>Seagull.CodeGeneration</Name>
-      </ProjectReference>
       <ProjectReference Include="..\Seagull\Seagull.csproj">
         <Project>{79d5c142-87e3-4b09-b516-c0da43eb1c1d}</Project>
         <Name>Seagull</Name>
@@ -60,9 +55,6 @@
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Modules\Creation" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
