@@ -6,11 +6,7 @@
   <img src="https://img.shields.io/github/stars/pacojq/Seagull.svg?style=flat-square" />
 </p>
 
-> As I watched the seagulls, I thought: That's the road to take;
-> find the absolute rhythm and follow it with absolute trust.
->
-> ~ Nikos Kazantzakis
-
+> DISCLAIMER: Development in idle state.
 
 
 ## Description
@@ -35,25 +31,22 @@ which can directly output a C language program after compilation.
   - Using basic namespace functionality.
   - Very basic type inference (only working with literals).
 
-## Short term goals
+## Goals
 
   - ```switch``` statements
   - ```for``` loops, ```break``` and ```continue``` keywords.
-  - Add lambda expressions.
   - Allow value assignment on declaration.
+  - Add lambda expressions.
   - Add ```Enum``` types to the language.
   - Basic polymorphism: interfaces and struct inheritance.
-
-## Long term goals
-
   - Implicit type declarations and conversions.
   - Pointer handling and pass parameters by reference.
   - Add generics to the language.
   - Use the C language as the target compilation language.
-  - Allow the use of a graphics library, such as OpenGL.
-  - Language server protocol (https://langserver.org) implementation.
   
 ## Wishlist
 
+  - Allow the use of a graphics library, such as OpenGL.
+  - Language server protocol (https://langserver.org) implementation.
   - Add other output languages, like Java, Javascript, etc.
   - Allow compilation to the Microsoft Common Intermediate Language.
